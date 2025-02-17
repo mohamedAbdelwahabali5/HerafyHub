@@ -1,0 +1,67 @@
+/* Login Form Styles */
+.login-form-container {
+  width: 100%;
+  max-width: 450px;
+  margin: auto;
+}
+
+/* Form Controls */
+.form-control {
+  padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--teal-green);
+  box-shadow: 0 0 0 0.25rem rgba(61, 141, 122, 0.25);
+}
+
+/* Button Styles */
+.btn.bg-teal-green {
+  padding: 0.4rem 1rem;
+  width: 100%;
+}
+
+.btn.bg-teal-green:hover {
+  background-color: #2d6b5c !important;
+}
+
+/* Image Styles */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Divider Styles */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--line-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .login-form-container {
+      padding: 1.5rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .login-form-container {
+      max-width: 400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .login-form-container {
+      max-width: 450px;
+  }
+}
