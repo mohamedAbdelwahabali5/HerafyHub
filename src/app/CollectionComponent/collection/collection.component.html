@@ -1,0 +1,28 @@
+<div class="container">
+  <header class="collection-header text-center">
+    <h1 class="collection-title">NEW COLLECTION</h1>
+    <p class="collection-subtitle">
+      Our latest collection where classic contemporary styles converge in
+      perfect harmony
+    </p>
+  </header>
+
+  <div class="row g-4">
+    @for (product of products; track $index) {
+    <div class="col-md-4">
+      <article class="product-card">
+        <img
+          [src]="product.image"
+          class="product-image"
+          [alt]="product.title"
+        />
+        <div class="product-details">
+          <h2 class="product-title">{{ product.title }}</h2>
+          <p class="card-text">{{ product.category }}</p>
+          <p class="product-price">${{ product.price }}</p>
+        </div>
+      </article>
+    </div>
+    }
+  </div>
+</div>
