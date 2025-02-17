@@ -1,1 +1,25 @@
-/* You can add global styles to this file, and also import other style files */
+/* root Variables */
+:root {
+  --teal-green: #3D8D7A;
+  --dark-gray: #6C6C6C;
+  --line-text-color: #6E6E6E;
+  --line-color: #7B7878;
+}
+
+/* Utility Classes */
+.bg-teal-green {
+  background-color: var(--teal-green) !important;
+}
+
+.text-teal-green {
+  color: var(--teal-green) !important;
+}
+
+.bg-dark-gray {
+  background-color: var(--dark-gray) !important;
+}
+
+.text-dark-gray {
+  color: var(--dark-gray) !important;
+}
+
