@@ -1,0 +1,31 @@
+/* Only keep custom styles that can't be handled by Bootstrap */
+.product-title {
+  color: var(--teal-green);
+  font-size: 1.8rem;
+}
+
+.original-price {
+  color: var(--line-text-color);
+  text-decoration: line-through;
+  font-size: 0.8rem;
+}
+
+.current-price {
+  color: var(--teal-green);
+  font-weight: bold;
+}
+
+.btn-checkout {
+  background-color: var(--teal-green);
+  color: white;
+}
+
+.btn-checkout:hover {
+  background-color: var(--teal-green-hover);
+}
+
+@media (max-width: 768px) {
+  .product-title {
+    font-size: 1.5rem;
+  }
+}
