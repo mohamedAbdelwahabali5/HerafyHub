@@ -1,0 +1,47 @@
+/* Custom styles for carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 40px; /* Adjust the width of the control buttons */
+  height: 40px; /* Adjust the height of the control buttons */
+
+  border-radius: 50%; /* Circular buttons */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+}
+
+.carousel-control-prev {
+  left: -40px; /* Position the previous button */
+}
+
+.carousel-control-next {
+  right: -40px; /* Position the next button */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* Make the arrows white */
+}
+.h-400 {
+  height: 550px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: 30px; /* Smaller buttons for small screens */
+    height: 30px;
+  }
+
+  .carousel-control-prev {
+    left: -10px; /* Adjust position for small screens */
+  }
+
+  .carousel-control-next {
+    right: -10px; /* Adjust position for small screens */
+  }
+
+  .card-img.h-400 {
+    height: 300px; /* Adjust image height for small screens */
+  }
+}

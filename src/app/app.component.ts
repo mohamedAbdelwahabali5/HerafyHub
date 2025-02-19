@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { CollectionComponent } from './CollectionComponent/collection/collection.component';
 import { LoginComponent } from './Components/login/login.component';
 import { HeroComponent } from './Components/hero/hero.component';
+import { SliderComponent } from './Components/slider/slider.component';
 
 @Component({
   selector: 'app-root',
-  imports: [HeroComponent, CollectionComponent],
+  imports: [SliderComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
