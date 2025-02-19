@@ -11,7 +11,7 @@
   left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%); /* Adjust for centering */
   width: 90%; /* Adjust width as needed */
-  height: 80%;
+  height: 90%;
   border-radius: 15px; /* Optional: rounded corners */
   justify-content: flex-end;
 }
@@ -34,8 +34,9 @@
 
 .card-title {
   font-family: "Inter", sans-serif;
-  font-size: 5rem; /* Large title */
-  margin-bottom: 0.5rem; /* Adjust margin */
+  font-size: 4.5rem;
+  /* margin-bottom: 0.3rem; */
+  margin: 0.3rem;
   font-weight: 700;
   margin-left: 50px;
   /* width: 250px; */
@@ -45,7 +46,7 @@
   font-family: "Inter", sans-serif;
   color: #f8f9fa;
   font-size: 1.25rem; /* Medium text */
-  max-width: 600px; /* Limit text width for better readability */
+  max-width: 700px; /* Limit text width for better readability */
   margin-left: 50px; /* Remove margin */
   font-weight: 700;
 }
@@ -70,4 +71,3 @@
   font-size: 0.875rem; /* Smaller text for the collection name */
   opacity: 0.8; /* Slightly transparent */
 }
-/* find out the best collection offering our best quality production in a tolus spring collection */

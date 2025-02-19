@@ -1,9 +1,11 @@
 /* root Variables */
 :root {
-  --teal-green: #3D8D7A;
-  --dark-gray: #6C6C6C;
-  --line-text-color: #6E6E6E;
-  --line-color: #7B7878;
+  --teal-green: #3d8d7a;
+  --teal-green-hover: #275a4e;
+
+  --dark-gray: #6c6c6c;
+  --line-text-color: #6e6e6e;
+  --line-color: #7b7878;
 }
 
 /* Utility Classes */
@@ -22,4 +24,3 @@
 .text-dark-gray {
   color: var(--dark-gray) !important;
 }
-
