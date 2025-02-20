@@ -38,3 +38,8 @@ main {
   border-color: #3d8d7a;
   box-shadow: 0 0 0 0.25rem rgba(61, 141, 122, 0.25);
 }
+@media (max-width: 768px) {
+  main {
+    background-image: none;
+  }
+}
