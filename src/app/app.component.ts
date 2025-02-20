@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CollectionComponent } from './Components/collection/collection.component';
 import { LoginComponent } from './Components/login/login.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
+import { HeroComponent } from './Components/hero/hero.component';
 
 @Component({
   selector: 'app-root',
-  imports: [LoginComponent,HeaderComponent,FooterComponent],
+  imports: [HeroComponent,CollectionComponent,HeaderComponent,FooterComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'HerafyHub';
