@@ -2,6 +2,10 @@
     font-size: 1.3rem;
     color: #6C6C6C;
 }
+.img-fluid{
+  width:135px;
+
+}
 a {
     text-decoration: none;
     color: #6C6C6C;
