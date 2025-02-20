@@ -1,6 +1,10 @@
 nav{
     background-color: white;
 }
+.img-fluid{
+    width:135px;
+
+}
 button{
     background-color: #3D8D7A;
     color: white;
@@ -31,4 +35,7 @@ li .nav-link{
         margin-bottom: 4%;
     }
   }
-  
+  button:hover{
+    
+    background-color: #3d8d7ac6;
+  }
