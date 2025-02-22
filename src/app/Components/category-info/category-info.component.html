@@ -1,0 +1,33 @@
+<div class="container">
+  <div
+    class="dropdown d-flex justify-content-end"
+    (click)="changeCategory($event)"
+  >
+    <button
+      class="custom-dropdown px-2"
+      type="button"
+      id="dropdownMenuButton"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      Catigories <i class="bi bi-chevron-down"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      @for (category of categories; track $index) {
+      <li class="dropdown-item">{{ category.title }}</li>
+      }
+    </ul>
+  </div>
+
+  <div
+    class="cat-image image-container d-flex justify-content-end flex-column align-content-end"
+    [ngStyle]="{ 'background-image': 'url(' + imagePath + ')' }"
+  >
+    <div class="d-flex justify-content-end flex-column align-content-end mx-4">
+      <h1>{{ title }}</h1>
+      <p class="w-md-50 w-sm-100 w-lg-50">
+        {{ description }}
+      </p>
+    </div>
+  </div>
+</div>
