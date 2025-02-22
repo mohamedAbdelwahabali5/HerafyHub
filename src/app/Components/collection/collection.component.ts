@@ -13,7 +13,7 @@ export class CollectionComponent {
   constructor(private collectionService: CollectionService) {}
 
   ngOnInit() {
-    this.collectionService.getAll().subscribe({
+    this.collectionService.getAllProducts().subscribe({
       next: (data) => {
         console.log(data);
         this.products = (data as any[]).slice(0, 9).map((product) => ({
