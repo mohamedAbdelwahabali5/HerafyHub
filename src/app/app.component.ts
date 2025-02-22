@@ -8,16 +8,18 @@ import { HeroComponent } from './Components/hero/hero.component';
 
 import { SliderComponent } from './Components/slider/slider.component';
 import { InspireComponent } from './Components/inspire/inspire.component';
+import { AboutUsComponent } from './Components/about-us/about-us.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     HeaderComponent,
     FooterComponent,
-    HeroComponent,
-    CollectionComponent,
-    SliderComponent,
-    InspireComponent
+    // HeroComponent,
+    // CollectionComponent,
+    // SliderComponent,
+    // InspireComponent
+    AboutUsComponent
 
   ],
 

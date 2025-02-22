@@ -9,6 +9,9 @@
 }
 
 /* Utility Classes */
+.teal-green {
+  color: var(--teal-green) !important;
+}
 .bg-teal-green {
   background-color: var(--teal-green) !important;
 }
