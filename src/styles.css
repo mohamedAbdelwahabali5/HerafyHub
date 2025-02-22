@@ -1,9 +1,11 @@
 /* root Variables */
 :root {
-  --teal-green: #3D8D7A;
-  --dark-gray: #6C6C6C;
-  --line-text-color: #6E6E6E;
-  --line-color: #7B7878;
+  --teal-green: #3d8d7a;
+  --teal-green-hover: #275a4e;
+  --dark-gray: #6c6c6c;
+  --line-text-color: #6e6e6e;
+  --line-color: #7b7878;
+  --light-gray: #D8D7D7;
 }
 
 /* Utility Classes */
@@ -21,5 +23,38 @@
 
 .text-dark-gray {
   color: var(--dark-gray) !important;
+}
+
+
+.bg-light-gray {
+  background-color: var(--light-gray) !important;
+}
+
+.text-light-gray {
+  color: var(--light-gray) !important;
+}
+
+/* Responsive Width for Small Screens (≤576px) */
+@media (max-width: 576px) {
+  .w-sm-25 { width: 25% !important; }
+  .w-sm-50 { width: 50% !important; }
+  .w-sm-75 { width: 75% !important; }
+  .w-sm-100 { width: 100% !important; }
+}
+
+/* Responsive Width for Medium Screens (≥577px) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .w-md-25 { width: 25% !important; }
+  .w-md-50 { width: 50% !important; }
+  .w-md-75 { width: 75% !important; }
+  .w-md-100 { width: 100% !important; }
+}
+
+/* Responsive Width for Large Screens (≥769px) */
+@media (min-width: 769px)  {
+  .w-lg-25 { width: 25% !important; }
+  .w-lg-50 { width: 50% !important; }
+  .w-lg-75 { width: 75% !important; }
+  .w-lg-100 { width: 100% !important; }
 }
 

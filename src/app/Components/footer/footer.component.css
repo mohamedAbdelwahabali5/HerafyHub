@@ -1,0 +1,25 @@
+.desc{
+    font-size: 1.3rem;
+    color: #6C6C6C;
+}
+.img-fluid{
+  width:135px;
+
+}
+a {
+    text-decoration: none;
+    color: #6C6C6C;
+  }
+
+h5{
+    color: #3D8D7A;
+    font-weight: bold;
+}
+.small-border {
+    margin: 0 10px; 
+    font-weight: 800;
+  }
+
+ .fa-copyright,p{
+    font-size: 0.8rem;
+ } 
