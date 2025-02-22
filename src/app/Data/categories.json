@@ -1,0 +1,34 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "title": "Fashion",
+      "description": "Explore our stylish collection of clothing for men and women, featuring the latest trends and timeless classics.",
+      "image": "/images/categories/Fashion.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Furniture",
+      "description": "Transform your living spaces with our elegant and functional furniture pieces designed for modern homes.",
+      "image": "/images/categories/Furniture.jpeg"
+    },
+    {
+      "id": 3,
+      "title": "Accessories",
+      "description": "Complete your look with our curated selection of accessories that add the perfect finishing touch.",
+      "image": "/images/categories/Accessories.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Homeware",
+      "description": "Enhance your living environment with our collection of stylish and practical homeware essentials.",
+      "image": "/images/categories/Homeware.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Paintings",
+      "description": "Bring your walls to life with our diverse collection of original artwork and prints from talented artists.",
+      "image": "/images/categories/Paintings.jpg"
+    }
+  ]
+}

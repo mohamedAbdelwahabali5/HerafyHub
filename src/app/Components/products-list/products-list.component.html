@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between">
+    <div class="dropdown col-auto">
+      <button
+        class="custom-dropdown px-2"
+        type="button"
+        id="dropdownMenuButton"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Sort <i class="bi bi-chevron-down"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li class="dropdown-item">Low to High</li>
+        <li class="dropdown-item">High to Low</li>
+      </ul>
+    </div>
+
+    <div class="col-auto px-0">
+      <div style="position: relative; width: fit-content; width: 50%">
+        <input
+          class="search-field"
+          type="search"
+          id="inputSearch"
+          placeholder="Search"
+        />
+        <img
+          src="/icons/search.svg"
+          alt="Search Icon"
+          width="16"
+          class="search-icon-style"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    @for (product of products; track product.id) {
+    <div
+      class="col-sm-5 col-md-4 col-lg-3 mb-3 d-flex justify-content-center align-content-center"
+    >
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+    }
+  </div>
+</div>

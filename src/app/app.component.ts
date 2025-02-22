@@ -5,10 +5,18 @@ import { LoginComponent } from './Components/login/login.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { HeroComponent } from './Components/hero/hero.component';
+import { CategoryInfoComponent } from './Components/category-info/category-info.component';
+import { ProductsListComponent } from './Components/products-list/products-list.component';
+import { ProductCardComponent } from './Components/product-card/product-card.component';
 
 @Component({
   selector: 'app-root',
-  imports: [HeroComponent,CollectionComponent,HeaderComponent,FooterComponent],
+  imports: [
+    HeaderComponent,
+    FooterComponent,
+    ProductsListComponent,
+    CategoryInfoComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

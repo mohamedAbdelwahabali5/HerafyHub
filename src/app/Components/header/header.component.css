@@ -5,6 +5,10 @@ button{
     background-color: #3D8D7A;
     color: white;
 }
+button:hover{
+  background-color: var(--teal-green-hover);
+  color: aliceblue;
+}
 
 div i{
     color: #3D8D7A;
@@ -31,4 +35,3 @@ li .nav-link{
         margin-bottom: 4%;
     }
   }
-  
