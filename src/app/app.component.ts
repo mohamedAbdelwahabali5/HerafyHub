@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CollectionComponent } from './CollectionComponent/collection/collection.component';
+import { CollectionComponent } from './Components/collection/collection.component';
 import { LoginComponent } from './Components/login/login.component';
 import { HeroComponent } from './Components/hero/hero.component';
 import { SliderComponent } from './Components/slider/slider.component';

@@ -1,47 +1,89 @@
-/* Custom styles for carousel controls */
-.carousel-control-prev,
-.carousel-control-next {
-  width: 40px; /* Adjust the width of the control buttons */
-  height: 40px; /* Adjust the height of the control buttons */
-
-  border-radius: 50%; /* Circular buttons */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Center vertically */
+.category-column {
+  width: 100%;
+  padding: 0 15px;
 }
 
-.carousel-control-prev {
-  left: -40px; /* Position the previous button */
-}
-
-.carousel-control-next {
-  right: -40px; /* Position the next button */
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  filter: invert(1); /* Make the arrows white */
-}
-.h-400 {
+.slider-image {
   height: 550px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .carousel-control-prev,
-  .carousel-control-next {
-    width: 30px; /* Smaller buttons for small screens */
-    height: 30px;
+.carousel-control {
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.category-btn {
+  width: 50%;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .category-column {
+    width: 50%;
+  }
+  
+  .slider-image {
+    height: 400px;
   }
 
-  .carousel-control-prev {
-    left: -10px; /* Adjust position for small screens */
+  .category-btn {
+    width: 60%;
   }
 
-  .carousel-control-next {
-    right: -10px; /* Adjust position for small screens */
+  .card-title {
+    font-size: 1.25rem;
+  }
+  
+  /* Hide the third item on tablet */
+  .category-column:nth-child(3) {
+    display: none;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 992px) {
+  .category-column {
+    width: 33.333%;
+  }
+  
+  .slider-image {
+    height: 550px;
+  }
+  
+  /* Show the third item on desktop */
+  .category-column:nth-child(3) {
+    display: block;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .slider-image {
+    height: 300px;
   }
 
-  .card-img.h-400 {
-    height: 300px; /* Adjust image height for small screens */
+  .category-btn {
+    width: 30%;
+    padding: 0.5rem !important;
+    font-size: 0.875rem;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+  }
+
+  .card-img-overlay {
+    padding: 1rem !important;
+  }
+  
+  /* Hide second and third items on mobile */
+  .category-column:nth-child(n+2) {
+    display: none;
   }
 }

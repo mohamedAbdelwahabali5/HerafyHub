@@ -1,27 +1,21 @@
-<div class="container">
-  <!-- Category Slider -->
-  <div id="categorySlider" class="carousel slide m-5" data-bs-ride="carousel">
-    <!-- Carousel Inner -->
+<div class="container py-5">
+  <div id="categorySlider" class="carousel slide position-relative" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <div class="row g-4">
+        <div class="row g-3">
           @for (category of visibleCategories; track $index) {
-          <div class="col-md-4">
-            <div
-              class="card position-relative overflow-hidden rounded-4 border-0"
-            >
+          <div class="category-column">
+            <div class="card border-0 rounded-4 overflow-hidden category-card">
               <img
                 [src]="category.image"
-                class="card-img h-400 object-fit-cover"
+                class="card-img object-fit-cover slider-image"
                 [alt]="category.name"
               />
-              <div
-                class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-gradient-to-top"
-              >
-                <h5 class="card-title text-white mb-3 fs-4 fw-bold">
+              <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-black bg-opacity-50">
+                <h5 class="card-title text-white mb-3">
                   {{ category.name }}
                 </h5>
-                <button class="btn btn-light rounded-4 px-4 py-2 w-50">
+                <button class="btn btn-light rounded-4 py-2 category-btn">
                   See Details
                 </button>
               </div>
@@ -32,12 +26,17 @@
       </div>
     </div>
 
-    <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" (click)="prevSlide()">
+    <button 
+      class="carousel-control-prev rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
+      type="button" 
+      (click)="prevSlide()">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" (click)="nextSlide()">
+    <button 
+      class="carousel-control-next rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
+      type="button" 
+      (click)="nextSlide()">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>

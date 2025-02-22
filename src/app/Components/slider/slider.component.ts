@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-slider',
-  imports: [],
   templateUrl: './slider.component.html',
-  styleUrls: ['./slider.component.css'],
+  styleUrls: ['./slider.component.css']
 })
 export class SliderComponent {
   categories = [
@@ -19,19 +18,21 @@ export class SliderComponent {
   currentIndex = 0;
 
   nextSlide() {
-    if (this.currentIndex < this.categories.length - 3) {
-      this.currentIndex++;
-    }
+    this.currentIndex = (this.currentIndex + 1) % this.categories.length;
   }
 
   prevSlide() {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
-    }
+    this.currentIndex = (this.currentIndex - 1 + this.categories.length) % this.categories.length;
   }
 
-  // Get the visible categories based on the current index
   get visibleCategories() {
-    return this.categories.slice(this.currentIndex, this.currentIndex + 3);
+    const result = [];
+    // Always get 3 items, CSS will handle visibility
+    const itemsToShow = 3;
+    for (let i = 0; i < itemsToShow; i++) {
+      const index = (this.currentIndex + i) % this.categories.length;
+      result.push(this.categories[index]);
+    }
+    return result;
   }
 }
