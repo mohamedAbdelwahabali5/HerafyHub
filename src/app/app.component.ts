@@ -9,6 +9,7 @@ import { CategoryInfoComponent } from './Components/category-info/category-info.
 import { ProductsListComponent } from './Components/products-list/products-list.component';
 import { ProductCardComponent } from './Components/product-card/product-card.component';
 
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -16,6 +17,7 @@ import { ProductCardComponent } from './Components/product-card/product-card.com
     FooterComponent,
     ProductsListComponent,
     CategoryInfoComponent,
+
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
