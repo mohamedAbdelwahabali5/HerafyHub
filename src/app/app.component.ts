@@ -15,8 +15,11 @@ import { ProductCardComponent } from './Components/product-card/product-card.com
   imports: [
     HeaderComponent,
     FooterComponent,
-    ProductsListComponent,
-    CategoryInfoComponent,
+    HeroComponent,
+    CollectionComponent,
+
+    // ProductsListComponent,
+    // CategoryInfoComponent,
 
   ],
   templateUrl: './app.component.html',
