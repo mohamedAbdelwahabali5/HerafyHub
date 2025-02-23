@@ -9,6 +9,7 @@ import { HeroComponent } from './Components/hero/hero.component';
 import { SliderComponent } from './Components/slider/slider.component';
 import { InspireComponent } from './Components/inspire/inspire.component';
 import { AboutUsComponent } from './Components/about-us/about-us.component';
+import { HomeComponent } from "./Components/home/home.component";
 
 @Component({
   selector: 'app-root',
@@ -19,9 +20,9 @@ import { AboutUsComponent } from './Components/about-us/about-us.component';
     // CollectionComponent,
     // SliderComponent,
     // InspireComponent
-    AboutUsComponent
-
-  ],
+    AboutUsComponent,
+    HomeComponent
+],
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
