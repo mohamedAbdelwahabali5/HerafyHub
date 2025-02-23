@@ -7,16 +7,22 @@ import { FooterComponent } from './Components/footer/footer.component';
 import { HeroComponent } from './Components/hero/hero.component';
 
 import { SliderComponent } from './Components/slider/slider.component';
+import { InspireComponent } from './Components/inspire/inspire.component';
+import { AboutUsComponent } from './Components/about-us/about-us.component';
+import { HomeComponent } from "./Components/home/home.component";
 
 @Component({
   selector: 'app-root',
   imports: [
     HeaderComponent,
     FooterComponent,
-    SliderComponent,
-    CollectionComponent,
-    HeroComponent
-  ],
+    // HeroComponent,
+    // CollectionComponent,
+    // SliderComponent,
+    // InspireComponent
+    AboutUsComponent,
+    HomeComponent
+],
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
