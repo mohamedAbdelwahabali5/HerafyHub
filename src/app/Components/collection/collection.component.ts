@@ -10,10 +10,14 @@ import { RouterModule } from '@angular/router';
   styleUrl: './collection.component.css',
 })
 export class CollectionComponent {
-  products: any;
+  products: any = [];
+  loading: boolean = true;
+  err: any = null;
+
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
+    this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         console.log(data);
@@ -24,9 +28,12 @@ export class CollectionComponent {
               ? product.title.substring(0, 30) + '...'
               : product.title,
         }));
+        this.loading = false; // Set loading to false on success
       },
       error: (err) => {
         console.log(err);
+        this.err = err; 
+        this.loading = false; // Set loading to false on error
       },
     });
   }

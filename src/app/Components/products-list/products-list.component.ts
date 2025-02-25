@@ -25,23 +25,22 @@ export class ProductsListComponent {
   currentPage = 0; // Initial page   0 1 2
 
   loading: boolean = true;
+  err:any=null
 
   constructor(private productService: ProductService) {}
   ngOnInit() {
     this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (data) => {
-        // console.log('Data from API:', data);
-        console.log(typeof data);
-        // Array.from(data);
         this.products = data;
         this.pageProducts = this.products.slice(0, 8);
-        // console.log(this.pageProducts);
-        this.loading = false;
+        this.loading = false; // Set loading to false on success
       },
       error: (err) => {
         console.log(err);
-        this.loading = false;
+        this.err = err; // Set err to the error object or message
+        this.loading = false; // Set loading to false on error
+        this.pageProducts = [];
       },
     });
   }
