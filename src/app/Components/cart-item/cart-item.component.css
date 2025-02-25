@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+img {
+  width: 10rem;
+  border-radius: 15px;
+}
+.left-card {
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  width: auto;
+}
+.price {
+  align-self: center;
+  font-size: 1rem;
+}
+.arthimitic {
+  align-self: center;
+}
+.arthimitic p {
+  font-size: 1.3rem;
+}
+
+.arthimitic i {
+  background-color: white;
+  border-radius: 50%;
+}
+.product {
+  gap: 320px;
+}
+.product p {
+  color: black;
+  font-weight: 600;
+}
+.left-card p {
+  color: black;
+}
+
+h5 {
+  color: #3d8d7a;
+}
+.left {
+  box-shadow: -8px 8px 8px rgba(0, 0, 0, 0.2), 0 8px 8px rgba(0, 0, 0, 0.2),
+    8px 0 0 rgba(0, 0, 0, 0);
+}

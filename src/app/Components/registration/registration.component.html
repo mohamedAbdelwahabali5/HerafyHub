@@ -1,0 +1,218 @@
+<main>
+  <div class="container">
+    <div class="form-container">
+      <h2 class="text-center text-success">Registration Form</h2>
+      <p class="text-center">Please fill in the form below</p>
+
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <!-- Full Name -->
+        <div class="mb-3 mx-3">
+          <label class="form-label"
+            >Full Name <span class="text-danger">*</span></label
+          >
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="firstName"
+                placeholder="First Name"
+              />
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.firstName.errors?.['required']"
+                >First Name is required.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.firstName.errors?.['pattern']"
+                >Only letters allowed.</small
+              >
+            </div>
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="lastName"
+                placeholder="Last Name"
+              />
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.lastName.errors?.['required']"
+                >Last Name is required.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.lastName.errors?.['pattern']"
+                >Only letters allowed.</small
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3 mx-3">
+          <label class="form-label"
+            >Address <span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control mb-2"
+            formControlName="street"
+            placeholder="Street"
+          />
+          <small
+            class="text-danger"
+            *ngIf="submitted && f.street.errors?.['required']"
+            >Street is required.</small
+          >
+
+          <div class="row g-2 mb-3">
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="city"
+                placeholder="City"
+              />
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.city.errors?.['required']"
+                >City is required.</small
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="state"
+                placeholder="State"
+              />
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.state.errors?.['required']"
+                >State is required.</small
+              >
+            </div>
+            <div class="col-md-4">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="zipCode"
+                placeholder="Zip Code"
+              />
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.zipCode.errors?.['required']"
+                >Zip code is required.</small
+              >
+              <small
+                class="text-danger"
+                *ngIf="submitted && f.zipCode.errors?.['pattern']"
+                >Invalid zip code.</small
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Contact Information -->
+        <div class="row g-2 mb-3 mx-3">
+          <div class="col-md-6">
+            <label class="form-label"
+              >Phone Number
+              <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" formControlName="phone" />
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.phone.errors?.['required']"
+              >Phone is required.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.phone.errors?.['pattern']"
+              >Invalid phone number.</small
+            >
+          </div>
+          <div class="col-md-6">
+            <label class="form-label"
+              >E-mail <span class="text-danger">*</span></label
+            >
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="example@gmail.com"
+            />
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.email.errors?.['required']"
+              >Email is required.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.email.errors?.['pattern']"
+              >Invalid email format.</small
+            >
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="row g-2 mb-3 mx-3">
+          <div class="col-md-6">
+            <label class="form-label"
+              >Password <span class="text-danger">*</span></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+            />
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.password.errors?.['required']"
+              >Password is required.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.password.errors?.['pattern']"
+            >
+              Must include uppercase, lowercase, number, and special character.
+            </small>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label"
+              >Confirm Password <span class="text-danger">*</span></label
+            >
+            <input
+              type="password"
+              class="form-control"
+              formControlName="confirmPassword"
+            />
+            <small
+              class="text-danger"
+              *ngIf="submitted && f.confirmPassword.errors?.['required']"
+              >Confirm Password is required.</small
+            >
+            <small
+              class="text-danger"
+              *ngIf="submitted && registrationForm.errors?.['passwordMismatch']"
+              >Passwords do not match.</small
+            >
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+          <button type="submit" class="btn btn-custom w-75">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- <span
+  [ngClass]="{
+                'text-danger': submitted && f.phone.errors?.['required'],
+                'text-dark': f.phone.value
+              }"
+  >*</span
+> -->

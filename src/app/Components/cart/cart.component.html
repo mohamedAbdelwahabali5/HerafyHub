@@ -8,7 +8,7 @@
     <div class="col-md-3 col-sm-6 search">
       <div class="input-group">
         <span class="input-group-text">
-          <i class="bi bi-search"></i>
+          <i class="fas fa-search"></i>
         </span>
         <input type="text" class="form-control ps-2" placeholder="Search" />
       </div>
@@ -19,29 +19,9 @@
   <!-- left card and right card-->
   <div class="row justify-content-between  mt-5">
     <div class="col-md-8 col-sm-12 left p-4">
-      <div class="product  d-flex align-items-center  mb-2">
-        <p>product</p>
-        <div class="features d-flex justify-content-space-evenly gap-5">
-          <p class="ms-1">Price</p>
-          <p class="ms-1">Quantity</p>
-          <p class="ms-2">Total Price</p>
-        </div>
-      </div>
-
-      <div class="left-card d-flex p-3">
-        <img src="images/hero.png" alt="..." />
-        <div class="ms-3">
-          <p class="mt-2 mb-2">Product Catigory</p>
-          <h5>Product Name</h5>
-        </div>
-        <p class="price ms-5">$20.50</p>
-        <div class="arthimitic d-flex align-items-center justify-content-center gap-2 ms-5">
-          <i class="mb-2 p-2 fa-solid fa-minus d-flex align-items-center justify-content-center"></i>
-          <p class="mb-3 text-center d-flex align-items-center justify-content-center">2</p>
-          <i class="mb-2 p-2 fa-solid fa-plus d-flex align-items-center justify-content-center"></i>
-        </div>
-        <p class="price ms-5">$41.00</p>
-      </div>
+      @for(cart of Carts;track cart.id){
+        <app-cart-item [cart]="cart"></app-cart-item>
+      }
     </div>
     <!-- right card -->
     <div class="col-md-3 col-sm-12 right">
