@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-inspire',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './inspire.component.html',
   styleUrl: './inspire.component.css'
 })
