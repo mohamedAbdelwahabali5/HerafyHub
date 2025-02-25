@@ -5,7 +5,7 @@
   --dark-gray: #6c6c6c;
   --line-text-color: #6e6e6e;
   --line-color: #7b7878;
-  --light-gray: #D8D7D7;
+  --light-gray: #d8d7d7;
 }
 
 /* Utility Classes */
@@ -28,7 +28,6 @@
   color: var(--dark-gray) !important;
 }
 
-
 .bg-light-gray {
   background-color: var(--light-gray) !important;
 }
@@ -39,25 +38,62 @@
 
 /* Responsive Width for Small Screens (≤576px) */
 @media (max-width: 576px) {
-  .w-sm-25 { width: 25% !important; }
-  .w-sm-50 { width: 50% !important; }
-  .w-sm-75 { width: 75% !important; }
-  .w-sm-100 { width: 100% !important; }
+  .w-sm-25 {
+    width: 25% !important;
+  }
+  .w-sm-50 {
+    width: 50% !important;
+  }
+  .w-sm-75 {
+    width: 75% !important;
+  }
+  .w-sm-100 {
+    width: 100% !important;
+  }
 }
 
 /* Responsive Width for Medium Screens (≥577px) */
 @media (min-width: 577px) and (max-width: 768px) {
-  .w-md-25 { width: 25% !important; }
-  .w-md-50 { width: 50% !important; }
-  .w-md-75 { width: 75% !important; }
-  .w-md-100 { width: 100% !important; }
+  .w-md-25 {
+    width: 25% !important;
+  }
+  .w-md-50 {
+    width: 50% !important;
+  }
+  .w-md-75 {
+    width: 75% !important;
+  }
+  .w-md-100 {
+    width: 100% !important;
+  }
 }
 
 /* Responsive Width for Large Screens (≥769px) */
-@media (min-width: 769px)  {
-  .w-lg-25 { width: 25% !important; }
-  .w-lg-50 { width: 50% !important; }
-  .w-lg-75 { width: 75% !important; }
-  .w-lg-100 { width: 100% !important; }
+@media (min-width: 769px) {
+  .w-lg-25 {
+    width: 25% !important;
+  }
+  .w-lg-50 {
+    width: 50% !important;
+  }
+  .w-lg-75 {
+    width: 75% !important;
+  }
+  .w-lg-100 {
+    width: 100% !important;
+  }
 }
 
+.container-fluid {
+  padding-right: 5% !important;
+  padding-left: 5% !important;
+}
+
+.text-blend-mode {
+  mix-blend-mode: difference;
+  color: white;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}

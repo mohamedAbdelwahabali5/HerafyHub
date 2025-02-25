@@ -18,14 +18,15 @@
                 formControlName="firstName"
                 placeholder="First Name"
               />
+
               <small
                 class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['required']"
+                *ngIf="submitted && f.firstName.errors?.['required'] && f.firstName.touched"
                 >First Name is required.</small
               >
               <small
                 class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['pattern']"
+                *ngIf="submitted && f.firstName.errors?.['pattern'] && f.firstName.touched"
                 >Only letters allowed.</small
               >
             </div>

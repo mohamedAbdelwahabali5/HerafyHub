@@ -6,7 +6,7 @@
   <div class="product-details d-flex flex-column">
     <div class="d-flex justify-content-between mb-3 fw-bold">
       <div class="col-10">
-        <h3 class="product-title">{{ product.title }}</h3>
+        <h3 class="product-title cursor-pointer">{{ product.title }}</h3>
       </div>
       <div class="col-1">
         <button class="wishlist-button" (click)="toggleHeart($event)">
@@ -28,8 +28,14 @@
     <div class=" ">
       <p class="product-price">${{ product.currentprice }}</p>
     </div>
-    <button (click)="addToCart()" class="cart">Add to Cart</button>
+  </div>
+  <div class="mb-1 w-100">
+    <button
+      type="submit"
+      (onsubmit)="addToCart()"
+      class="btn w-100 bg-teal-green text-white px-2"
+    >
+      ADD TO CART
+    </button>
   </div>
 </div>
- 
- 

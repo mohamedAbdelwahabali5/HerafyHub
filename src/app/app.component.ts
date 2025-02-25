@@ -8,21 +8,29 @@ import { HeroComponent } from './Components/hero/hero.component';
 import { CartComponent } from './Components/cart/cart.component';
 import { CartItemComponent } from './Components/cart-item/cart-item.component';
 import { ProductsListComponent } from './Components/products-list/products-list.component';
+import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+
+
+
+
+
 
 
 
 @Component({
   selector: 'app-root',
 
+
   imports: [
-    HeroComponent,
-    CollectionComponent,
-    HeaderComponent,
-    FooterComponent,
-    LoginComponent,
-    CartComponent,
-    CartItemComponent,
-    ProductsListComponent
+    ResetPasswordComponent
+    // HeroComponent,
+    // CollectionComponent,
+    // HeaderComponent,
+    // FooterComponent,
+    // LoginComponent,
+    // CartComponent,
+    // CartItemComponent,
+    // ProductsListComponent
   ],
 
   templateUrl: './app.component.html',

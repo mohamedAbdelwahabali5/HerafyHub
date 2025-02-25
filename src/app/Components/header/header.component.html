@@ -16,18 +16,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0  ">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" 
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="active"
+          routerLink="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#">Contact Us</a>
+          <a class="nav-link active" routerLinkActive="active" routerLink="contact-us">Contact Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="#">About Us</a>
+          <a class="nav-link active" routerLinkActive="active" routerLink="about-us">About Us</a>
         </li>
       </ul>
       
       <div class="me-4"><i class="fa-regular fa-moon"></i></div>
-      <button type="button" class="border-0 rounded-5 ps-4 pe-4 py-2">Login</button>
+      <button type="button" class="border-0 rounded-5 ps-4 pe-4 py-2" routerLinkActive="active" routerLink="login" >Login</button>
     </div>
   </div>
 </nav>

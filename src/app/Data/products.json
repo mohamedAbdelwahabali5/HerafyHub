@@ -279,6 +279,64 @@
         "rate": 3.6,
         "count": 145
       }
+
+    },
+    {
+      "id": 21,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/21.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 22,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/22.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 23,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/23.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 24,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/24.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+
     }
   ]
 }
