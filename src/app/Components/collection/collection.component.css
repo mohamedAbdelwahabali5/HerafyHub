@@ -1,6 +1,6 @@
 /* Hover effect for the title */
 .card-title:hover {
-  color: var(--teal-green-hover) !important; /* Change to green on hover */
+  color: var(--teal-green) !important; /* Change to green on hover */
   transition: color 0.1s ease-in-out;
 }
 

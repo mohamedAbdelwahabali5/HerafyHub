@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
-import { CollectionService } from '../../Services/collection.service';
+import { ProductService } from '../../Services/collection.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -24,9 +24,12 @@ export class ProductsListComponent {
   imagePath!: string;
   currentPage = 0; // Initial page   0 1 2
 
-  constructor(private collectionService: CollectionService) {}
+  loading: boolean = true;
+
+  constructor(private productService: ProductService) {}
   ngOnInit() {
-    this.collectionService.getAllProducts().subscribe({
+    this.loading = true;
+    this.productService.getAllProducts().subscribe({
       next: (data) => {
         // console.log('Data from API:', data);
         console.log(typeof data);
@@ -34,9 +37,11 @@ export class ProductsListComponent {
         this.products = data;
         this.pageProducts = this.products.slice(0, 8);
         // console.log(this.pageProducts);
+        this.loading = false;
       },
       error: (err) => {
         console.log(err);
+        this.loading = false;
       },
     });
   }

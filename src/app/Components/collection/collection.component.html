@@ -10,20 +10,19 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     @for (product of products; track $index) {
     <div class="col">
-      <div class="card border-0 rounded-4 overflow-hidden ">
+      <div class="card border-0 rounded-4 overflow-hidden">
         <div class="position-relative">
-          <a href="#" class="text-decoration-none">
+          <a routerLink="/product-details/{{product.id}}" class="text-decoration-none">
             <img
               [src]="product.image"
               class="card-img-top object-fit-cover rounded-4 hover-green"
               [alt]="product.title"
               loading="lazy"
-              
             />
           </a>
         </div>
-        <div class="card-body ">
-          <a href="#" class="text-decoration-none">
+        <div class="card-body">
+          <a routerLink="/product-details/{{product.id}}" class="text-decoration-none">
             <h2 class="card-title fw-semibold fs-5 text-dark">{{ product.title }}</h2>
           </a>
           <p class="card-text fw-bold fs-6 text-muted">{{ product.category }}</p>

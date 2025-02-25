@@ -6,7 +6,7 @@
   <div class="product-details d-flex flex-column">
     <div class="d-flex justify-content-between mb-3 fw-bold">
       <div class="col-10">
-        <h3 class="product-title cursor-pointer">{{ product.title }}</h3>
+        <a routerLink="/product-details/{{product.id}}" class="product-title text-decoration-none">{{ product.title }}</a>
       </div>
       <div class="col-1">
         <button class="wishlist-button" (click)="toggleHeart($event)">

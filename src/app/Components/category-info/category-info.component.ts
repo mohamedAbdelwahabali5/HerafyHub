@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CollectionService } from '../../Services/collection.service';
+import { ProductService } from '../../Services/collection.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './category-info.component.html',
   styleUrls: ['./category-info.component.css'],
-  providers: [CollectionService],
+  providers: [ProductService],
 })
 export class CategoryInfoComponent implements OnInit {
   @ViewChild('imagecontainer') imagecontainer!: ElementRef;
@@ -19,9 +19,9 @@ export class CategoryInfoComponent implements OnInit {
   title!: string;
   description!: string;
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(private productService: ProductService) {}
   ngOnInit() {
-    this.collectionService.getAllCategories().subscribe({
+    this.productService.getAllCategories().subscribe({
       next: (data) => {
         // console.log('Data from API:', data);
         this.categories = data;
