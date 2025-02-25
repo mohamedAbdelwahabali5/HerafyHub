@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-error',
   imports: [RouterModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  templateUrl: './error.component.html',
+  styleUrl: './error.component.css'
 })
-export class HeaderComponent {
+export class ErrorComponent {
 
 }

@@ -16,12 +16,13 @@ import { HomeComponent } from "./Components/home/home.component";
   imports: [
     HeaderComponent,
     FooterComponent,
-    // HeroComponent,
-    // CollectionComponent,
-    // SliderComponent,
-    // InspireComponent
-    AboutUsComponent,
-    HomeComponent
+    // // HeroComponent,
+    // // CollectionComponent,
+    // // SliderComponent,
+    // // InspireComponent
+    // AboutUsComponent,
+    // HomeComponent
+    RouterOutlet,
 ],
 
   templateUrl: './app.component.html',
