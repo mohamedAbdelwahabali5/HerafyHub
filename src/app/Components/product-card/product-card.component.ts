@@ -23,4 +23,7 @@ export class ProductCardComponent {
 
     heartIcon.classList.toggle('filled');
   }
+  addToCart(){
+    
+  }
 }
