@@ -1,0 +1,28 @@
+.card{
+    height: 400px;
+}
+.btn{
+    background-color: var(--teal-green);
+}
+
+.btn:hover{
+    background-color: var(--teal-green-hover);
+}
+
+.thk, .inspire{
+    color: var(--teal-green);
+}
+
+  
+  @media (max-width: 768px) {
+    .card {
+      height: 300px; /* Adjust height for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      height: 250px; /* Even smaller height for mobile */
+    }
+  }
+  
