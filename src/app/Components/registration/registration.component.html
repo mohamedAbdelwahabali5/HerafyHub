@@ -17,18 +17,13 @@
                 class="form-control"
                 formControlName="firstName"
                 placeholder="First Name"
+                (blur)="f.firstName.markAsTouched()"
               />
-
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['required'] && f.firstName.touched"
-                >First Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['pattern'] && f.firstName.touched"
-                >Only letters allowed.</small
-              >
+              @if (f.firstName.touched && f.firstName.errors?.['required']) {
+              <small class="text-danger">First Name is required.</small>
+              } @if (f.firstName.touched && f.firstName.errors?.['pattern']) {
+              <small class="text-danger">Only letters allowed.</small>
+              }
             </div>
             <div class="col-md-6">
               <input
@@ -36,17 +31,13 @@
                 class="form-control"
                 formControlName="lastName"
                 placeholder="Last Name"
+                (blur)="f.lastName.markAsTouched()"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['required']"
-                >Last Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['pattern']"
-                >Only letters allowed.</small
-              >
+              @if (f.lastName.touched && f.lastName.errors?.['required']) {
+              <small class="text-danger">Last Name is required.</small>
+              } @if (f.lastName.touched && f.lastName.errors?.['pattern']) {
+              <small class="text-danger">Only letters allowed.</small>
+              }
             </div>
           </div>
         </div>
@@ -61,12 +52,11 @@
             class="form-control mb-2"
             formControlName="street"
             placeholder="Street"
+            (blur)="f.street.markAsTouched()"
           />
-          <small
-            class="text-danger"
-            *ngIf="submitted && f.street.errors?.['required']"
-            >Street is required.</small
-          >
+          @if (f.street.touched && f.street.errors?.['required']) {
+          <small class="text-danger">Street is required.</small>
+          }
 
           <div class="row g-2 mb-3">
             <div class="col-md-4">
@@ -75,12 +65,11 @@
                 class="form-control"
                 formControlName="city"
                 placeholder="City"
+                (blur)="f.city.markAsTouched()"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.city.errors?.['required']"
-                >City is required.</small
-              >
+              @if (f.city.touched && f.city.errors?.['required']) {
+              <small class="text-danger">City is required.</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -88,12 +77,11 @@
                 class="form-control"
                 formControlName="state"
                 placeholder="State"
+                (blur)="f.state.markAsTouched()"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.state.errors?.['required']"
-                >State is required.</small
-              >
+              @if (f.state.touched && f.state.errors?.['required']) {
+              <small class="text-danger">State is required.</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -101,38 +89,34 @@
                 class="form-control"
                 formControlName="zipCode"
                 placeholder="Zip Code"
+                (blur)="f.zipCode.markAsTouched()"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['required']"
-                >Zip code is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['pattern']"
-                >Invalid zip code.</small
-              >
+              @if (f.zipCode.touched && f.zipCode.errors?.['required']) {
+              <small class="text-danger">Zip code is required.</small>
+              } @if (f.zipCode.touched && f.zipCode.errors?.['pattern']) {
+              <small class="text-danger">Invalid zip code.</small>
+              }
             </div>
           </div>
         </div>
+
         <!-- Contact Information -->
         <div class="row g-2 mb-3 mx-3">
           <div class="col-md-6">
             <label class="form-label"
-              >Phone Number
-              <span class="text-danger">*</span>
-            </label>
-            <input type="text" class="form-control" formControlName="phone" />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['required']"
-              >Phone is required.</small
+              >Phone Number <span class="text-danger">*</span></label
             >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['pattern']"
-              >Invalid phone number.</small
-            >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phone"
+              (blur)="f.phone.markAsTouched()"
+            />
+            @if (f.phone.touched && f.phone.errors?.['required']) {
+            <small class="text-danger">Phone is required.</small>
+            } @if (f.phone.touched && f.phone.errors?.['pattern']) {
+            <small class="text-danger">Invalid phone number.</small>
+            }
           </div>
           <div class="col-md-6">
             <label class="form-label"
@@ -143,17 +127,13 @@
               class="form-control"
               formControlName="email"
               placeholder="example@gmail.com"
+              (blur)="f.email.markAsTouched()"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['required']"
-              >Email is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['pattern']"
-              >Invalid email format.</small
-            >
+            @if (f.email.touched && f.email.errors?.['required']) {
+            <small class="text-danger">Email is required.</small>
+            } @if (f.email.touched && f.email.errors?.['pattern']) {
+            <small class="text-danger">Invalid email format.</small>
+            }
           </div>
         </div>
 
@@ -167,18 +147,16 @@
               type="password"
               class="form-control"
               formControlName="password"
+              (blur)="f.password.markAsTouched()"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.password.errors?.['required']"
-              >Password is required.</small
+            @if (f.password.touched && f.password.errors?.['required']) {
+            <small class="text-danger">Password is required.</small>
+            } @if (f.password.touched && f.password.errors?.['pattern']) {
+            <small class="text-danger"
+              >Must include uppercase, lowercase, number, and special
+              character.</small
             >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.password.errors?.['pattern']"
-            >
-              Must include uppercase, lowercase, number, and special character.
-            </small>
+            }
           </div>
           <div class="col-md-6">
             <label class="form-label"
@@ -188,17 +166,15 @@
               type="password"
               class="form-control"
               formControlName="confirmPassword"
+              (blur)="f.confirmPassword.markAsTouched()"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.confirmPassword.errors?.['required']"
-              >Confirm Password is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && registrationForm.errors?.['passwordMismatch']"
-              >Passwords do not match.</small
-            >
+            @if (f.confirmPassword.touched &&
+            f.confirmPassword.errors?.['required']) {
+            <small class="text-danger">Confirm Password is required.</small>
+            } @if (f.confirmPassword.touched &&
+            registrationForm.errors?.['passwordMismatch']) {
+            <small class="text-danger">Passwords do not match.</small>
+            }
           </div>
         </div>
 
@@ -209,11 +185,3 @@
     </div>
   </div>
 </main>
-
-<!-- <span
-  [ngClass]="{
-                'text-danger': submitted && f.phone.errors?.['required'],
-                'text-dark': f.phone.value
-              }"
-  >*</span
-> -->
