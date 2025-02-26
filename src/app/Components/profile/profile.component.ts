@@ -6,18 +6,23 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { User } from '../../models/user.model';
+import { UsersService } from '../../Services/users.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [UsersService],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
 export class ProfileComponent implements OnInit {
   submitted = false;
+  isEditMode = false;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
+  userData: User | null = null;
 
   profileForm = new FormGroup({
     firstName: new FormControl('', [
@@ -33,7 +38,7 @@ export class ProfileComponent implements OnInit {
     state: new FormControl('', [Validators.required]),
     zipCode: new FormControl('', [
       Validators.required,
-      Validators.pattern('^[0-9]{5,10}$'),
+      Validators.pattern('^[0-9]{2,5}$'),
     ]),
     phone: new FormControl('', [
       Validators.required,
@@ -55,25 +60,41 @@ export class ProfileComponent implements OnInit {
     return this.profileForm.controls;
   }
 
+  constructor(private usersService: UsersService) {}
+
   ngOnInit() {
-    // You can load user data here
     this.loadUserProfile();
+    this.disableForm();
   }
 
+  // loadUserProfile() {
+  //   // Simulate loading user data
+  //   const userData = {
+  //     firstName: 'Mostafa',
+  //     lastName: 'Bolbol',
+  //     street: 'Omar Ibn Al-Khatab',
+  //     city: 'Zagazig',
+  //     state: 'Egypt',
+  //     zipCode: '055',
+  //     phone: '01122334455',
+  //     email: 'bolbol@gmail.com',
+  //     password: 'Mo_123456',
+  //   };
+  //   this.profileForm.patchValue(userData);
+  // }
   loadUserProfile() {
     // Simulate loading user data
-    const userData = {
-      firstName: 'Mostafa',
-      lastName: 'Bolbol',
-      street: 'Omar Ibn Al-Khatab',
-      city: 'Zagazig',
-      state: 'Egypt',
-      zipCode: '055',
-      phone: '01122334455',
-      email: 'bolbol@gmail.com',
-      password: 'Mo_123456',
-    };
-    this.profileForm.patchValue(userData);
+    this.usersService.getUserById(1).subscribe((user) => {
+      this.userData = user;
+      this.profileForm.patchValue(user);
+    });
+  }
+  disableForm() {
+    this.profileForm.disable();
+  }
+
+  enableForm() {
+    this.profileForm.enable();
   }
 
   onFileSelected(event: any) {
@@ -92,12 +113,45 @@ export class ProfileComponent implements OnInit {
     this.selectedFile = null;
     this.imagePreview = null;
   }
-
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+    if (this.isEditMode) {
+      this.enableForm();
+    } else {
+      this.disableForm();
+    }
+  }
   onSubmit() {
     this.submitted = true;
-    if (this.profileForm.valid) {
-      console.log('Profile Updated Successfully', this.profileForm.value);
-      // Add your API call here
+
+    if (this.profileForm.valid && this.userData) {
+      const updatedUser: User = {
+        ...this.userData, // Spread existing user data
+        name: {
+          fName: this.profileForm.value.firstName!, // Use form value for first name
+          lName: this.profileForm.value.lastName!, // Use form value for last name
+        },
+        address: {
+          street: this.profileForm.value.street!,
+          city: this.profileForm.value.city!,
+          state: this.profileForm.value.state!,
+          zipCode: this.profileForm.value.zipCode!,
+        },
+        phone: this.profileForm.value.phone!,
+        email: this.profileForm.value.email!,
+        password: this.profileForm.value.password!,
+      };
+
+      this.usersService.updateUser(1, updatedUser).subscribe({
+        next: () => {
+          alert('Profile updated successfully!');
+          this.isEditMode = false;
+          this.disableForm();
+        },
+        error: (err) => {
+          alert('Error updating profile: ' + err.message);
+        },
+      });
     }
   }
 }

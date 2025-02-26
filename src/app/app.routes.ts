@@ -11,11 +11,13 @@ import { ProductsListComponent } from './Components/products-list/products-list.
 import { FavoritesComponent } from './Components/favorites/favorites.component';
 
 
+
 export const routes: Routes = [
         {path: '', redirectTo:'home' ,pathMatch: 'full'},
         {path: 'home', component:HomeComponent},
         {path: 'login', component:LoginComponent},
         {path: 'register', component:RegistrationComponent},
+        {path: 'product-list', component:ProductsListComponent},
         {path: 'about-us', component:AboutUsComponent},
         {path: 'contact-us', component:ContactComponent},
         {path: 'product-details/:id', component:ProductDetailsComponent} ,
