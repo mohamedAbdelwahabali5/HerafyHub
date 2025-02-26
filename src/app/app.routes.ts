@@ -6,6 +6,9 @@ import { LoginComponent } from './Components/login/login.component';
 import { ErrorComponent } from './Components/error/error.component';
 import { ContactComponent } from './Components/contact/contact.component';
 import { RegistrationComponent } from './Components/registration/registration.component';
+import { CartComponent } from './Components/cart/cart.component';
+import { ProductsListComponent } from './Components/products-list/products-list.component';
+import { FavoritesComponent } from './Components/favorites/favorites.component';
 
 
 export const routes: Routes = [
@@ -16,8 +19,9 @@ export const routes: Routes = [
         {path: 'about-us', component:AboutUsComponent},
         {path: 'contact-us', component:ContactComponent},
         {path: 'product-details/:id', component:ProductDetailsComponent} ,
+        {path: 'products', component:ProductsListComponent} ,
+        {path: 'cart', component:CartComponent} ,
+        {path: 'favorite', component:FavoritesComponent} ,
         {path:'**',component:ErrorComponent},
-
-
 ];
 

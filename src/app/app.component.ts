@@ -10,17 +10,8 @@ import { CartItemComponent } from './Components/cart-item/cart-item.component';
 import { ProductsListComponent } from './Components/products-list/products-list.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 
-
-
-
-
-
-
-
 @Component({
   selector: 'app-root',
-
-
   imports: [
     ResetPasswordComponent
     // HeroComponent,
@@ -31,7 +22,11 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
     // CartComponent,
     // CartItemComponent,
     // ProductsListComponent
-  ],
+    ,
+    HeaderComponent,
+    FooterComponent,
+    RouterOutlet
+],
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

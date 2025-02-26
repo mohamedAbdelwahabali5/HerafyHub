@@ -2,10 +2,6 @@
   padding: 0;
   margin: 0;
 }
-.container-fluid{
-  padding-right:5% ;
-  padding-left:5% ;
-}
 
 .input-group span{
     background-color: #3D8D7A;
@@ -26,69 +22,37 @@ h3{
 }
 p{
     color: #3D8D7A;
-    
 }
-
 .input-group-text, .form-control {
-    height: 40px; 
-    padding: 10px 10px; 
-    font-size: 14px; 
+    height: 40px;
+    padding: 10px 10px;
+    font-size: 14px;
   }
   .left{
    background-color: #F4F4F4;
    border-radius: 15px;
-   height: auto;
+   height: 75vh;
+   overflow: scroll;
+   overflow-x:hidden;
   }
   img{
     width: 10rem;
     border-radius: 15px;
-  } 
-  .left-card{
-    background-color: #D9D9D9;
-    border-radius: 10px;
-    width: auto;
   }
-.price{
-    align-self: center;
-    font-size: 1rem;
-}
-.arthimitic{
-    align-self: center;
-}
-.arthimitic p{
-    font-size: 1.3rem;
-}
-
-.arthimitic i{
-    background-color: white;
-    border-radius: 50%;
-}
-.product{
-    gap: 320px;
-}
-.product p{
-    color: black;
-    font-weight: 600;
-}
-.left-card p{
-    color: black;
-}
-
 h5{
-   
+
     color:#3D8D7A;
 }
 .left{
-    box-shadow: -8px 8px 8px rgba(0, 0, 0, 0.2), 
-             0 8px 8px rgba(0, 0, 0, 0.2), 
-            8px 0 0 rgba(0, 0, 0, 0); 
+    box-shadow: -8px 8px 8px rgba(0, 0, 0, 0.2),
+             0 8px 8px rgba(0, 0, 0, 0.2),
+            8px 0 0 rgba(0, 0, 0, 0);
 
 }
-/* right cart */
 .card {
-    box-shadow: 8px 0 0 rgba(0, 0, 0, 0), 
-            8px 0 8px rgba(0, 0, 0, 0.2),  
-            0 8px 8px rgba(0, 0, 0, 0.2);   
+    box-shadow: 8px 0 0 rgba(0, 0, 0, 0),
+            8px 0 8px rgba(0, 0, 0, 0.2),
+            0 8px 8px rgba(0, 0, 0, 0.2);
 
   }
   .right h5{
@@ -96,26 +60,28 @@ h5{
   }
 
 
- /* Existing styles remain the same */
-
   @media (max-width: 768px){
- 
   .col-md-7 p{
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
-
   .right{
     margin-top: 40px;
   }
-
   .card {
     box-shadow: none;
-    border: none;   
-
+    border: none;
   }
   .left{
     box-shadow:none;
-    border: none; 
+    background-color: white;
+    border: none;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    overflow:auto;
+    height: auto;
+  }
+  
 }
 
 .left-card,.product{
@@ -128,8 +94,8 @@ h5{
 .product{
   display:block;
 
-  
+
 }
- }
- 
+
+
 

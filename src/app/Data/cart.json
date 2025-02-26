@@ -47,6 +47,14 @@
       "productName": "Foldsack Backpack",
       "quantity": 1,
       "price": 109.95
+    },
+    {
+      "id": "sVBWLadn41",
+      "productId": "3",
+      "productImage": "/images/products/3.jpg",
+      "productName": "Cotton Jacket",
+      "quantity": 1,
+      "price": 55.99
     }
   ]
 }

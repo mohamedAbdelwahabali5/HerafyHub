@@ -1,35 +1,21 @@
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-2">
   <div class="row justify-content-between">
     <div class="col-md-7 col-sm-6 ">
       <h3 class="mb-3">Shopping Bag</h3>
-      <p>2 items in your bag</p>
-    </div>
-  
-    <div class="col-md-3 col-sm-6 search">
-      <div class="input-group">
-        <span class="input-group-text">
-          <i class="fas fa-search"></i>
-        </span>
-        <input type="text" class="form-control ps-2" placeholder="Search" />
-      </div>
+      <p>{{Carts.length}}items in your bag</p>
     </div>
   </div>
-  
-
   <!-- left card and right card-->
-  <div class="row justify-content-between  mt-5">
-    <div class="col-md-8 col-sm-12 left p-4">
+  <div class="row justify-content-between mt-2 ">
+    <div class="col-md-8 col-sm-12 left p-4 ">
       @for(cart of Carts;track cart.id){
         <app-cart-item [cart]="cart"></app-cart-item>
       }
     </div>
     <!-- right card -->
     <div class="col-md-3 col-sm-12 right">
-
-      
     <div class="card rounded-3  p-4">
       <h5 class="mb-3">Cart Total</h5>
-
       <div class="d-flex justify-content-between mb-2">
         <span>Cart subtotal</span>
         <span>$71.50</span>
@@ -49,13 +35,13 @@
 
       <div class="d-flex justify-content-between mt-3">
         <strong>Total Amount</strong>
-        <strong>$67.50</strong>
+        <strong>${{TotalAmount.toFixed(2)}}</strong>
       </div>
     </div>
 
     </div>
-    
-   
+
+
   </div>
 
 </div>
