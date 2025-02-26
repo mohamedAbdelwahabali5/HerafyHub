@@ -24,14 +24,14 @@ import { ProfileComponent } from './Components/profile/profile.component';
   imports: [
     HeaderComponent,
     FooterComponent,
+
     // ProductsListComponent,
     // CategoryInfoComponent,
     // LoginComponent,
     // ForgotPasswordComponent,
     // ResetPasswordComponent,
-    // RegistrationComponent,
-    ProfileComponent,
-  ],
+    // RegistrationComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
