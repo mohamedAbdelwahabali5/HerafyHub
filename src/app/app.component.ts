@@ -23,13 +23,14 @@ import { HomeComponent } from "./Components/home/home.component";
 @Component({
   selector: 'app-root',
   imports: [
-    // HeaderComponent,
-    // FooterComponent,
+    HeaderComponent,
+    FooterComponent,
+    RouterOutlet,
     // ProductsListComponent,
     // CategoryInfoComponent,
     // LoginComponent,
     // ForgotPasswordComponent,
-    ResetPasswordComponent,
+    // ResetPasswordComponent,
     // RegistrationComponent
 ],
   templateUrl: './app.component.html',

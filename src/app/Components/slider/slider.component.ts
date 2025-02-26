@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../../Services/collection.service';
 
 @Component({
   selector: 'app-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.css']
 })
-export class SliderComponent {
-  categories = [
-    { name: 'FASHION', image: 'images/hero.png' },
-    { name: 'ACCESSORIES', image: 'images/cat.png' },
-    { name: 'FURNITURE', image: 'images/hero.png' },
-    { name: 'ELECTRONICS', image: 'images/login-image.jpg' },
-    { name: 'BEAUTY', image: 'images/hero.png' },
-    { name: 'SPORTS', image: 'images/hero.png' },
-  ];
-
+export class SliderComponent implements OnInit {
+  categories: any[] = [];
   currentIndex = 0;
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit() {
+    this.productService.getAllCategories().subscribe({
+      next: (data: any) => {
+        console.log(data);
+        
+        this.categories = data;
+      },
+      error: (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    });
+  }
 
   nextSlide() {
     this.currentIndex = (this.currentIndex + 1) % this.categories.length;

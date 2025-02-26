@@ -1,16 +1,18 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { CollectionService } from '../../Services/collection.service';
+import {ProductService } from '../../Services/collection.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
+  providers: [ProductService],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.css',
+  styleUrls: ['./product-card.component.css'],
 })
 export class ProductCardComponent {
   @Input() product: any;
-  constructor() {}
+  constructor(private productService:ProductService) {}
 
   ngOnInit() {
     // Simple logging to verify product data is received
