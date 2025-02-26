@@ -11,21 +11,20 @@ import { ProductsListComponent } from './Components/products-list/products-list.
 import { ProductCardComponent } from './Components/product-card/product-card.component';
 import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
-import { RegistrationComponent } from "./Components/registration/registration.component";
-
+import { RegistrationComponent } from './Components/registration/registration.component';
 
 import { SliderComponent } from './Components/slider/slider.component';
 import { InspireComponent } from './Components/inspire/inspire.component';
 import { AboutUsComponent } from './Components/about-us/about-us.component';
-import { HomeComponent } from "./Components/home/home.component";
-
+import { HomeComponent } from './Components/home/home.component';
+import { ProfileComponent } from './Components/profile/profile.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     HeaderComponent,
     FooterComponent,
-    RouterOutlet,
+
     // ProductsListComponent,
     // CategoryInfoComponent,
     // LoginComponent,

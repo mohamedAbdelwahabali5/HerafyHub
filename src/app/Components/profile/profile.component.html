@@ -4,10 +4,14 @@
       <h2 class="text-center">Profile</h2>
       <div class="profile-picture-container">
         <div class="profile-picture">
+          @if (imagePreview) {
+          <img [src]="imagePreview" alt="Profile Picture" />
+          } @else {
           <img
-            [src]="imagePreview || 'HerafyHub/public/images/registration.png'"
-            alt="Profile Picture"
+            src="assets/images/default-profile.png"
+            alt="Default Profile Picture"
           />
+          }
         </div>
         <div class="picture-actions">
           <button class="btn btn-custom-outline" (click)="fileInput.click()">
@@ -40,16 +44,11 @@
                 formControlName="firstName"
                 placeholder="First Name"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['required']"
-                >First Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['pattern']"
-                >Only letters allowed.</small
-              >
+              @if (submitted && f.firstName.errors?.['required']) {
+              <small class="text-danger">First Name is required.</small>
+              } @if (submitted && f.firstName.errors?.['pattern']) {
+              <small class="text-danger">Only letters allowed.</small>
+              }
             </div>
             <div class="col-md-6">
               <input
@@ -58,16 +57,11 @@
                 formControlName="lastName"
                 placeholder="Last Name"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['required']"
-                >Last Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['pattern']"
-                >Only letters allowed.</small
-              >
+              @if (submitted && f.lastName.errors?.['required']) {
+              <small class="text-danger">Last Name is required.</small>
+              } @if (submitted && f.lastName.errors?.['pattern']) {
+              <small class="text-danger">Only letters allowed.</small>
+              }
             </div>
           </div>
         </div>
@@ -83,11 +77,9 @@
             formControlName="street"
             placeholder="Street"
           />
-          <small
-            class="text-danger"
-            *ngIf="submitted && f.street.errors?.['required']"
-            >Street is required.</small
-          >
+          @if (submitted && f.street.errors?.['required']) {
+          <small class="text-danger">Street is required.</small>
+          }
 
           <div class="row g-2 mb-3">
             <div class="col-md-4">
@@ -97,11 +89,9 @@
                 formControlName="city"
                 placeholder="City"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.city.errors?.['required']"
-                >City is required.</small
-              >
+              @if (submitted && f.city.errors?.['required']) {
+              <small class="text-danger">City is required.</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -110,11 +100,9 @@
                 formControlName="state"
                 placeholder="State"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.state.errors?.['required']"
-                >State is required.</small
-              >
+              @if (submitted && f.state.errors?.['required']) {
+              <small class="text-danger">State is required.</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -123,16 +111,11 @@
                 formControlName="zipCode"
                 placeholder="Zip Code"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['required']"
-                >Zip code is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['pattern']"
-                >Invalid zip code.</small
-              >
+              @if (submitted && f.zipCode.errors?.['required']) {
+              <small class="text-danger">Zip code is required.</small>
+              } @if (submitted && f.zipCode.errors?.['pattern']) {
+              <small class="text-danger">Invalid zip code.</small>
+              }
             </div>
           </div>
         </div>
@@ -149,16 +132,11 @@
               formControlName="phone"
               placeholder="Phone Number"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['required']"
-              >Phone is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['pattern']"
-              >Invalid phone number.</small
-            >
+            @if (submitted && f.phone.errors?.['required']) {
+            <small class="text-danger">Phone is required.</small>
+            } @if (submitted && f.phone.errors?.['pattern']) {
+            <small class="text-danger">Invalid phone number.</small>
+            }
           </div>
           <div class="col-md-6">
             <label class="form-label"
@@ -170,16 +148,11 @@
               formControlName="email"
               placeholder="example@gmail.com"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['required']"
-              >Email is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['pattern']"
-              >Invalid email format.</small
-            >
+            @if (submitted && f.email.errors?.['required']) {
+            <small class="text-danger">Email is required.</small>
+            } @if (submitted && f.email.errors?.['pattern']) {
+            <small class="text-danger">Invalid email format.</small>
+            }
           </div>
         </div>
 
@@ -193,21 +166,28 @@
             class="form-control"
             formControlName="password"
           />
-          <small
-            class="text-danger"
-            *ngIf="submitted && f.password.errors?.['required']"
-            >Password is required.</small
+          @if (submitted && f.password.errors?.['required']) {
+          <small class="text-danger">Password is required.</small>
+          } @if (submitted && f.password.errors?.['pattern']) {
+          <small class="text-danger"
+            >Must include uppercase, lowercase, number, and special
+            character.</small
           >
-          <small
-            class="text-danger"
-            *ngIf="submitted && f.password.errors?.['pattern']"
-          >
-            Must include uppercase, lowercase, number, and special character.
-          </small>
+          }
         </div>
 
         <div class="d-flex justify-content-center">
-          <button type="submit" class="btn btn-custom w-75">Update</button>
+          @if (isEditMode) {
+          <button type="submit" class="btn btn-custom w-75">Save Changes</button>
+          } @else {
+          <button
+            type="button"
+            class="btn btn-custom w-75"
+            (click)="toggleEditMode()"
+          >
+            Update
+          </button>
+          }
         </div>
       </form>
     </div>
