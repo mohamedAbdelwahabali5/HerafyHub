@@ -6,7 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class ProductService {
   private readonly Collection_URL = 'https://fakestoreapi.com/products';
-  private readonly products_URL = 'http://localhost:3000/products';
+
+  private readonly products_URL = 'http://localhost:3100/products';
+
   private readonly Categories_URL = 'http://localhost:4400/categories';
 
   constructor(private http: HttpClient) {}
