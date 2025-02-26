@@ -1,0 +1,340 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Foldsack Backpack",
+      "oldprice": 129.95,
+      "currentprice": 109.95,
+      "description": "Perfect everyday backpack with padded laptop sleeve. Ideal for daily use and outdoor walks.",
+      "categoryId": 4,
+      "image": "/images/products/1.jpg",
+      "numberOfParts": 5,
+      "rating": {
+        "rate": 3.9,
+        "count": 120
+      }
+    },
+    {
+      "id": 2,
+      "title": "Premium Slim Tee",
+      "oldprice": 24.99,
+      "currentprice": 22.3,
+      "description": "Slim-fit, breathable, and durable casual T-shirt. Features contrast raglan sleeves and a three-button placket.",
+      "categoryId": 4,
+      "image": "/images/products/2.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 4.1,
+        "count": 259
+      }
+    },
+    {
+      "id": 3,
+      "title": "Cotton Jacket",
+      "oldprice": 69.99,
+      "currentprice": 55.99,
+      "description": "Versatile jacket suitable for various outdoor activities. Great for hiking, camping, and traveling.",
+      "categoryId": 4,
+      "image": "/images/products/3.jpg",
+      "numberOfParts": 3,
+      "rating": {
+        "rate": 4.7,
+        "count": 500
+      }
+    },
+    {
+      "id": 4,
+      "title": "Slim Fit Shirt",
+      "oldprice": 18.5,
+      "currentprice": 15.99,
+      "description": "Slim-fit casual shirt with a modern design. Note that colors may vary slightly from the image.",
+      "categoryId": 4,
+      "image": "/images/products/4.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 2.1,
+        "count": 430
+      }
+    },
+    {
+      "id": 5,
+      "title": "Dragon Chain Bracelet",
+      "oldprice": 799,
+      "currentprice": 695,
+      "description": "Inspired by the mythical water dragon, this bracelet symbolizes love and protection. Perfect for special occasions.",
+      "categoryId": 3,
+      "image": "/images/products/5.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 4.6,
+        "count": 400
+      }
+    },
+    {
+      "id": 6,
+      "title": "Gold Micropave Bracelet",
+      "oldprice": 199.99,
+      "currentprice": 168,
+      "description": "Elegant and delicate gold bracelet. Satisfaction guaranteed with a 30-day return policy.",
+      "categoryId": 3,
+      "image": "/images/products/6.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 3.9,
+        "count": 70
+      }
+    },
+    {
+      "id": 7,
+      "title": "Princess Ring",
+      "oldprice": 12.5,
+      "currentprice": 9.99,
+      "description": "Classic solitaire diamond promise ring. Ideal for engagements, weddings, and anniversaries.",
+      "categoryId": 3,
+      "image": "/images/products/7.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 3,
+        "count": 400
+      }
+    },
+    {
+      "id": 8,
+      "title": "Tunnel Plug Earrings",
+      "oldprice": 14.99,
+      "currentprice": 10.99,
+      "description": "Rose gold plated double flared tunnel plug earrings. Made of durable 316L stainless steel.",
+      "categoryId": 3,
+      "image": "/images/products/8.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 1.9,
+        "count": 100
+      }
+    },
+    {
+      "id": 9,
+      "title": "2TB External Drive",
+      "oldprice": 79.95,
+      "currentprice": 64,
+      "description": "High-capacity portable hard drive with fast data transfer. Compatible with USB 3.0 and USB 2.0.",
+      "categoryId": 2,
+      "image": "images/products/9.jpg",
+      "numberOfParts": 3,
+      "rating": {
+        "rate": 3.3,
+        "count": 203
+      }
+    },
+    {
+      "id": 10,
+      "title": "1TB Internal SSD",
+      "oldprice": 129.99,
+      "currentprice": 109,
+      "description": "Boost your PC's performance with this internal SSD. Offers fast boot-up and application load times.",
+      "categoryId": 2,
+      "image": "/images/products/10.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 2.9,
+        "count": 470
+      }
+    },
+    {
+      "id": 11,
+      "title": "256GB SSD",
+      "oldprice": 124.5,
+      "currentprice": 109,
+      "description": "High-performance SSD with 3D NAND flash. Enhances system performance and reliability.",
+      "categoryId": 2,
+      "image": "/images/products/11.jpg",
+      "numberOfParts": 4,
+      "rating": {
+        "rate": 4.8,
+        "count": 319
+      }
+    },
+    {
+      "id": 12,
+      "title": "PS4 Gaming Drive",
+      "oldprice": 139.99,
+      "currentprice": 114,
+      "description": "Expand your PS4 gaming experience with this high-capacity drive. Sleek design with fast setup.",
+      "categoryId": 2,
+      "image": "/images/products/12.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 4.8,
+        "count": 400
+      }
+    },
+    {
+      "id": 13,
+      "title": "21.5\" Full HD Monitor",
+      "oldprice": 649,
+      "currentprice": 599,
+      "description": "Ultra-thin Full HD monitor with IPS display. Features Radeon FreeSync technology for smooth visuals.",
+      "categoryId": 2,
+      "image": "/images/products/13.jpg",
+      "numberOfParts": 7,
+      "rating": {
+        "rate": 2.9,
+        "count": 250
+      }
+    },
+    {
+      "id": 14,
+      "title": "Curved Gaming Monitor",
+      "oldprice": 1199.99,
+      "currentprice": 999.99,
+      "description": "Super ultrawide curved gaming monitor with QLED technology. High refresh rate for smooth gameplay.",
+      "categoryId": 2,
+      "image": "/images/products/14.jpg",
+      "numberOfParts": 8,
+      "rating": {
+        "rate": 2.2,
+        "count": 140
+      }
+    },
+    {
+      "id": 15,
+      "title": "3-in-1 Winter Jacket",
+      "oldprice": 72.99,
+      "currentprice": 56.99,
+      "description": "Versatile 3-in-1 snowboard jacket with detachable liner. Suitable for various weather conditions.",
+      "categoryId": 1,
+      "image": "/images/products/15.jpg",
+      "numberOfParts": 6,
+      "rating": {
+        "rate": 2.6,
+        "count": 235
+      }
+    },
+    {
+      "id": 16,
+      "title": "Faux Leather Jacket",
+      "oldprice": 39.95,
+      "currentprice": 29.95,
+      "description": "Stylish faux leather biker jacket with removable hood. Features zippered pockets and a modern design.",
+      "categoryId": 1,
+      "image": "/images/products/16.jpg",
+      "numberOfParts": 4,
+      "rating": {
+        "rate": 2.9,
+        "count": 340
+      }
+    },
+    {
+      "id": 17,
+      "title": "Striped Raincoat",
+      "oldprice": 49.99,
+      "currentprice": 39.99,
+      "description": "Lightweight raincoat with adjustable hood and drawstring waist. Perfect for outdoor activities.",
+      "categoryId": 1,
+      "image": "/images/products/17.jpg",
+      "numberOfParts": 5,
+      "rating": {
+        "rate": 3.8,
+        "count": 679
+      }
+    },
+    {
+      "id": 18,
+      "title": "Boat Neck Top",
+      "oldprice": 12.99,
+      "currentprice": 9.85,
+      "description": "Lightweight and stretchy boat neck top. Features ribbed sleeves and double stitching for durability.",
+      "categoryId": 1,
+      "image": "/images/products/18.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 4.7,
+        "count": 130
+      }
+    },
+    {
+      "id": 19,
+      "title": "Moisture-Wicking Tee",
+      "oldprice": 9.95,
+      "currentprice": 7.95,
+      "description": "Breathable and moisture-wicking short sleeve top. Soft fabric with a comfortable V-neck design.",
+      "categoryId": 1,
+      "image": "/images/products/19.jpg",
+      "numberOfParts": 1,
+      "rating": {
+        "rate": 4.5,
+        "count": 146
+      }
+    },
+    {
+      "id": 20,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/20.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 21,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/21.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 22,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/22.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 23,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/23.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    },
+    {
+      "id": 24,
+      "title": "Casual Cotton Tee",
+      "oldprice": 16.99,
+      "currentprice": 12.99,
+      "description": "Casual cotton T-shirt with a soft and stretchy fabric. Features a V-neck and letter print design.",
+      "categoryId": 1,
+      "image": "/images/products/24.jpg",
+      "numberOfParts": 2,
+      "rating": {
+        "rate": 3.6,
+        "count": 145
+      }
+    }
+  ]
+}

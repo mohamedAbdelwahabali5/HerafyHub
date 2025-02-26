@@ -1,0 +1,47 @@
+nav{
+    background-color: white;
+}
+.img-fluid{
+    width:135px;
+
+}
+button{
+    background-color: #3D8D7A;
+    color: white;
+}
+button:hover{
+  background-color: var(--teal-green-hover);
+  color: aliceblue;
+}
+
+div i{
+    color: #3D8D7A;
+    font-size: 1.8rem;
+}
+
+li .nav-link{
+    color: #3D8D7A;
+    font-weight: 600;
+}
+.navbar-nav{
+    margin-left: 32%;
+}
+.container-fluid{
+    padding-right:5% ;
+    padding-left:5% ;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-nav{
+        margin-left: 0%;
+    }
+    div i{
+        margin-bottom: 4%;
+    }
+  }
+
+  button:hover{
+    
+    background-color: #3d8d7ac6;
+  }
+

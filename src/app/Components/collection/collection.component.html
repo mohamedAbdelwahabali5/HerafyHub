@@ -1,0 +1,65 @@
+<div class="container">
+  <header class="text-center py-5">
+    <h1 class="fw-semibold display-4 teal-green">NEW COLLECTION</h1>
+    <p class="fw-medium fs-4 text-secondary">
+      Our latest collection where classic contemporary styles converge in
+      perfect harmony
+    </p>
+  </header>
+  @if (loading) {
+    <div class="row my-5">
+      <div class="col-12 text-center py-4">
+        <div class="spinner-border text-teal-green" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading Collection...</p>
+      </div>
+    </div>
+  }
+  @else if (products.length === 0) {
+    <div class="row my-5">
+      <div class="col-12 text-center py-4">
+        <div class="d-flex flex-column align-items-center">
+          <h5 class="text-muted">Comming Soon !</h5>
+        </div>
+      </div>
+    </div>
+  }
+  @else if (err) {
+    <div class="row my-5">
+      <div class="col-12 text-center py-4">
+        <div class="d-flex flex-column align-items-center">
+          <h5 class="text-danger">Comming Soon!</h5>
+          
+        </div>
+      </div>
+    </div>
+  }
+  @else {
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      @for (product of products; track $index) {
+        <div class="col">
+          <div class="card border-0 rounded-4 overflow-hidden">
+            <div class="position-relative">
+              <a routerLink="/product-details/{{product.id}}" class="text-decoration-none">
+                <img
+                  [src]="product.image"
+                  class="card-img-top object-fit-cover rounded-4 hover-green"
+                  [alt]="product.title"
+                  loading="lazy"
+                />
+              </a>
+            </div>
+            <div class="card-body">
+              <a routerLink="/product-details/{{product.id}}" class="text-decoration-none">
+                <h2 class="card-title fw-semibold fs-5 text-dark">{{ product.title }}</h2>
+              </a>
+              <p class="card-text fw-bold fs-6 text-muted">{{ product.category }}</p>
+              <p class="card-text fw-semibold fs-5 text-dark">${{ product.currentprice }}</p>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

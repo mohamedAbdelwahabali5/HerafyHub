@@ -10,24 +10,54 @@
           <h1 class="text-center text-teal-green mb-4 fs-2">Welcome Back</h1>
           <p class="text-center text-dark-gray">Please Enter your Details</p>
 
-          <form class="row g-3">
+          <form [formGroup]="loginForm" id="" class="row g-3">
             <div class="col-12">
               <label for="inputEmail4" class="form-label text-teal-green"
                 >Email</label
               >
-              <input type="email" class="form-control" id="inputEmail4" />
+              <input
+                formControlName="email"
+                type="email"
+                class="form-control"
+                id="inputEmail4"
+              />
             </div>
-
+            @if(loginForm.controls['email'].invalid &&
+            loginForm.controls['email'].touched) {
+            @if(loginForm.controls['email'].errors?.['required']) {
+            <p class="error text-danger">Email is required</p>
+            } @else if(loginForm.controls['email'].errors?.['email']) {
+            <p class="error text-danger">Invalid email format</p>
+            } }
             <div class="col-12">
               <label for="inputPassword4" class="form-label text-teal-green"
                 >Password</label
               >
-              <input type="password" class="form-control" id="inputPassword4" />
+              <input
+                formControlName="password"
+                type="password"
+                class="form-control"
+                id="inputPassword4"
+              />
             </div>
+            @if(loginForm.controls['password'].invalid &&
+            loginForm.controls['password'].touched) {
+            @if(loginForm.controls['password'].errors?.['required']) {
+            <p class="error text-danger">Password is required</p>
+            } @else if(loginForm.controls['password'].errors?.['minlength']) {
+            <p class="error text-danger">
+              Password must be at least 8 characters long
+            </p>
+            } @else if(loginForm.controls['password'].errors?.['pattern']) {
+            <p class="error text-danger">
+              Password must include one uppercase letter, one lowercase letter,
+              one digit, and one special character
+            </p>
+            } }
             <div class="col-12 text-center mt-3">
               <p class="mb-0">
                 Need an account?
-                <a href="#" class="text-teal-green text-decoration-none fw-bold"
+                <a   routerLink="/register" class="text-teal-green text-decoration-none fw-bold"
                   >Create one</a
                 >
               </p>
@@ -56,7 +86,11 @@
             </div>
 
             <div class="col-12">
-              <button type="submit" class="btn w-100 bg-teal-green text-white">
+              <button
+                type="submit"
+                (onsubmit)="formCheack()"
+                class="btn w-100 bg-teal-green text-white"
+              >
                 Sign in
               </button>
             </div>

@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div
+    class="dropdown d-flex justify-content-end"
+    (click)="changeCategory($event)"
+  >
+    <button
+      class="custom-dropdown px-2"
+      type="button"
+      id="dropdownMenuButton"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      Categories
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 65 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M29.278 28.9074C29.2821 28.904 29.2881 28.904 29.2922 28.9074C31.071 30.3661 33.9533 30.3642 35.7291 28.9016L63.0414 6.40598C64.8195 4.94142 64.8195 2.56298 63.0414 1.09842C61.2632 -0.366139 58.3755 -0.366139 56.5974 1.09842L51.5672 5.24153C40.4915 14.364 24.5066 14.3663 13.4283 5.24706L8.4026 1.11013C6.62446 -0.354424 3.73675 -0.354424 1.95861 1.11013C0.180464 2.57469 0.180464 4.95313 1.95861 6.41769L29.2638 28.9074C29.2679 28.9108 29.2739 28.9108 29.278 28.9074V28.9074Z"
+          fill="white"
+        />
+      </svg>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      @for (category of categories; track $index) {
+      <li class="dropdown-item">{{ category.title }}</li>
+      }
+    </ul>
+  </div>
+
+  <div
+    class="cat-image image-container d-flex justify-content-end flex-column align-content-end"
+    [ngStyle]="{ 'background-image': 'url(' + imagePath + ')' }"
+  >
+    <div
+      class="cat-info d-flex justify-content-end flex-column align-content-end mx-4"
+    >
+      <h1>{{ title }}</h1>
+      <p class="w-md-50 w-sm-100 w-lg-50">
+        {{ description }}
+      </p>
+    </div>
+  </div>
+</div>
