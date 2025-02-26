@@ -9,6 +9,7 @@ import {
 
 @Component({
   selector: 'app-contact',
+  // standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css',
