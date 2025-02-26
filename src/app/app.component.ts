@@ -24,13 +24,14 @@ import { ProductDetailsComponent } from "./Components/product-details/product-de
 @Component({
   selector: 'app-root',
   imports: [
-    // HeaderComponent,
-    // FooterComponent,
+    HeaderComponent,
+    FooterComponent,
+    RouterOutlet,
     // ProductsListComponent,
     // CategoryInfoComponent,
     // LoginComponent,
     // ForgotPasswordComponent,
-    ResetPasswordComponent,
+    // ResetPasswordComponent,
     // ProductDetailsComponent
 ],
   templateUrl: './app.component.html',

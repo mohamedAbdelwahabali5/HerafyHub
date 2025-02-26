@@ -1,3 +1,42 @@
-.h-80vh {
-  height: 80vh; /* 80% of viewport height */
+.hero-img-container {
+  height: 60vh;
+}
+
+@media (min-width: 576px) {
+  .hero-img-container {
+    height: 70vh;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-img-container {
+    height: 80vh;
+  }
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* Bootstrap doesn't include display classes for different breakpoints by default */
+@media (min-width: 768px) {
+  .display-md-4 {
+    font-size: 3.5rem;
+  }
+  .display-md-5 {
+    font-size: 3rem;
+  }
+  .fs-md-5 {
+    font-size: 1.25rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .display-lg-3 {
+    font-size: 4rem;
+  }
+  .display-lg-4 {
+    font-size: 3.5rem;
+  }
 }
