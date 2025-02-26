@@ -18,6 +18,7 @@ import { SliderComponent } from './Components/slider/slider.component';
 import { InspireComponent } from './Components/inspire/inspire.component';
 import { AboutUsComponent } from './Components/about-us/about-us.component';
 import { HomeComponent } from "./Components/home/home.component";
+import { ProductDetailsComponent } from "./Components/product-details/product-details.component";
 
 
 @Component({
@@ -30,7 +31,7 @@ import { HomeComponent } from "./Components/home/home.component";
     // LoginComponent,
     // ForgotPasswordComponent,
     ResetPasswordComponent,
-    // RegistrationComponent
+    // ProductDetailsComponent
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
