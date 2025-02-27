@@ -1,0 +1,29 @@
+<div class="row gap-2 p-2 m-3">
+  <div class="img-container col-md-2 col-sm-12" [ngStyle]="{'background-image': 'url(' + cart.productImage + ')'}">
+  </div>
+  <div class="card-body col-md-2 col-sm-12">
+    <h5 class="title">{{cart.productName}}</h5>
+    <p class="card-text mt-2">{{cart.productCatigory}}</p>
+  </div>
+  <div class="card-body col-md-2  col-sm-12">
+    <p class="card-title">Price</p>
+    <p class="card-text mt-5">${{cart.price}}</p>
+  </div>
+  <div class="card-body col-md-2 col-sm-12">
+    <p class="card-title">Quantity</p>
+    <div class="d-flex mt-5 quantity justify-content-center">
+      <button (click)="decrease()" class="icon me-2">
+        <i class="fa-solid fa-minus d-flex align-items-center justify-content-center"></i>
+      </button>
+      <p class="card-text d-inline">{{cart.quantity}}</p>
+      <button (click)="increase()" class="icon ms-2">
+        <i class="fa-solid  fa-plus d-flex align-items-center justify-content-center"></i>
+      </button>
+
+    </div>
+  </div>
+  <div class="card-body col-md-2  col-sm-12">
+    <p class="card-title">Total Price</p>
+    <p class="card-text mt-5 ">{{totalPrice}}</p>
+  </div>
+</div>

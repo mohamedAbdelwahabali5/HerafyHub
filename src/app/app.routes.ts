@@ -6,7 +6,12 @@ import { LoginComponent } from './Components/login/login.component';
 import { ErrorComponent } from './Components/error/error.component';
 import { ContactComponent } from './Components/contact/contact.component';
 import { RegistrationComponent } from './Components/registration/registration.component';
+import { CartComponent } from './Components/cart/cart.component';
 import { ProductsListComponent } from './Components/products-list/products-list.component';
+import { FavoritesComponent } from './Components/favorites/favorites.component';
+import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+
 
 
 export const routes: Routes = [
@@ -18,8 +23,14 @@ export const routes: Routes = [
         {path: 'about-us', component:AboutUsComponent},
         {path: 'contact-us', component:ContactComponent},
         {path: 'product-details/:id', component:ProductDetailsComponent} ,
-        {path:'**',component:ErrorComponent},
+        {path: 'products', component:ProductsListComponent} ,
+        {path: 'cart', component:CartComponent} ,
+        {path: 'favorite', component:FavoritesComponent} ,
+        {path: 'forgot-password', component:ForgotPasswordComponent},
+        {path:'reset-password', component:ResetPasswordComponent},
 
-
+        // error page
+        { path: 'error', component: ErrorComponent }, 
+        { path: '**', redirectTo: 'error' }
 ];
 

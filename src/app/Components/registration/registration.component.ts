@@ -8,14 +8,20 @@ import {
   ValidationErrors,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { UsersService } from '../../Services/users.service';
+import { User } from '../../Models/user.model';
 
 @Component({
   selector: 'app-registration',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [UsersService],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
+  constructor(private userService: UsersService) {}
+
   submitted = false;
 
   registrationForm = new FormGroup(
@@ -37,7 +43,7 @@ export class RegistrationComponent {
       ]),
       zipCode: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[0-9]{5,10}$'),
+        Validators.pattern('^[0-9]{2,5}$'),
       ]),
       email: new FormControl('', [
         Validators.required,
@@ -65,8 +71,32 @@ export class RegistrationComponent {
 
   onSubmit() {
     this.submitted = true;
+
+    if (this.registrationForm.invalid) {
+      this.registrationForm.get('confirmPassword')?.markAsTouched();
+      return;
+    }
     if (this.registrationForm.valid) {
-      console.log('Form Submitted Successfully', this.registrationForm.value);
+      const newUser: User = {
+        name: {
+          fName: this.registrationForm.value.firstName ?? '', // Corrected
+          lName: this.registrationForm.value.lastName ?? '', // Corrected
+        },
+        email: this.registrationForm.value.email ?? '',
+        phone: this.registrationForm.value.phone ?? '',
+        address: {
+          city: this.registrationForm.value.city ?? '',
+          street: this.registrationForm.value.street ?? '',
+          state: this.registrationForm.value.state ?? '',
+          zipCode: this.registrationForm.value.zipCode ?? '', // Corrected
+        },
+        password: this.registrationForm.value.password ?? '',
+      };
+
+      this.userService.addUser(newUser).subscribe(() => {
+        alert('User registered successfully!');
+        this.registrationForm.reset();
+      });
     }
   }
 }
