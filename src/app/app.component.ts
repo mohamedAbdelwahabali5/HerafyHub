@@ -15,8 +15,9 @@ import { RegistrationComponent } from './Components/registration/registration.co
 import { SliderComponent } from './Components/slider/slider.component';
 import { InspireComponent } from './Components/inspire/inspire.component';
 import { AboutUsComponent } from './Components/about-us/about-us.component';
-import { HomeComponent } from './Components/home/home.component';
-import { ProfileComponent } from './Components/profile/profile.component';
+import { HomeComponent } from "./Components/home/home.component";
+import { ProductDetailsComponent } from "./Components/product-details/product-details.component";
+
 
 @Component({
   selector: 'app-root',
@@ -30,12 +31,16 @@ import { ProfileComponent } from './Components/profile/profile.component';
     // CartComponent,
     // CartItemComponent,
     // ProductsListComponent,
-    ProfileComponent,
     HeaderComponent,
     FooterComponent,
-    // RouterOutlet,
-  ],
-
+    RouterOutlet,
+    // ProductsListComponent,
+    // CategoryInfoComponent,
+    // LoginComponent,
+    // ForgotPasswordComponent,
+    // ResetPasswordComponent,
+    // ProductDetailsComponent
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
