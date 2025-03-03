@@ -17,12 +17,12 @@
                 class="form-control"
                 formControlName="firstName"
                 placeholder="First Name"
-                (blur)="f.firstName.markAsTouched()"
               />
-              @if (f.firstName.touched && f.firstName.errors?.['required']) {
-              <small class="text-danger">First Name is required.</small>
-              } @if (f.firstName.touched && f.firstName.errors?.['pattern']) {
-              <small class="text-danger">Only letters allowed.</small>
+              @if ((formControls.firstName.touched ||
+              formControls.firstName.dirty) && formControls.firstName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("firstName")
+              }}</small>
               }
             </div>
             <div class="col-md-6">
@@ -31,12 +31,12 @@
                 class="form-control"
                 formControlName="lastName"
                 placeholder="Last Name"
-                (blur)="f.lastName.markAsTouched()"
               />
-              @if (f.lastName.touched && f.lastName.errors?.['required']) {
-              <small class="text-danger">Last Name is required.</small>
-              } @if (f.lastName.touched && f.lastName.errors?.['pattern']) {
-              <small class="text-danger">Only letters allowed.</small>
+              @if ((formControls.lastName.touched ||
+              formControls.lastName.dirty) && formControls.lastName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("lastName")
+              }}</small>
               }
             </div>
           </div>
@@ -52,10 +52,10 @@
             class="form-control mb-2"
             formControlName="street"
             placeholder="Street"
-            (blur)="f.street.markAsTouched()"
           />
-          @if (f.street.touched && f.street.errors?.['required']) {
-          <small class="text-danger">Street is required.</small>
+          @if ((formControls.street.touched || formControls.street.dirty) &&
+          formControls.street.invalid) {
+          <small class="text-danger">{{ getErrorMessage("street") }}</small>
           }
 
           <div class="row g-2 mb-3">
@@ -65,10 +65,10 @@
                 class="form-control"
                 formControlName="city"
                 placeholder="City"
-                (blur)="f.city.markAsTouched()"
               />
-              @if (f.city.touched && f.city.errors?.['required']) {
-              <small class="text-danger">City is required.</small>
+              @if ((formControls.city.touched || formControls.city.dirty) &&
+              formControls.city.invalid) {
+              <small class="text-danger">{{ getErrorMessage("city") }}</small>
               }
             </div>
             <div class="col-md-4">
@@ -77,10 +77,10 @@
                 class="form-control"
                 formControlName="state"
                 placeholder="State"
-                (blur)="f.state.markAsTouched()"
               />
-              @if (f.state.touched && f.state.errors?.['required']) {
-              <small class="text-danger">State is required.</small>
+              @if ((formControls.state.touched || formControls.state.dirty) &&
+              formControls.state.invalid) {
+              <small class="text-danger">{{ getErrorMessage("state") }}</small>
               }
             </div>
             <div class="col-md-4">
@@ -89,12 +89,12 @@
                 class="form-control"
                 formControlName="zipCode"
                 placeholder="Zip Code"
-                (blur)="f.zipCode.markAsTouched()"
               />
-              @if (f.zipCode.touched && f.zipCode.errors?.['required']) {
-              <small class="text-danger">Zip code is required.</small>
-              } @if (f.zipCode.touched && f.zipCode.errors?.['pattern']) {
-              <small class="text-danger">Invalid zip code.</small>
+              @if ((formControls.zipCode.touched || formControls.zipCode.dirty)
+              && formControls.zipCode.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("zipCode")
+              }}</small>
               }
             </div>
           </div>
@@ -106,16 +106,10 @@
             <label class="form-label"
               >Phone Number <span class="text-danger">*</span></label
             >
-            <input
-              type="text"
-              class="form-control"
-              formControlName="phone"
-              (blur)="f.phone.markAsTouched()"
-            />
-            @if (f.phone.touched && f.phone.errors?.['required']) {
-            <small class="text-danger">Phone is required.</small>
-            } @if (f.phone.touched && f.phone.errors?.['pattern']) {
-            <small class="text-danger">Invalid phone number.</small>
+            <input type="text" class="form-control" formControlName="phone" />
+            @if ((formControls.phone.touched || formControls.phone.dirty) &&
+            formControls.phone.invalid) {
+            <small class="text-danger">{{ getErrorMessage("phone") }}</small>
             }
           </div>
           <div class="col-md-6">
@@ -127,12 +121,10 @@
               class="form-control"
               formControlName="email"
               placeholder="example@gmail.com"
-              (blur)="f.email.markAsTouched()"
             />
-            @if (f.email.touched && f.email.errors?.['required']) {
-            <small class="text-danger">Email is required.</small>
-            } @if (f.email.touched && f.email.errors?.['pattern']) {
-            <small class="text-danger">Invalid email format.</small>
+            @if ((formControls.email.touched || formControls.email.dirty) &&
+            formControls.email.invalid) {
+            <small class="text-danger">{{ getErrorMessage("email") }}</small>
             }
           </div>
         </div>
@@ -147,15 +139,10 @@
               type="password"
               class="form-control"
               formControlName="password"
-              (blur)="f.password.markAsTouched()"
             />
-            @if (f.password.touched && f.password.errors?.['required']) {
-            <small class="text-danger">Password is required.</small>
-            } @if (f.password.touched && f.password.errors?.['pattern']) {
-            <small class="text-danger"
-              >Must include uppercase, lowercase, number, and special
-              character.</small
-            >
+            @if ((formControls.password.touched || formControls.password.dirty)
+            && formControls.password.invalid) {
+            <small class="text-danger">{{ getErrorMessage("password") }}</small>
             }
           </div>
           <div class="col-md-6">
@@ -166,14 +153,14 @@
               type="password"
               class="form-control"
               formControlName="confirmPassword"
-              (blur)="f.confirmPassword.markAsTouched()"
             />
-            @if (f.confirmPassword.touched &&
-            f.confirmPassword.errors?.['required']) {
-            <small class="text-danger">Confirm Password is required.</small>
-            } @if (f.confirmPassword.touched &&
-            registrationForm.errors?.['passwordMismatch']) {
-            <small class="text-danger">Passwords do not match.</small>
+            @if ((formControls.confirmPassword.touched ||
+            formControls.confirmPassword.dirty) &&
+            (formControls.confirmPassword.errors?.['required'] ||
+            registrationForm.errors?.['passwordMismatch'])) {
+            <small class="text-danger">{{
+              getErrorMessage("confirmPassword")
+            }}</small>
             }
           </div>
         </div>

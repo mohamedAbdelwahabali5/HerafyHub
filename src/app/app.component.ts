@@ -21,7 +21,7 @@ import { ProfileComponent } from './Components/profile/profile.component';
 @Component({
   selector: 'app-root',
   imports: [
-    ResetPasswordComponent
+    // ResetPasswordComponent
     // HeroComponent,
     // CollectionComponent,
     // HeaderComponent,
@@ -29,13 +29,12 @@ import { ProfileComponent } from './Components/profile/profile.component';
     // LoginComponent,
     // CartComponent,
     // CartItemComponent,
-    // ProductsListComponent
-    ,
+    // ProductsListComponent,
+    ProfileComponent,
     HeaderComponent,
     FooterComponent,
-    RouterOutlet
-
-],
+    // RouterOutlet,
+  ],
 
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

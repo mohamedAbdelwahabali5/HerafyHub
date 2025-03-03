@@ -1,32 +1,37 @@
+/* profile.component.css */
 main {
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 0;
+  background-color: white;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .form-container {
-  background: rgba(255, 255, 255, 0.9);
+  background: white;
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 700px;
-  width: 100%;
-  margin: 10px auto;
+  /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); */
 }
 
 .form-container h2 {
   color: #3d8d7a;
   font-weight: 600;
   margin-bottom: 25px;
+  text-align: left;
 }
 
 .profile-picture-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* flex-direction: column; */
+  align-items: left;
   margin-bottom: 30px;
 }
 
@@ -47,6 +52,8 @@ main {
 
 .picture-actions {
   display: flex;
+  height: 50px;
+  margin: 30px;
   gap: 10px;
 }
 
@@ -101,6 +108,110 @@ main {
 .text-danger {
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+
+/* Activity Overview Styles */
+.active-details-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  height: fit-content;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detail-card {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #eee;
+  transition: transform 0.2s;
+}
+
+.detail-card:hover {
+  transform: translateY(-2px);
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: #f8f9fa;
+  border-bottom: 2px solid #3d8d7a;
+}
+
+.detail-header i {
+  font-size: 1.5rem;
+  color: #3d8d7a;
+  margin-right: 10px;
+}
+
+.detail-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #2c6a5c;
+}
+
+.detail-content {
+  padding: 15px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-list li {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.9rem;
+}
+
+.activity-list i {
+  margin-right: 10px;
+  color: #3d8d7a;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.stat-item strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #3d8d7a;
+}
+
+@media (max-width: 992px) {
+  .active-details-container {
+    margin-top: 30px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
