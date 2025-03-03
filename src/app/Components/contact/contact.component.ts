@@ -34,8 +34,43 @@ export class ContactComponent {
     subject: new FormControl('', [Validators.required]),
     message: new FormControl('', [Validators.required]),
   });
-  get f() {
+  get formControls() {
     return this.contactForm.controls;
+  }
+  getErrorMessage(controlName: string): string {
+    const control = this.contactForm.get(controlName);
+
+    if (control?.errors?.['required']) {
+      return `${this.getFieldLabel(controlName)} is required.`;
+    }
+
+    if (control?.errors?.['pattern']) {
+      switch (controlName) {
+        case 'firstName':
+        case 'lastName':
+          return 'Only letters allowed.';
+        case 'phone':
+          return 'Invalid phone number.';
+        case 'zipCode':
+          return 'Invalid zip code.';
+        case 'email':
+          return 'Invalid email format.';
+        case 'password':
+          return 'Must include uppercase, lowercase, number, and special character.';
+      }
+    }
+    return '';
+  }
+  getFieldLabel(controlName: string): string {
+    const labels: { [key: string]: string } = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      message: 'Message',
+      subject: 'Subject',
+      email: 'Email',
+    };
+
+    return labels[controlName] || controlName;
   }
 
   onSubmit(): void {

@@ -4,7 +4,7 @@ import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 
 import { filter } from 'rxjs';
-import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { LoginComponent } from './Components/login/login.component';
 
 
 @Component({
@@ -12,10 +12,10 @@ import { ResetPasswordComponent } from './Components/reset-password/reset-passwo
   imports: [
     HeaderComponent,
     FooterComponent,
-    ResetPasswordComponent,
     RouterOutlet,
-],
+    // LoginComponent
 
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
