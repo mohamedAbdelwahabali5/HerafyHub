@@ -18,17 +18,12 @@
                 formControlName="firstName"
                 placeholder="First Name"
               />
-
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['required'] && f.firstName.touched"
-                >First Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.firstName.errors?.['pattern'] && f.firstName.touched"
-                >Only letters allowed.</small
-              >
+              @if ((formControls.firstName.touched ||
+              formControls.firstName.dirty) && formControls.firstName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("firstName")
+              }}</small>
+              }
             </div>
             <div class="col-md-6">
               <input
@@ -37,16 +32,12 @@
                 formControlName="lastName"
                 placeholder="Last Name"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['required']"
-                >Last Name is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.lastName.errors?.['pattern']"
-                >Only letters allowed.</small
-              >
+              @if ((formControls.lastName.touched ||
+              formControls.lastName.dirty) && formControls.lastName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("lastName")
+              }}</small>
+              }
             </div>
           </div>
         </div>
@@ -62,11 +53,10 @@
             formControlName="street"
             placeholder="Street"
           />
-          <small
-            class="text-danger"
-            *ngIf="submitted && f.street.errors?.['required']"
-            >Street is required.</small
-          >
+          @if ((formControls.street.touched || formControls.street.dirty) &&
+          formControls.street.invalid) {
+          <small class="text-danger">{{ getErrorMessage("street") }}</small>
+          }
 
           <div class="row g-2 mb-3">
             <div class="col-md-4">
@@ -76,11 +66,10 @@
                 formControlName="city"
                 placeholder="City"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.city.errors?.['required']"
-                >City is required.</small
-              >
+              @if ((formControls.city.touched || formControls.city.dirty) &&
+              formControls.city.invalid) {
+              <small class="text-danger">{{ getErrorMessage("city") }}</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -89,11 +78,10 @@
                 formControlName="state"
                 placeholder="State"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.state.errors?.['required']"
-                >State is required.</small
-              >
+              @if ((formControls.state.touched || formControls.state.dirty) &&
+              formControls.state.invalid) {
+              <small class="text-danger">{{ getErrorMessage("state") }}</small>
+              }
             </div>
             <div class="col-md-4">
               <input
@@ -102,37 +90,27 @@
                 formControlName="zipCode"
                 placeholder="Zip Code"
               />
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['required']"
-                >Zip code is required.</small
-              >
-              <small
-                class="text-danger"
-                *ngIf="submitted && f.zipCode.errors?.['pattern']"
-                >Invalid zip code.</small
-              >
+              @if ((formControls.zipCode.touched || formControls.zipCode.dirty)
+              && formControls.zipCode.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("zipCode")
+              }}</small>
+              }
             </div>
           </div>
         </div>
+
         <!-- Contact Information -->
         <div class="row g-2 mb-3 mx-3">
           <div class="col-md-6">
             <label class="form-label"
-              >Phone Number
-              <span class="text-danger">*</span>
-            </label>
+              >Phone Number <span class="text-danger">*</span></label
+            >
             <input type="text" class="form-control" formControlName="phone" />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['required']"
-              >Phone is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.phone.errors?.['pattern']"
-              >Invalid phone number.</small
-            >
+            @if ((formControls.phone.touched || formControls.phone.dirty) &&
+            formControls.phone.invalid) {
+            <small class="text-danger">{{ getErrorMessage("phone") }}</small>
+            }
           </div>
           <div class="col-md-6">
             <label class="form-label"
@@ -144,16 +122,10 @@
               formControlName="email"
               placeholder="example@gmail.com"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['required']"
-              >Email is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.email.errors?.['pattern']"
-              >Invalid email format.</small
-            >
+            @if ((formControls.email.touched || formControls.email.dirty) &&
+            formControls.email.invalid) {
+            <small class="text-danger">{{ getErrorMessage("email") }}</small>
+            }
           </div>
         </div>
 
@@ -168,17 +140,10 @@
               class="form-control"
               formControlName="password"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.password.errors?.['required']"
-              >Password is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.password.errors?.['pattern']"
-            >
-              Must include uppercase, lowercase, number, and special character.
-            </small>
+            @if ((formControls.password.touched || formControls.password.dirty)
+            && formControls.password.invalid) {
+            <small class="text-danger">{{ getErrorMessage("password") }}</small>
+            }
           </div>
           <div class="col-md-6">
             <label class="form-label"
@@ -189,16 +154,14 @@
               class="form-control"
               formControlName="confirmPassword"
             />
-            <small
-              class="text-danger"
-              *ngIf="submitted && f.confirmPassword.errors?.['required']"
-              >Confirm Password is required.</small
-            >
-            <small
-              class="text-danger"
-              *ngIf="submitted && registrationForm.errors?.['passwordMismatch']"
-              >Passwords do not match.</small
-            >
+            @if ((formControls.confirmPassword.touched ||
+            formControls.confirmPassword.dirty) &&
+            (formControls.confirmPassword.errors?.['required'] ||
+            registrationForm.errors?.['passwordMismatch'])) {
+            <small class="text-danger">{{
+              getErrorMessage("confirmPassword")
+            }}</small>
+            }
           </div>
         </div>
 
@@ -209,11 +172,3 @@
     </div>
   </div>
 </main>
-
-<!-- <span
-  [ngClass]="{
-                'text-danger': submitted && f.phone.errors?.['required'],
-                'text-dark': f.phone.value
-              }"
-  >*</span
-> -->

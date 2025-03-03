@@ -10,6 +10,7 @@ export class ProductService {
   private readonly searchProduct_URL = 'http://localhost:5555/product/search';
   private readonly Categories_URL = 'http://localhost:5555/category';
 
+
   constructor(private http: HttpClient) {}
 
   //Handle All collection

@@ -12,7 +12,6 @@
   cursor: pointer;
   font-size: 18px;
 }
-
 .dropdown-menu {
   text-align: center;
   min-width: 110px;
@@ -34,7 +33,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
 .search-field {
   padding-left: 34px;
   height: 35px;
@@ -44,7 +42,6 @@
   border-radius: 10px;
   color: var(--teal-green);
 }
-
 .search-icon-style {
   position: absolute;
   left: 10px;
