@@ -13,6 +13,7 @@ import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-registration',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   providers: [UsersService],
   templateUrl: './registration.component.html',
@@ -58,7 +59,8 @@ export class RegistrationComponent {
     },
     { validators: this.passwordMatchValidator }
   );
-  get f() {
+
+  get formControls() {
     return this.registrationForm.controls;
   }
 
@@ -75,11 +77,12 @@ export class RegistrationComponent {
       this.registrationForm.get('confirmPassword')?.markAsTouched();
       return;
     }
+
     if (this.registrationForm.valid) {
       const newUser: User = {
         name: {
-          fName: this.registrationForm.value.firstName ?? '', // Corrected
-          lName: this.registrationForm.value.lastName ?? '', // Corrected
+          fName: this.registrationForm.value.firstName ?? '',
+          lName: this.registrationForm.value.lastName ?? '',
         },
         email: this.registrationForm.value.email ?? '',
         phone: this.registrationForm.value.phone ?? '',
@@ -87,7 +90,7 @@ export class RegistrationComponent {
           city: this.registrationForm.value.city ?? '',
           street: this.registrationForm.value.street ?? '',
           state: this.registrationForm.value.state ?? '',
-          zipCode: this.registrationForm.value.zipCode ?? '', // Corrected
+          zipCode: this.registrationForm.value.zipCode ?? '',
         },
         password: this.registrationForm.value.password ?? '',
       };
@@ -97,5 +100,55 @@ export class RegistrationComponent {
         this.registrationForm.reset();
       });
     }
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.registrationForm.get(controlName);
+
+    if (control?.errors?.['required']) {
+      return `${this.getFieldLabel(controlName)} is required.`;
+    }
+
+    if (control?.errors?.['pattern']) {
+      switch (controlName) {
+        case 'firstName':
+        case 'lastName':
+          return 'Only letters allowed.';
+        case 'phone':
+          return 'Invalid phone number.';
+        case 'zipCode':
+          return 'Invalid zip code.';
+        case 'email':
+          return 'Invalid email format.';
+        case 'password':
+          return 'Must include uppercase, lowercase, number, and special character.';
+      }
+    }
+
+    if (
+      controlName === 'confirmPassword' &&
+      this.registrationForm.errors?.['passwordMismatch']
+    ) {
+      return 'Passwords do not match.';
+    }
+
+    return '';
+  }
+
+  getFieldLabel(controlName: string): string {
+    const labels: { [key: string]: string } = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      street: 'Street',
+      city: 'City',
+      state: 'State',
+      zipCode: 'Zip Code',
+      phone: 'Phone',
+      email: 'Email',
+      password: 'Password',
+      confirmPassword: 'Confirm Password',
+    };
+
+    return labels[controlName] || controlName;
   }
 }

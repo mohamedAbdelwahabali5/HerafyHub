@@ -56,8 +56,48 @@ export class ProfileComponent implements OnInit {
     ]),
   });
 
-  get f() {
+  get formControls() {
     return this.profileForm.controls;
+  }
+  getErrorMessage(controlName: string): string {
+    const control = this.profileForm.get(controlName);
+
+    if (control?.errors?.['required']) {
+      return `${this.getFieldLabel(controlName)} is required.`;
+    }
+
+    if (control?.errors?.['pattern']) {
+      switch (controlName) {
+        case 'firstName':
+        case 'lastName':
+          return 'Only letters allowed.';
+        case 'phone':
+          return 'Invalid phone number.';
+        case 'zipCode':
+          return 'Invalid zip code.';
+        case 'email':
+          return 'Invalid email format.';
+        case 'password':
+          return 'Must include uppercase, lowercase, number, and special character.';
+      }
+    }
+    return '';
+  }
+  getFieldLabel(controlName: string): string {
+    const labels: { [key: string]: string } = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      street: 'Street',
+      city: 'City',
+      state: 'State',
+      zipCode: 'Zip Code',
+      phone: 'Phone',
+      email: 'Email',
+      password: 'Password',
+      confirmPassword: 'Confirm Password',
+    };
+
+    return labels[controlName] || controlName;
   }
 
   constructor(private usersService: UsersService) {}
