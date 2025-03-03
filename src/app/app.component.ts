@@ -1,49 +1,44 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { CollectionComponent } from './Components/collection/collection.component';
-import { LoginComponent } from './Components/login/login.component';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
-import { HeroComponent } from './Components/hero/hero.component';
-import { CartComponent } from './Components/cart/cart.component';
-import { CartItemComponent } from './Components/cart-item/cart-item.component';
-import { ProductsListComponent } from './Components/products-list/products-list.component';
-import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 
-import { RegistrationComponent } from './Components/registration/registration.component';
-
-import { SliderComponent } from './Components/slider/slider.component';
-import { InspireComponent } from './Components/inspire/inspire.component';
-import { AboutUsComponent } from './Components/about-us/about-us.component';
-import { HomeComponent } from "./Components/home/home.component";
-import { ProductDetailsComponent } from "./Components/product-details/product-details.component";
+import { filter } from 'rxjs';
+import { LoginComponent } from './Components/login/login.component';
 
 
 @Component({
   selector: 'app-root',
   imports: [
-    // ResetPasswordComponent
-    // HeroComponent,
-    // CollectionComponent,
-    // HeaderComponent,
-    // FooterComponent,
-    // LoginComponent,
-    // CartComponent,
-    // CartItemComponent,
-    // ProductsListComponent,
     HeaderComponent,
     FooterComponent,
     RouterOutlet,
-    // ProductsListComponent,
-    // CategoryInfoComponent,
-    // LoginComponent,
-    // ForgotPasswordComponent,
-    // ResetPasswordComponent,
-    // ProductDetailsComponent
+    // LoginComponent
+
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
   title = 'HerafyHub';
+  showHeaderAndFooter = true;
+
+  constructor(private router: Router) {
+    // Subscribe to router events
+    this.router.events
+      .pipe(
+        // Filter for NavigationEnd events
+        filter((event) => event instanceof NavigationEnd)
+      )
+      .subscribe((event: NavigationEnd) => {
+        // Check the current route
+        this.showHeaderAndFooter = !this.isAuthRoute(event.url);
+      });
+  }
+
+  // Helper function to check if the current route is an auth route
+  private isAuthRoute(url: string): boolean {
+    const authRoutes = ['/login', '/register','/reset-password','/forgot-password','/error']; 
+    return authRoutes.includes(url);
+  }
 }

@@ -20,7 +20,7 @@ export class CollectionComponent {
     this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (data) => {
-        // console.log(data);
+        console.log('Raw product data:', data);
         this.products = (data as any[]).slice(0, 9).map((product) => ({
           ...product,
           title:
@@ -28,10 +28,11 @@ export class CollectionComponent {
               ? product.title.substring(0, 30) + '...'
               : product.title,
         }));
-        this.loading = false; // Set loading to false on success
+        console.log('Processed products:', this.products);
+        this.loading = false;
       },
       error: (err) => {
-        console.log(err);
+        console.log('Error fetching products:', err);
         this.err = err;
         this.loading = false; // Set loading to false on error
       },

@@ -20,7 +20,7 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      const id = +params['id']; // Convert string to number using +
+      const id = params['id']; // Convert string to number using +
       this.productService.getProductById(id).subscribe({
         next: (data: any) => {
           this.product = data;

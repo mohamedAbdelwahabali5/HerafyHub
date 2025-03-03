@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +26,15 @@ export class ProductService {
   }
 
   SearchByTitle(title: string) {
-    // return this.http.post(`${this.searchProduct_URL}?title=${title}`);
-    // return this.http.get(this.searchProduct_URL, { params: { title } });
-    return this.http.get(`${this.searchProduct_URL}/search`, { params: { title } });
+    console.log('Searching for:', title);
+    console.log('Search URL:', `${this.searchProduct_URL}?title=${title}`);
+    return this.http.get(`${this.searchProduct_URL}?title=${title}`).pipe(
+      tap(response => console.log('Search response:', response)),
+      catchError(error => {
+        console.error('Search API error:', error);
+        throw error;
+      })
+    );
   }
 
   //Handle all Categories
@@ -36,7 +44,7 @@ export class ProductService {
 
 
   // get product by id --> single product
-  getProductById(id: number) {
+  getProductById(id: string) {
     return this.http.get(`${this.products_URL}/${id}`);
   }
 }

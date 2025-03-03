@@ -106,33 +106,63 @@ export class ProductsListComponent {
   //   }
   // }
 
-  searchProduct(event: any): void {
-    const searchText = this.searchTerm.trim(); // Remove extra whitespace
+  // searchProduct(event: any): void {
+  //   const searchText = this.searchTerm.trim(); // Remove extra whitespace
 
+  //   if (searchText) {
+  //     this.productService.SearchByTitle(searchText).subscribe(
+  //       (data: any) => {
+  //         this.searchedProducts = data;
+  //         console.log(`Found ${this.searchedProducts.length} products matching "${searchText}"`);
+
+
+  //         // Make sure we're getting a subset if needed
+  //         this.pageProducts = this.searchedProducts.slice(0, 8);
+  //       },
+  //       (error) => {
+  //         console.error("Error fetching products:", error);
+  //       }
+  //     );
+  //   } else {
+  //     // If search is empty, reset to showing all products
+  //     this.updatePageProducts();
+  //   }
+  // }
+
+  searchProduct(event: any): void {
+    const searchText = this.searchTerm.trim();
+  
     if (searchText) {
       this.productService.SearchByTitle(searchText).subscribe(
-        (data: any) => {
-          this.searchedProducts = data;
+        (response: any) => { // <-- Change parameter name to 'response'
+          this.searchedProducts = response.data; // <-- Access the data array
           console.log(`Found ${this.searchedProducts.length} products matching "${searchText}"`);
-
-
-          // Make sure we're getting a subset if needed
+  
+          // Update page products with search results
           this.pageProducts = this.searchedProducts.slice(0, 8);
         },
         (error) => {
           console.error("Error fetching products:", error);
+          this.pageProducts = [];
         }
       );
     } else {
-      // If search is empty, reset to showing all products
+      // Reset to original products when search is empty
+      this.searchedProducts = null;
       this.updatePageProducts();
     }
   }
   // Update the products for the current page
+  // updatePageProducts(): void {
+  //   const start = this.currentPage * 8;
+  //   const end = start + 8;
+  //   this.pageProducts = this.products.slice(start, end);
+  // }
   updatePageProducts(): void {
+    const sourceArray = this.searchedProducts || this.products;
     const start = this.currentPage * 8;
     const end = start + 8;
-    this.pageProducts = this.products.slice(start, end);
+    this.pageProducts = sourceArray.slice(start, end);
   }
 
   // Get the next page link element

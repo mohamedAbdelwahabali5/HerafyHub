@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { User } from '../../models/user.model';
+import { User } from '../../Models/user.model';
 
 @Component({
   selector: 'app-registration',
