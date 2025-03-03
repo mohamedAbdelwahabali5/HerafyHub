@@ -9,6 +9,7 @@ import { RegistrationComponent } from './Components/registration/registration.co
 import { ProductsListComponent } from './Components/products-list/products-list.component';
 
 
+
 export const routes: Routes = [
         {path: '', redirectTo:'home' ,pathMatch: 'full'},
         {path: 'home', component:HomeComponent},
@@ -19,7 +20,5 @@ export const routes: Routes = [
         {path: 'contact-us', component:ContactComponent},
         {path: 'product-details/:id', component:ProductDetailsComponent} ,
         {path:'**',component:ErrorComponent},
-
-
 ];
 

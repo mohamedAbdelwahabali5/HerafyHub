@@ -20,7 +20,7 @@ export class CollectionComponent {
     this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.products = (data as any[]).slice(0, 9).map((product) => ({
           ...product,
           title:
@@ -32,7 +32,7 @@ export class CollectionComponent {
       },
       error: (err) => {
         console.log(err);
-        this.err = err; 
+        this.err = err;
         this.loading = false; // Set loading to false on error
       },
     });

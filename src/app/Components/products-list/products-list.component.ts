@@ -34,6 +34,7 @@ export class ProductsListComponent {
       next: (data) => {
         this.products = data;
         this.pageProducts = this.products.slice(0, 8);
+        // console.log('this.products', this.products);
         this.loading = false; // Set loading to false on success
       },
       error: (err) => {
@@ -87,20 +88,46 @@ export class ProductsListComponent {
     }
     console.log('this.currentPage', this.currentPage);
   }
+  //
+// searchProduct(event: any): void {
+  //   const searchText = this.searchTerm.toLowerCase();
+  //   // this.searchedProducts = this.pageProducts.filter(
+  //   //   (product: { title: string }) =>
+  //   //     product.title.toLowerCase().includes(searchText)
+  //   // );
+  //   this.searchedProducts =this.productService.SearchByTitle(searchText).subscribe();
+  //   console.log("this.searchedProducts = ",this.searchedProducts);
+
+  //   if (searchText) {
+  //     this.pageProducts =
+  //       this.searchedProducts.slice(0, 8) || this.searchedProducts;
+  //   } else {
+  //     this.updatePageProducts();
+  //   }
+  // }
+
   searchProduct(event: any): void {
-    const searchText = this.searchTerm.toLowerCase();
-    this.searchedProducts = this.pageProducts.filter(
-      (product: { title: string }) =>
-        product.title.toLowerCase().includes(searchText)
-    );
+    const searchText = this.searchTerm.trim(); // Remove extra whitespace
+
     if (searchText) {
-      this.pageProducts =
-        this.searchedProducts.slice(0, 8) || this.searchedProducts;
+      this.productService.SearchByTitle(searchText).subscribe(
+        (data: any) => {
+          this.searchedProducts = data;
+          console.log(`Found ${this.searchedProducts.length} products matching "${searchText}"`);
+
+
+          // Make sure we're getting a subset if needed
+          this.pageProducts = this.searchedProducts.slice(0, 8);
+        },
+        (error) => {
+          console.error("Error fetching products:", error);
+        }
+      );
     } else {
+      // If search is empty, reset to showing all products
       this.updatePageProducts();
     }
   }
-
   // Update the products for the current page
   updatePageProducts(): void {
     const start = this.currentPage * 8;
