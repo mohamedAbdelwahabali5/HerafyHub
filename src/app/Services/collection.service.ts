@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +21,36 @@ export class ProductService {
   }
 
   //Handle Products
-  getAllProducts() {
-    return this.http.get(this.products_URL);
+  // getAllProducts(page: number, limit: number): Observable<any> {
+  //   return this.http.get<any>(`${this.products_URL}?page=${page}&limit=${limit}`);
+  // }
+  getAllProducts(page: number, limit: number, categoryId?: string): Observable<any> {
+    const url = categoryId
+      ? `${this.products_URL}?page=${page}&limit=${limit}&categoryId=${categoryId}`
+      : `${this.products_URL}?page=${page}&limit=${limit}`;
+    return this.http.get<any>(url);
   }
+  // getAllProducts(page: number, limit: number, categoryId?: string): Observable<{
+  //   products: any[],
+  //   totalProducts: number,
+  //   totalPages: number,
+  //   currentPage: number
+  // }> {
+  //   let params = new HttpParams()
+  //     .set('page', page.toString())
+  //     .set('limit', limit.toString());
 
+  //   if (categoryId) {
+  //     params = params.set('categoryId', categoryId);
+  //   }
+
+  //   return this.http.get<{
+  //     products: any[],
+  //     totalProducts: number,
+  //     totalPages: number,
+  //     currentPage: number
+  //   }>(`${this.products_URL}/products`, { params });
+  // }
   SearchByTitle(title: string) {
     console.log('Searching for:', title);
     console.log('Search URL:', `${this.searchProduct_URL}?title=${title}`);
