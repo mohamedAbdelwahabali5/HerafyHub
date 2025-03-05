@@ -17,41 +17,37 @@ import { FormsModule } from '@angular/forms';
 })
 export class ProductsListComponent {
   @Input() categoryId: string = ''; // Changed from selectedCategoryId to categoryId
-
   products: any[] = [];
   pageProducts: any[] = [];
   searchedProducts: any[] = [];
   searchTerm: string = '';
-
   // Pagination Properties
   currentPage: number = 1;
   totalPages: number = 0;
   totalProducts: number = 0;
   pageSize: number = 12;
-
   loading: boolean = true;
   err: any = null;
-
   constructor(private productService: ProductService) {}
-
   ngOnInit() {
     this.loadProducts();
   }
-
+  // Add this new method to detect category changes
+  ngOnChanges(changes: any) {
+    if (changes.categoryId) {
+      this.currentPage = 1; // Reset to first page when category changes
+      this.loadProducts();
+    }
+  }
   loadProducts() {
     this.loading = true;
     this.productService.getAllProducts(this.currentPage, this.pageSize, this.categoryId).subscribe({
       next: (response:any) => {
         this.products = response.products;
-        console.log('Products fetched:', this.products);
         this.pageProducts = this.products;
-        console.log('Page products:', this.pageProducts);
         this.totalPages = response.totalPages;
-        // console.log('Total pages:', this.totalPages);
         this.totalProducts = response.totalProducts;
-        // console.log('Total products:', this.totalProducts);
         this.loading = false;
-        console.log("categoryId in product list",this.categoryId);
       },
       error: (err) => {
         console.error(err);
@@ -61,7 +57,6 @@ export class ProductsListComponent {
       }
     });
   }
-
   // Other methods remain the same, just ensure no references to selectedCategoryId
   // loadProducts() {
   //   this.loading = true;
