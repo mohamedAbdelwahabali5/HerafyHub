@@ -57,3 +57,26 @@
   color: white !important;
   background-color: var(--dark-gray) !important;
 }
+
+.pagination .page-item .page-link {
+  color: var(--teal-green) !important;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+}
+
+.pagination .page-item .page-link:hover {
+  color: white !important;
+  background-color: var(--teal-green) !important;
+}
+
+.pagination .page-item.active .page-link {
+  color: white !important;
+  background-color: var(--teal-green) !important;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d !important;
+  pointer-events: none;
+}

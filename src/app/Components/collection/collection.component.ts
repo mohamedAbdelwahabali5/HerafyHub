@@ -18,7 +18,7 @@ export class CollectionComponent {
 
   ngOnInit() {
     this.loading = true;
-    this.productService.getAllProducts().subscribe({
+    this.productService.getAllProducts(10,8).subscribe({
       next: (data) => {
         console.log('Raw product data:', data);
         this.products = (data as any[]).slice(0, 9).map((product) => ({
