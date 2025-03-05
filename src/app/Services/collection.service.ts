@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import {Product,ProductApiResponse} from '../Utils/interface'
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class ProductService {
 
   //Handle All collection
   getAll() {
-    return this.http.get(this.Collection_URL);
+    return this.http.get(this.products_URL);
   }
 
   //Handle Products
