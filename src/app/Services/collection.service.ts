@@ -20,38 +20,13 @@ export class ProductService {
   getAll() {
     return this.http.get(this.products_URL);
   }
-
-  //Handle Products
-  // getAllProducts(page: number, limit: number): Observable<any> {
-  //   return this.http.get<any>(`${this.products_URL}?page=${page}&limit=${limit}`);
-  // }
-  getAllProducts(page: number, limit: number, categoryId?: string): Observable<any> {
-    const url = categoryId
-      ? `${this.products_URL}?page=${page}&limit=${limit}&categoryId=${categoryId}`
-      : `${this.products_URL}?page=${page}&limit=${limit}`;
-    return this.http.get<any>(url);
+  getAllProducts(page: number, pageSize: number, categoryId: string = '') {
+    let url = `${this.products_URL}/?page=${page}&limit=${pageSize}`;
+    if (categoryId) {
+      url += `&categoryId=${categoryId}`;
+    }
+    return this.http.get(url);
   }
-  // getAllProducts(page: number, limit: number, categoryId?: string): Observable<{
-  //   products: any[],
-  //   totalProducts: number,
-  //   totalPages: number,
-  //   currentPage: number
-  // }> {
-  //   let params = new HttpParams()
-  //     .set('page', page.toString())
-  //     .set('limit', limit.toString());
-
-  //   if (categoryId) {
-  //     params = params.set('categoryId', categoryId);
-  //   }
-
-  //   return this.http.get<{
-  //     products: any[],
-  //     totalProducts: number,
-  //     totalPages: number,
-  //     currentPage: number
-  //   }>(`${this.products_URL}/products`, { params });
-  // }
   SearchByTitle(title: string) {
     console.log('Searching for:', title);
     console.log('Search URL:', `${this.searchProduct_URL}?title=${title}`);
