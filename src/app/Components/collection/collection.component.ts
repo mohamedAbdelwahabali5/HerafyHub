@@ -18,10 +18,10 @@ export class CollectionComponent {
 
   ngOnInit() {
     this.loading = true;
-    this.productService.getAll().subscribe({
+    this.productService.getAllProducts().subscribe({
       next: (response: any) => {
         console.log('Raw product data:', response);
-      
+
         // Access the products array from the response.products
         this.products = response.products?.slice(0, 9).map((product: any) => ({
           ...product,

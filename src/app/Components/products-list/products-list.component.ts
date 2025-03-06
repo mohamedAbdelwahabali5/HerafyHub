@@ -21,6 +21,7 @@ export class ProductsListComponent {
   pageProducts: any[] = [];
   searchedProducts: any[] = [];
   searchTerm: string = '';
+
   // Pagination Properties
   currentPage: number = 1;
   totalPages: number = 0;
@@ -41,61 +42,52 @@ export class ProductsListComponent {
   }
   loadProducts() {
     this.loading = true;
-    this.productService.getAllProducts(this.currentPage, this.pageSize, this.categoryId).subscribe({
-      next: (response:any) => {
-        this.products = response.products;
-        this.pageProducts = this.products;
-        this.totalPages = response.totalPages;
-        this.totalProducts = response.totalProducts;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.err = err;
-        this.loading = false;
-        this.pageProducts = [];
-      }
-    });
+    console.log('Category ID in ProductsListComponent:', this.categoryId);
+    if (this.categoryId != "allProducts") {
+      this.productService.getProductsCategory(this.currentPage, this.pageSize, this.categoryId).subscribe({
+        next: (response:any) => {
+          this.products = response.products;
+          this.pageProducts = this.products;
+          this.totalPages = response.totalPages;
+          this.totalProducts = response.totalProducts;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.err = err;
+          this.loading = false;
+          this.pageProducts = [];
+        }
+      });
+    } else {
+      this.productService.getAllProducts().subscribe({
+        next: (response:any) => {
+          this.products = response.products;
+          this.totalProducts = response.totalProducts;
+          console.log('All products fetched:', this.products);
+          this.totalPages =  Math.ceil(this.totalProducts / this.pageSize),
+          console.log('Total pages:', this.totalPages);
+          this.pageProducts = this.products.slice((this.currentPage-1)*this.pageSize, this.pageSize*this.currentPage);
+          console.log('this.pageSize:', this.pageSize);
+          console.log('this.currentPage:', this.currentPage);
+          console.log('Page products:', this.pageProducts);
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.err = err;
+          this.loading = false;
+          this.pageProducts = [];
+        }
+      });
+    }
   }
-  // Other methods remain the same, just ensure no references to selectedCategoryId
-  // loadProducts() {
-  //   this.loading = true;
-  //   this.productService.getAllProducts(this.currentPage, this.pageSize, this.categoryId).subscribe({
-  //     next: (response: {
-  //       products: any[],
-  //       totalProducts: number,
-  //       totalPages: number,
-  //       currentPage: number
-  //     }) => {
-  //       // this.products = response.products;
-  //       // this.pageProducts = this.products;
-  //       // this.totalPages = response.totalPages;
-  //       // this.totalProducts = response.totalProducts;
-  //       // this.currentPage = response.currentPage;
-  //       // this.loading = false;
-  //       this.products = response.products;
-  //       console.log("response.products",response.products);
-  //       this.pageProducts = this.products;
-  //       console.log("this.pageProducts",this.pageProducts);
-  //       this.totalPages = response.totalPages;
-  //       console.log("this.totalPages",this.totalPages);
-  //       this.totalProducts = response.totalProducts;
-  //       console.log("this.totalProducts",this.totalProducts);
-  //       this.loading = false;
-  //     },
-  //     error: (err) => {
-  //       console.error(err);
-  //       this.err = err;
-  //       this.loading = false;
-  //       this.pageProducts = [];
-  //     }
-  //   });
-  // }
+
   searchProduct() {
     const searchText = this.searchTerm.trim();
 
     if (searchText) {
-      this.productService.SearchByTitle(searchText).subscribe(
+      this.productService.searchByTitleInCategory(searchText,this.categoryId).subscribe(
         (response: any) => {
           this.searchedProducts = response.data;
           this.pageProducts = this.searchedProducts;
@@ -110,6 +102,22 @@ export class ProductsListComponent {
       this.searchedProducts = [];
       this.loadProducts();
     }
+  }
+
+  sort(event: any) {
+    console.log('event.target', event.target.innerText);
+    console.log('event', event);
+    console.log('Sorted prices:', this.pageProducts.map(product => product.currentprice));
+
+
+    if (event.target.innerText === 'Low to High') {
+      this.pageProducts.sort((a, b) => a.currentprice - b.currentprice);
+    } else if (event.target.innerText === 'High to Low') {
+      this.pageProducts.sort((a, b) => b.currentprice - a.currentprice);
+    }
+
+    console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
+
   }
 
   calculateSearchPagination() {
