@@ -92,6 +92,10 @@
     padding: 1.5rem;
   }
 
+  #contact {
+    display: none;
+  }
+
   .send-message-btn {
     width: 100%;
   }

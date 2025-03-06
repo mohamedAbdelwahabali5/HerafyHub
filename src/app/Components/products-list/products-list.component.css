@@ -12,7 +12,6 @@
   cursor: pointer;
   font-size: 18px;
 }
-
 .dropdown-menu {
   text-align: center;
   min-width: 110px;
@@ -34,7 +33,6 @@
   border-radius: 5px;
   cursor: pointer;
 }
-
 .search-field {
   padding-left: 34px;
   height: 35px;
@@ -44,7 +42,6 @@
   border-radius: 10px;
   color: var(--teal-green);
 }
-
 .search-icon-style {
   position: absolute;
   left: 10px;
@@ -59,4 +56,86 @@
 .li-disabled {
   color: white !important;
   background-color: var(--dark-gray) !important;
+}
+
+
+.pagination .page-item .page-link {
+  color: var(--teal-green) !important;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+}
+
+.pagination .page-item .page-link:hover {
+  color: white !important;
+  background-color: var(--teal-green) !important;
+}
+
+.pagination .page-item.active .page-link {
+  color: white !important;
+  background-color: var(--teal-green) !important;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d !important;
+  pointer-events: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination .page-item .page-link {
+    font-size: 16px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Hide some page numbers on small screens */
+  .pagination .page-number:not(.active) {
+    display: none;
+  }
+
+  /* But always show active page and a few neighbors */
+  .pagination .page-number.active,
+  .pagination .page-number.active + .page-number,
+  .pagination .page-number.active + .page-number + .page-number,
+  .pagination .page-number.active + .page-number,
+  .pagination .page-number.active + .page-number + .page-number {
+    display: block;
+  }
+
+  /* Always show first and last page number */
+  .pagination .page-number:first-of-type,
+  .pagination .page-number:last-of-type {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination .page-item .page-link {
+    font-size: 14px;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .pagination-text {
+    display: none;
+  }
+
+  /* Show even fewer page numbers on very small screens */
+  .pagination .page-number:not(.active) {
+    display: none;
+  }
+
+  .pagination .page-number.active,
+  .pagination .page-number:first-of-type,
+  .pagination .page-number:last-of-type {
+    display: block;
+  }
 }

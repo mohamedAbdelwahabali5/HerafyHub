@@ -19,21 +19,24 @@ export class CollectionComponent {
   ngOnInit() {
     this.loading = true;
     this.productService.getAllProducts().subscribe({
-      next: (data) => {
-        console.log(data);
-        this.products = (data as any[]).slice(0, 9).map((product) => ({
+      next: (response: any) => {
+        console.log('Raw product data:', response);
+
+        // Access the products array from the response.products
+        this.products = response.products?.slice(0, 9).map((product: any) => ({
           ...product,
           title:
             product.title.length > 50
               ? product.title.substring(0, 30) + '...'
               : product.title,
-        }));
-        this.loading = false; // Set loading to false on success
+        })) || [];
+        console.log('Processed products:', this.products);
+        this.loading = false;
       },
       error: (err) => {
-        console.log(err);
-        this.err = err; 
-        this.loading = false; // Set loading to false on error
+        console.log('Error fetching products:', err);
+        this.err = err;
+        this.loading = false;
       },
     });
   }
