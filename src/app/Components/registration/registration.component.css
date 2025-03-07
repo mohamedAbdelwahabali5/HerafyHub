@@ -43,3 +43,17 @@ main {
     background-image: none;
   }
 }
+
+.alert {
+  transition: all 0.5s ease;
+  margin: 15px;
+}
+
+.login-link {
+  color: #20a8d8;
+  cursor: pointer;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
