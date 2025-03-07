@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../Models/user.model';
+import { User } from '../models/user.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
@@ -98,6 +98,24 @@ export class UsersService {
       catchError((error) => {
         console.error('Error fetching user profile:', error);
         return throwError(() => new Error('Failed to fetch user profile'));
+      })
+    );
+  }
+  // Update user profile (requires token)
+  updateUserProfile(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/profile`, user).pipe(
+      catchError((error) => {
+        console.error('Error updating user profile:', error);
+        return throwError(() => new Error('Failed to update user profile'));
+      })
+    );
+  }
+  // Delete user (requires token)
+  deleteUser(): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/profile`).pipe(
+      catchError((error) => {
+        console.error('Error deleting user:', error);
+        return throwError(() => new Error('Failed to delete user'));
       })
     );
   }

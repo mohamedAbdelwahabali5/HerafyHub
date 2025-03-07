@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { User } from '../../Models/user.model';
+import { User } from '../../models/user.model';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
