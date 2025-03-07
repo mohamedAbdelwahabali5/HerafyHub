@@ -1,14 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import {Product,ProductApiResponse} from '../Utils/interface'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private readonly Collection_URL = 'https://fakestoreapi.com/products';
+  // private readonly Collection_URL = 'https://fakestoreapi.com/products';
   private readonly products_URL = 'http://localhost:5555/product';
+  private readonly all_Products_URL = 'http://localhost:5555/product/all';
   private readonly searchProduct_URL = 'http://localhost:5555/product/search';
   private readonly Categories_URL = 'http://localhost:5555/category';
 
@@ -16,25 +18,26 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   //Handle All collection
-  getAll() {
-    return this.http.get(this.Collection_URL);
-  }
-
-  //Handle Products
   getAllProducts() {
-    return this.http.get(this.products_URL);
+    return this.http.get(this.all_Products_URL);
+  }
+  getProductsCategory(page: number, pageSize: number, categoryId: string = '') {
+    let url = `${this.products_URL}/?page=${page}&limit=${pageSize}`;
+    if (categoryId) {
+      url += `&categoryId=${categoryId}`;
+    }
+    return this.http.get(url);
   }
 
-  SearchByTitle(title: string) {
-    console.log('Searching for:', title);
-    console.log('Search URL:', `${this.searchProduct_URL}?title=${title}`);
-    return this.http.get(`${this.searchProduct_URL}?title=${title}`).pipe(
-      tap(response => console.log('Search response:', response)),
-      catchError(error => {
-        console.error('Search API error:', error);
-        throw error;
-      })
-    );
+  //Handle search
+  searchByTitleInCategory(title: string, categoryId: string) {
+    console.log('Searching for:', title, 'in category:', categoryId);
+    if (categoryId == 'allProducts') {
+      return this.http.get(`${this.all_Products_URL}`);
+    }else {
+      return this.http.get(`${this.searchProduct_URL}?title=${title}&categoryId=${categoryId}`);
+    }
+
   }
 
   //Handle all Categories

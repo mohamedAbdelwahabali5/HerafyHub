@@ -1,34 +1,94 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+// import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+// import { ProductService } from '../../Services/collection.service';
+// import { CommonModule } from '@angular/common';
+// import { url } from 'node:inspector';
+
+// @Component({
+//   selector: 'app-category-info',
+//   imports: [CommonModule],
+//   standalone: true,
+//   templateUrl: './category-info.component.html',
+//   styleUrls: ['./category-info.component.css'],
+//   providers: [ProductService],
+// })
+// export class CategoryInfoComponent implements OnInit {
+//   @Output() categorySelected = new EventEmitter<string>();
+
+//   @ViewChild('imagecontainer') imagecontainer!: ElementRef;
+
+//   products!: any;
+//   categories!: any;
+//   category!: any;
+//   imagePath!: string;
+//   title!: string;
+//   description!: string;
+
+//   constructor(private productService: ProductService) {}
+//   ngOnInit() {
+//     this.productService.getAllCategories().subscribe({
+//       next: (data) => {
+//         // console.log('Data from API:', data);
+//         this.categories = data;
+//         this.imagePath = this.categories[0].image;
+//         this.title = 'Welcome to our Platform';
+//         this.description =
+//           'We are proud to offer you the finest local products and handicrafts carefully crafted by skilled artisans';
+//           this.imagecontainer.nativeElement.style.backgroundImage = "https://res.cloudinary.com/dojq1nxqw/image/upload/v1741223343/Welcome_to_our_platform_e1kxy1.jpg";
+//         },
+//       error: (err) => {
+//         console.log(err);
+//       },
+//     });
+//   }
+
+//   changeCategory(event: any) {
+//     let clickedItem = event.target.closest('li');
+//     if (clickedItem) {
+//       const selectedCategoryTitle = clickedItem.textContent.trim();
+//       const category = this.categories.find((cat: any) => cat.title === selectedCategoryTitle);
+//       if (category) {
+//         this.imagePath = category.image;
+//         this.title = category.title;
+//         this.description = category.description;
+
+//         this.categorySelected.emit(category._id);
+//         console.log('Category ID:', category._id);
+//         if (this.imagecontainer) {
+//           this.imagecontainer.nativeElement.style.backgroundImage = `url(${this.imagePath})`;
+//         }
+//       }
+//     }
+//   }
+// }
+
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ProductService } from '../../Services/collection.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-category-info',
   imports: [CommonModule],
+  standalone: true,
   templateUrl: './category-info.component.html',
   styleUrls: ['./category-info.component.css'],
   providers: [ProductService],
 })
 export class CategoryInfoComponent implements OnInit {
-  @ViewChild('imagecontainer') imagecontainer!: ElementRef;
+  @Output() categorySelected = new EventEmitter<string>();
 
   products!: any;
   categories!: any;
   category!: any;
-  imagePath!: string;
-  title!: string;
-  description!: string;
+  imagePath: string = 'https://res.cloudinary.com/dojq1nxqw/image/upload/v1741223343/Welcome_to_our_platform_e1kxy1.jpg';
+  title: string = 'Welcome to our Platform';
+  description: string = 'We are proud to offer you the finest local products and handicrafts carefully crafted by skilled artisans';
 
   constructor(private productService: ProductService) {}
+
   ngOnInit() {
     this.productService.getAllCategories().subscribe({
       next: (data) => {
-        // console.log('Data from API:', data);
         this.categories = data;
-        this.imagePath = this.categories[0].image;
-        this.title = 'Fashion';
-        this.description =
-          'Explore our stylish collection of clothing for men and women, featuring the latest trends and timeless classics.';
       },
       error: (err) => {
         console.log(err);
@@ -39,20 +99,27 @@ export class CategoryInfoComponent implements OnInit {
   changeCategory(event: any) {
     let clickedItem = event.target.closest('li');
     if (clickedItem) {
-      console.log(clickedItem.textContent.trim());
-      this.category = this.categories.find((cat: any) => {
-        return cat.title === clickedItem.textContent.trim();
-      });
-      this.imagePath = this.category.image;
-      this.title = this.category.title;
-      this.description = this.category.description;
-      // console.log('Unique Categories:', this.categories);
-      // console.log('imagePath:', this.imagePath);
-      if (this.imagecontainer) {
-        this.imagecontainer.nativeElement.style.backgroundImage = `url(${this.imagePath})`;
+      const selectedCategoryTitle = clickedItem.textContent.trim();
+
+      // Handle "All Products" case
+      if (selectedCategoryTitle === 'All Products') {
+        this.imagePath = 'https://res.cloudinary.com/dojq1nxqw/image/upload/v1741223343/Welcome_to_our_platform_e1kxy1.jpg';
+        this.title = 'Welcome to our Platform';
+        this.description = 'We are proud to offer you the finest local products and handicrafts carefully crafted by skilled artisans';
+        this.categorySelected.emit('allProducts');
+        console.log(`category._id in category --> allProducts`);
+        return;
       }
 
-      console.log(this.category);
+      const category = this.categories.find((cat: any) => cat.title === selectedCategoryTitle);
+      if (category) {
+        this.imagePath = category.image;
+        this.title = category.title;
+        this.description = category.description;
+        this.categorySelected.emit(category._id);
+        console.log(`category._id in category ${category._id}`);
+
+      }
     }
   }
 }

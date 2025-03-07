@@ -1,145 +1,97 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProductService } from '../../Services/collection.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-products-list',
-  imports: [ProductCardComponent, CommonModule, FormsModule],
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
+  standalone: true,
+  imports: [
+    ProductCardComponent,
+    CommonModule,
+    FormsModule
+  ]
 })
 export class ProductsListComponent {
-  products!: any;
-  pageProducts!: any;
-  searchedProducts!: any;
-  searchTerm!: string;
-  categories!: any;
-  ProImage!: any;
-  ProCurrentprice!: number;
-  ProTitle!: string;
-  ProDescription!: string;
-  imagePath!: string;
-  currentPage = 0; // Initial page   0 1 2
+  @Input() categoryId: string = ''; // Changed from selectedCategoryId to categoryId
+  products: any[] = [];
+  pageProducts: any[] = [];
+  searchedProducts: any[] = [];
+  searchTerm: string = '';
 
+  // Pagination Properties
+  currentPage: number = 1;
+  totalPages: number = 0;
+  totalProducts: number = 0;
+  pageSize: number = 12;
   loading: boolean = true;
-  err:any=null
-
+  err: any = null;
   constructor(private productService: ProductService) {}
   ngOnInit() {
+    this.loadProducts();
+  }
+  // Add this new method to detect category changes
+  ngOnChanges(changes: any) {
+    if (changes.categoryId) {
+      this.currentPage = 1; // Reset to first page when category changes
+      this.loadProducts();
+    }
+  }
+  loadProducts() {
     this.loading = true;
-    this.productService.getAllProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-        this.pageProducts = this.products.slice(0, 8);
-        // console.log('this.products', this.products);
-        this.loading = false; // Set loading to false on success
-      },
-      error: (err) => {
-        console.log(err);
-        this.err = err; // Set err to the error object or message
-        this.loading = false; // Set loading to false on error
-        this.pageProducts = [];
-      },
-    });
+    console.log('Category ID in ProductsListComponent:', this.categoryId);
+    if (this.categoryId != "allProducts") {
+      this.productService.getProductsCategory(this.currentPage, this.pageSize, this.categoryId).subscribe({
+        next: (response:any) => {
+          this.products = response.products;
+          this.pageProducts = this.products;
+          this.totalPages = response.totalPages;
+          this.totalProducts = response.totalProducts;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.err = err;
+          this.loading = false;
+          this.pageProducts = [];
+        }
+      });
+    } else {
+      this.productService.getAllProducts().subscribe({
+        next: (response:any) => {
+          this.products = response.products;
+          this.totalProducts = response.totalProducts;
+          console.log('All products fetched:', this.products);
+          this.totalPages =  Math.ceil(this.totalProducts / this.pageSize),
+          console.log('Total pages:', this.totalPages);
+          this.pageProducts = this.products.slice((this.currentPage-1)*this.pageSize, this.pageSize*this.currentPage);
+          console.log('this.pageSize:', this.pageSize);
+          console.log('this.currentPage:', this.currentPage);
+          console.log('Page products:', this.pageProducts);
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.err = err;
+          this.loading = false;
+          this.pageProducts = [];
+        }
+      });
+    }
   }
 
-  // Pagination
-  changePage(event: any): void {
-    // const paginationList = document.querySelector('.pagination');
-    // const allPageLinks = paginationList?.querySelectorAll('.page-link');
-
-    // // Remove active class from all spans
-    // allPageLinks?.forEach((link) => {
-    //   link.classList.remove('li-active');
-    // });
-
-    const page = event.target.textContent;
-    this.currentPage = parseInt(page) - 1;
-    this.updatePageProducts();
-    this.updateActivePageLink(event.target);
-    console.log('this.currentPage', this.currentPage);
-  }
-
-  nextPage(event: any): void {
-    if (this.currentPage >= 2) {
-      return;
-    }
-    this.currentPage++;
-    this.updatePageProducts();
-    const nextLink = this.getNextPageLink();
-    if (nextLink) {
-      this.updateActivePageLink(nextLink);
-    }
-    console.log('this.currentPage', this.currentPage);
-  }
-
-  prevPage(event: any): void {
-    if (this.currentPage <= 0) {
-      return;
-    }
-    this.currentPage--;
-    this.updatePageProducts();
-    const prevLink = this.getPreviousPageLink();
-    if (prevLink) {
-      this.updateActivePageLink(prevLink);
-    }
-    console.log('this.currentPage', this.currentPage);
-  }
-  //
-// searchProduct(event: any): void {
-  //   const searchText = this.searchTerm.toLowerCase();
-  //   // this.searchedProducts = this.pageProducts.filter(
-  //   //   (product: { title: string }) =>
-  //   //     product.title.toLowerCase().includes(searchText)
-  //   // );
-  //   this.searchedProducts =this.productService.SearchByTitle(searchText).subscribe();
-  //   console.log("this.searchedProducts = ",this.searchedProducts);
-
-  //   if (searchText) {
-  //     this.pageProducts =
-  //       this.searchedProducts.slice(0, 8) || this.searchedProducts;
-  //   } else {
-  //     this.updatePageProducts();
-  //   }
-  // }
-
-  // searchProduct(event: any): void {
-  //   const searchText = this.searchTerm.trim(); // Remove extra whitespace
-
-  //   if (searchText) {
-  //     this.productService.SearchByTitle(searchText).subscribe(
-  //       (data: any) => {
-  //         this.searchedProducts = data;
-  //         console.log(`Found ${this.searchedProducts.length} products matching "${searchText}"`);
-
-
-  //         // Make sure we're getting a subset if needed
-  //         this.pageProducts = this.searchedProducts.slice(0, 8);
-  //       },
-  //       (error) => {
-  //         console.error("Error fetching products:", error);
-  //       }
-  //     );
-  //   } else {
-  //     // If search is empty, reset to showing all products
-  //     this.updatePageProducts();
-  //   }
-  // }
-
-  searchProduct(event: any): void {
+  searchProduct() {
     const searchText = this.searchTerm.trim();
-  
+
     if (searchText) {
-      this.productService.SearchByTitle(searchText).subscribe(
-        (response: any) => { // <-- Change parameter name to 'response'
-          this.searchedProducts = response.data; // <-- Access the data array
-          console.log(`Found ${this.searchedProducts.length} products matching "${searchText}"`);
-  
-          // Update page products with search results
-          this.pageProducts = this.searchedProducts.slice(0, 8);
+      this.productService.searchByTitleInCategory(searchText,this.categoryId).subscribe(
+        (response: any) => {
+          this.searchedProducts = response.data;
+          this.pageProducts = this.searchedProducts;
+          this.calculateSearchPagination();
         },
         (error) => {
           console.error("Error fetching products:", error);
@@ -147,60 +99,70 @@ export class ProductsListComponent {
         }
       );
     } else {
-      // Reset to original products when search is empty
-      this.searchedProducts = null;
+      this.searchedProducts = [];
+      this.loadProducts();
+    }
+  }
+
+  sort(event: any) {
+    console.log('event.target', event.target.innerText);
+    console.log('event', event);
+    console.log('Sorted prices:', this.pageProducts.map(product => product.currentprice));
+
+
+    if (event.target.innerText === 'Low to High') {
+      this.pageProducts.sort((a, b) => a.currentprice - b.currentprice);
+    } else if (event.target.innerText === 'High to Low') {
+      this.pageProducts.sort((a, b) => b.currentprice - a.currentprice);
+    }
+
+    console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
+
+  }
+
+  calculateSearchPagination() {
+    this.totalProducts = this.searchedProducts.length;
+    this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+    this.currentPage = 1;
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
+    this.loadProducts();
+    this.updatePageProducts();
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadProducts();
       this.updatePageProducts();
     }
   }
-  // Update the products for the current page
-  // updatePageProducts(): void {
-  //   const start = this.currentPage * 8;
-  //   const end = start + 8;
-  //   this.pageProducts = this.products.slice(start, end);
-  // }
-  updatePageProducts(): void {
-    const sourceArray = this.searchedProducts || this.products;
-    const start = this.currentPage * 8;
-    const end = start + 8;
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadProducts();
+      this.updatePageProducts();
+    }
+  }
+
+  updatePageProducts() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+
+    const sourceArray = this.searchedProducts.length > 0
+      ? this.searchedProducts
+      : this.products;
+
     this.pageProducts = sourceArray.slice(start, end);
   }
 
-  // Get the next page link element
-  getNextPageLink(): HTMLElement | null {
-    const paginationList = document.querySelector('.pagination');
-    const activeSpanElement = paginationList?.querySelector(
-      '.page-link.li-active'
+  get pageNumbers(): number[] {
+    return Array.from(
+      { length: this.totalPages },
+      (_, index) => index + 1
     );
-    const activeLiElement = activeSpanElement?.parentElement;
-    return (
-      activeLiElement?.nextElementSibling?.querySelector('.page-link') || null
-    );
-  }
-  // Get the previous page link element
-  getPreviousPageLink(): HTMLElement | null {
-    const paginationList = document.querySelector('.pagination');
-    const activeSpanElement = paginationList?.querySelector(
-      '.page-link.li-active'
-    );
-    const activeLiElement = activeSpanElement?.parentElement;
-    return (
-      activeLiElement?.previousElementSibling?.querySelector('.page-link') ||
-      null
-    );
-  }
-  // Update the active page link in the pagination UI
-  updateActivePageLink(activeLink: HTMLElement | null): void {
-    if (activeLink) {
-      const paginationList = document.querySelector('.pagination');
-      const allPageLinks = paginationList?.querySelectorAll('.page-link');
-
-      // Remove active class from all spans
-      allPageLinks?.forEach((link) => {
-        link.classList.remove('li-active');
-      });
-
-      // Add active class to the clicked page link
-      activeLink.classList.add('li-active');
-    }
   }
 }
