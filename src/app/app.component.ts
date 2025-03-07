@@ -17,6 +17,8 @@ import { InspireComponent } from './Components/inspire/inspire.component';
 import { AboutUsComponent } from './Components/about-us/about-us.component';
 import { HomeComponent } from './Components/home/home.component';
 import { ProfileComponent } from './Components/profile/profile.component';
+import { FavoritesComponent } from './Components/favorites/favorites.component';
+import { FavoritesItemComponent } from './Components/favorites-item/favorites-item.component';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +35,9 @@ import { ProfileComponent } from './Components/profile/profile.component';
     ,
     HeaderComponent,
     FooterComponent,
-    RouterOutlet
+    RouterOutlet,
+    FavoritesComponent,
+    FavoritesItemComponent
 
 ],
 
