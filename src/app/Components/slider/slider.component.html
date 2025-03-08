@@ -16,7 +16,7 @@
                 <h2 class="card-tite text-white mb-3">
                   {{ category.title }}
                 </h2>
-                <button class="btn btn-light rounded-4 py-2 category-btn">
+                <button (click)="navigateToProducts(category._id)" class="btn btn-light rounded-4 py-2 category-btn">
                   See Details
                 </button>
               </div>

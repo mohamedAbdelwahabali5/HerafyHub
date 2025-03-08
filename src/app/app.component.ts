@@ -4,10 +4,6 @@ import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 
 import { filter } from 'rxjs';
-<<<<<<< Updated upstream
-import { LoginComponent } from './Components/login/login.component';
-=======
->>>>>>> Stashed changes
 
 
 @Component({
@@ -42,9 +38,6 @@ export class AppComponent {
   private isAuthRoute(url: string): boolean {
     const authRoutes = ['/login', '/register','/reset-password','/forgot-password','/error'];
     return authRoutes.includes(url);
-<<<<<<< Updated upstream
+
   }
-=======
-  }
->>>>>>> Stashed changes
-}
+ }

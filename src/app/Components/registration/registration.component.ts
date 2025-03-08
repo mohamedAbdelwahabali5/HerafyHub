@@ -9,8 +9,9 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { User } from '../../models/user.model';
+import { RegisterResponse, User } from '../../models/user.model';
 import { Router, RouterModule } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-registration',
@@ -26,7 +27,7 @@ export class RegistrationComponent {
   submitted = false;
   registrationError = '';
   loading = false;
-
+  successMessage = '';
   registrationForm = new FormGroup(
     {
       firstName: new FormControl('', [
@@ -73,11 +74,9 @@ export class RegistrationComponent {
     },
     { validators: this.passwordMatchValidator }
   );
-
   get formControls() {
     return this.registrationForm.controls;
   }
-
   passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
@@ -85,72 +84,83 @@ export class RegistrationComponent {
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.registrationError = '';
-
-    // Mark all fields as touched to trigger validation
-    Object.keys(this.registrationForm.controls).forEach((key) => {
-      const control = this.registrationForm.get(key);
-      control?.markAsTouched();
-    });
-
     if (this.registrationForm.invalid) {
-      console.log('Form is invalid', this.registrationForm.errors);
+      this.markFormGroupTouched(this.registrationForm);
       return;
     }
-
+  
     this.loading = true;
     const formValues = this.registrationForm.value;
-
-    const newUser: User = {
-      firstName: formValues.firstName || '',
-      lastName: formValues.lastName || '',
-      email: formValues.email || '',
-      phone: formValues.phone || '',
-      address: formValues.address || '', // Map street to address for backend
-      city: formValues.city || '',
-      state: formValues.state || '',
-      zipCode: formValues.zipCode || '',
-      password: formValues.password || '',
-    };
-
-    console.log('Submitting user:', newUser);
-
-    this.userService.addUser(newUser).subscribe({
+        const newUser: User = {
+          firstName: formValues.firstName!,
+          lastName: formValues.lastName!,
+          email: formValues.email!,
+          phone: formValues.phone!,
+          address: formValues.address!,
+          password: formValues.password!,
+          city: formValues.city || '',
+          state: formValues.state || '',
+          zipCode: formValues.zipCode || ''
+        };
+  
+    this.userService.addUser(newUser).pipe(
+      finalize(() => this.loading = false)
+    ).subscribe({
       next: (response) => {
-        this.loading = false;
-        alert('Registration successful!');
-        this.router.navigate(['/login']);
+        this.handleSuccessfulRegistration(response, newUser.email);
       },
-      error: (error) => {
-        this.loading = false;
-        this.registrationError = error.message || 'Registration failed';
-        alert(this.registrationError);
-      },
+      error: (error) => this.handleRegistrationError(error)
     });
   }
-
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+  private handleSuccessfulRegistration(response: RegisterResponse, email: string) {
+    this.successMessage = response.message;
+    this.registrationForm.reset();
+    this.submitted = false;
+    
+    setTimeout(() => {
+      this.router.navigate(['/login'], {
+        state: { email, message: 'Registration successful! Please login to continue.' }
+      });
+    }, 2000);
+  }
+  private handleRegistrationError(error: any) {
+    this.registrationError = error.userMessage;
+    const errorElement = document.querySelector('.alert-danger');
+    errorElement?.scrollIntoView({ behavior: 'smooth' });
+  }
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.registrationForm.get(fieldName);
+    return field ? (field.invalid && (field.dirty || field.touched || this.submitted)) : false;
+  }
   getErrorMessage(controlName: string): string {
     const control = this.registrationForm.get(controlName);
-
+  
     if (control?.errors?.['required']) {
       return `${this.getFieldLabel(controlName)} is required.`;
     }
-
+  
     if (control?.errors?.['minlength']) {
       const minLength = control.errors?.['minlength'].requiredLength;
       return `${this.getFieldLabel(
         controlName
       )} must be at least ${minLength} characters.`;
     }
-
+  
     if (control?.errors?.['maxlength']) {
       const maxLength = control.errors?.['maxlength'].requiredLength;
       return `${this.getFieldLabel(
         controlName
       )} must be less than ${maxLength} characters.`;
     }
-
+  
     if (control?.errors?.['pattern']) {
       switch (controlName) {
         case 'firstName':
@@ -168,22 +178,21 @@ export class RegistrationComponent {
           return 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
       }
     }
-
+  
     if (
       controlName === 'confirmPassword' &&
       this.registrationForm.errors?.['passwordMismatch']
     ) {
       return 'Passwords do not match.';
     }
-
+  
     return '';
   }
-
   getFieldLabel(controlName: string): string {
     const labels: { [key: string]: string } = {
       firstName: 'First Name',
       lastName: 'Last Name',
-      address: 'Street Address',
+      address: 'Address',
       city: 'City',
       state: 'State',
       zipCode: 'Zip Code',
@@ -192,7 +201,7 @@ export class RegistrationComponent {
       password: 'Password',
       confirmPassword: 'Confirm Password',
     };
-
+  
     return labels[controlName] || controlName;
   }
 }
