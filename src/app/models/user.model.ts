@@ -1,16 +1,14 @@
 export interface User {
-  id?: number;
-  name: {
-    fName: string;
-    lName: string;
-  };
+  id?: number | string; // MongoDB will use _id
+  firstName: string;
+  lastName: string;
   email: string;
+  address: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   phone: string;
-  address: {
-    city: string;
-    street: string;
-    state: string;
-    zipCode: string;
-  };
   password: string;
+  role?: 'user' | 'admin';
+  profileImage?: string;
 }

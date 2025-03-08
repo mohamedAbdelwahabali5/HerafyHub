@@ -9,50 +9,64 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { User } from '../../Models/user.model';
+import { User } from '../../models/user.model';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   providers: [UsersService],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  constructor(private userService: UsersService) {}
+  constructor(private userService: UsersService, private router: Router) {}
 
   submitted = false;
+  registrationError = '';
+  loading = false;
 
   registrationForm = new FormGroup(
     {
       firstName: new FormControl('', [
         Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
         Validators.pattern('^[A-Za-z]+$'),
       ]),
       lastName: new FormControl('', [
         Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
         Validators.pattern('^[A-Za-z]+$'),
       ]),
-      street: new FormControl('', [Validators.required]),
-      city: new FormControl('', [Validators.required]),
-      state: new FormControl('', [Validators.required]),
+      address: new FormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(50),
+      ]),
+      city: new FormControl('', [
+        Validators.minLength(3),
+        Validators.maxLength(20),
+      ]),
+      state: new FormControl('', [
+        Validators.minLength(3),
+        Validators.maxLength(20),
+      ]),
       phone: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[0-9]{10,15}$'),
+        Validators.pattern(/^[0-9]{10,15}$/),
       ]),
-      zipCode: new FormControl('', [
-        Validators.required,
-        Validators.pattern('^[0-9]{2,5}$'),
-      ]),
+      zipCode: new FormControl('', [Validators.pattern('^[0-9]{2,5}$')]),
       email: new FormControl('', [
         Validators.required,
-        Validators.pattern(/[a-zA-Z0-9_%+]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}/),
+        Validators.pattern(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/),
       ]),
       password: new FormControl('', [
         Validators.required,
         Validators.pattern(
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&_#])[A-Za-z\d@$!%*?&_#]{8,}$/
+          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&#_])[A-Za-z\d@$!%*?&#_]{8,}$/
         ),
       ]),
       confirmPassword: new FormControl('', [Validators.required]),
@@ -72,34 +86,48 @@ export class RegistrationComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.registrationError = '';
+
+    // Mark all fields as touched to trigger validation
+    Object.keys(this.registrationForm.controls).forEach((key) => {
+      const control = this.registrationForm.get(key);
+      control?.markAsTouched();
+    });
 
     if (this.registrationForm.invalid) {
-      this.registrationForm.get('confirmPassword')?.markAsTouched();
+      console.log('Form is invalid', this.registrationForm.errors);
       return;
     }
 
-    if (this.registrationForm.valid) {
-      const newUser: User = {
-        name: {
-          fName: this.registrationForm.value.firstName ?? '',
-          lName: this.registrationForm.value.lastName ?? '',
-        },
-        email: this.registrationForm.value.email ?? '',
-        phone: this.registrationForm.value.phone ?? '',
-        address: {
-          city: this.registrationForm.value.city ?? '',
-          street: this.registrationForm.value.street ?? '',
-          state: this.registrationForm.value.state ?? '',
-          zipCode: this.registrationForm.value.zipCode ?? '',
-        },
-        password: this.registrationForm.value.password ?? '',
-      };
+    this.loading = true;
+    const formValues = this.registrationForm.value;
 
-      this.userService.addUser(newUser).subscribe(() => {
-        alert('User registered successfully!');
-        this.registrationForm.reset();
-      });
-    }
+    const newUser: User = {
+      firstName: formValues.firstName || '',
+      lastName: formValues.lastName || '',
+      email: formValues.email || '',
+      phone: formValues.phone || '',
+      address: formValues.address || '', // Map street to address for backend
+      city: formValues.city || '',
+      state: formValues.state || '',
+      zipCode: formValues.zipCode || '',
+      password: formValues.password || '',
+    };
+
+    console.log('Submitting user:', newUser);
+
+    this.userService.addUser(newUser).subscribe({
+      next: (response) => {
+        this.loading = false;
+        alert('Registration successful!');
+        this.router.navigate(['/login']);
+      },
+      error: (error) => {
+        this.loading = false;
+        this.registrationError = error.message || 'Registration failed';
+        alert(this.registrationError);
+      },
+    });
   }
 
   getErrorMessage(controlName: string): string {
@@ -109,19 +137,35 @@ export class RegistrationComponent {
       return `${this.getFieldLabel(controlName)} is required.`;
     }
 
+    if (control?.errors?.['minlength']) {
+      const minLength = control.errors?.['minlength'].requiredLength;
+      return `${this.getFieldLabel(
+        controlName
+      )} must be at least ${minLength} characters.`;
+    }
+
+    if (control?.errors?.['maxlength']) {
+      const maxLength = control.errors?.['maxlength'].requiredLength;
+      return `${this.getFieldLabel(
+        controlName
+      )} must be less than ${maxLength} characters.`;
+    }
+
     if (control?.errors?.['pattern']) {
       switch (controlName) {
         case 'firstName':
         case 'lastName':
           return 'Only letters allowed.';
+        case 'address':
+          return 'Address must be at least 10 characters long and max 50 characters';
         case 'phone':
-          return 'Invalid phone number.';
+          return 'Invalid phone number format (10-15 digits only).';
         case 'zipCode':
-          return 'Invalid zip code.';
+          return 'Invalid zip code format (3-5 digits only).';
         case 'email':
           return 'Invalid email format.';
         case 'password':
-          return 'Must include uppercase, lowercase, number, and special character.';
+          return 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
       }
     }
 
@@ -139,7 +183,7 @@ export class RegistrationComponent {
     const labels: { [key: string]: string } = {
       firstName: 'First Name',
       lastName: 'Last Name',
-      street: 'Street',
+      address: 'Street Address',
       city: 'City',
       state: 'State',
       zipCode: 'Zip Code',
