@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
+import { User, RegisterResponse } from '../models/user.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { handleError } from '../Utils/handleError';
 
 @Injectable({
   providedIn: 'root',
@@ -14,60 +15,13 @@ export class UsersService {
   constructor(private http: HttpClient) {}
 
   // users.service.ts
-  addUser(user: User): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, user).pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = 'Registration failed';
-
-        if (error.status === 400) {
-          // Handle Zod validation errors
-          if (error.error?.errors) {
-            const messages = error.error.errors.map(
-              (e: any) => `${e.path.join('.')}: ${e.message}`
-            );
-            errorMessage = messages.join('\n');
-          } else if (error.error?.message) {
-            errorMessage = error.error.message;
-          }
-        }
-
-        return throwError(() => new Error(errorMessage));
-      })
+  addUser(user: User): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, user).pipe(
+      catchError(handleError)
     );
   }
-  // addUser(user: User): Observable<any> {
-  //   // Map the Angular user model to match the expected format in your Node backend
-  //   const backendUser = {
-  //     firstName: user.firstName,
-  //     lastName: user.lastName,
-  //     email: user.email,
-  //     address: user.address,
-  //     city: user.city || '',
-  //     state: user.state || '',
-  //     zipCode: user.zipCode || '',
-  //     phone: user.phone,
-  //     password: user.password,
-  //     role: user.role || 'user',
-  //   };
 
-  //   console.log('Sending user to backend:', backendUser);
-
-  //   return this.http.post<any>(`${this.apiUrl}/register`, backendUser).pipe(
-  //     tap((response) => console.log('User registered successfully:', response)),
-  //     catchError((error) => {
-  //       console.error('Error registering user:', error);
-  //       let errorMessage = 'Failed to register user';
-
-  //       // Handle specific error messages from backend
-  //       if (error.error && error.error.message) {
-  //         errorMessage = error.error.message;
-  //       }
-
-  //       return throwError(() => new Error(errorMessage));
-  //     })
-  //   );
-  // }
-
+  
   // Login user
   loginUser(email: string, password: string): Observable<any> {
     return this.http

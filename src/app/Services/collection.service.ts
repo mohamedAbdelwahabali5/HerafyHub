@@ -13,10 +13,9 @@ export class ProductService {
   private readonly all_Products_URL = 'http://localhost:5555/product/all';
   private readonly searchProduct_URL = 'http://localhost:5555/product/search';
   private readonly Categories_URL = 'http://localhost:5555/category';
-
-
+  
   constructor(private http: HttpClient) {}
-
+  
   //Handle All collection
   getAllProducts() {
     return this.http.get(this.all_Products_URL);
@@ -28,7 +27,7 @@ export class ProductService {
     }
     return this.http.get(url);
   }
-
+  
   //Handle search
   searchByTitleInCategory(title: string, categoryId: string) {
     console.log('Searching for:', title, 'in category:', categoryId);
@@ -37,15 +36,18 @@ export class ProductService {
     }else {
       return this.http.get(`${this.searchProduct_URL}?title=${title}&categoryId=${categoryId}`);
     }
-
   }
-
+  
   //Handle all Categories
   getAllCategories() {
     return this.http.get(this.Categories_URL);
   }
-
-
+  
+  // Get category by ID
+  getCategoryById(categoryId: string) {
+    return this.http.get(`${this.Categories_URL}/${categoryId}`);
+  }
+  
   // get product by id --> single product
   getProductById(id: string) {
     return this.http.get(`${this.products_URL}/${id}`);

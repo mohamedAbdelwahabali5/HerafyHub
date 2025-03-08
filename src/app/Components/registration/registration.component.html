@@ -4,8 +4,21 @@
       <h2 class="text-center teal-green">Registration Form</h2>
       <p class="text-center">Please fill in the form below</p>
 
+      @if(successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+      }
+
       @if(registrationError) {
-      <div class="alert alert-danger">{{ registrationError }}</div>
+      <div class="alert alert-danger d-flex align-items-center">
+        @if(loading) {
+          <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        }
+        {{ registrationError }}
+      </div>
       }
 
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
@@ -176,13 +189,18 @@
             class="btn btn-custom w-75"
             [disabled]="loading"
           >
-            {{ loading ? "Please wait..." : "Register" }}
+            @if(loading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Registering...
+            } @else {
+              Register
+            }
           </button>
         </div>
         <div class="text-center mt-3">
           <p>
             Already have an account?
-            <a class="login-link" routerLinkActive="active" routerLink="/login"
+            <a class="login-link  teal-green" routerLinkActive="active" routerLink="/login"
               >Login here</a
             >
           </p>
