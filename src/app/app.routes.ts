@@ -12,6 +12,7 @@ import { FavoritesComponent } from './Components/favorites/favorites.component';
 import { ProductsComponent } from './Components/products/products.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
+import { ProfileComponent } from './Components/profile/profile.component';
 
 
 
@@ -21,6 +22,7 @@ export const routes: Routes = [
         {path: 'home', component:HomeComponent},
         {path: 'login', component:LoginComponent},
         {path: 'register', component:RegistrationComponent},
+        {path: 'profile', component:ProfileComponent},
         // {path: 'product-list', component:ProductsListComponent},
         {path: 'about-us', component:AboutUsComponent},
         {path: 'contact-us', component:ContactComponent},
