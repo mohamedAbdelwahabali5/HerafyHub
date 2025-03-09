@@ -7,14 +7,14 @@ import { filter } from 'rxjs';
 import { UsersService } from './Services/users.service';
 
 
+
 @Component({
   selector: 'app-root',
   imports: [
     HeaderComponent,
     FooterComponent,
     RouterOutlet,
-
-  ],
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
