@@ -7,13 +7,13 @@ import { filter } from 'rxjs';
 import { LoginComponent } from './Components/login/login.component';
 
 
+
 @Component({
   selector: 'app-root',
   imports: [
     HeaderComponent,
     FooterComponent,
     RouterOutlet,
-
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

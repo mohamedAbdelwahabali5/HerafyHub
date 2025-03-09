@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CartService {
 
-  private readonly cart_URL = 'http://localhost:3000/cartProducts';
+  private readonly cart_URL = 'http://localhost:5000/favorites';
   constructor(private http:HttpClient) {}
 
     addProductToCart(newCart: any): Observable<any> {
