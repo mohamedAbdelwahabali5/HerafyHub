@@ -56,8 +56,48 @@ export class ProfileComponent implements OnInit {
     ]),
   });
 
-  get f() {
+  get formControls() {
     return this.profileForm.controls;
+  }
+  getErrorMessage(controlName: string): string {
+    const control = this.profileForm.get(controlName);
+
+    if (control?.errors?.['required']) {
+      return `${this.getFieldLabel(controlName)} is required.`;
+    }
+
+    if (control?.errors?.['pattern']) {
+      switch (controlName) {
+        case 'firstName':
+        case 'lastName':
+          return 'Only letters allowed.';
+        case 'phone':
+          return 'Invalid phone number.';
+        case 'zipCode':
+          return 'Invalid zip code.';
+        case 'email':
+          return 'Invalid email format.';
+        case 'password':
+          return 'Must include uppercase, lowercase, number, and special character.';
+      }
+    }
+    return '';
+  }
+  getFieldLabel(controlName: string): string {
+    const labels: { [key: string]: string } = {
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      street: 'Street',
+      city: 'City',
+      state: 'State',
+      zipCode: 'Zip Code',
+      phone: 'Phone',
+      email: 'Email',
+      password: 'Password',
+      confirmPassword: 'Confirm Password',
+    };
+
+    return labels[controlName] || controlName;
   }
 
   constructor(private usersService: UsersService) {}
@@ -84,7 +124,7 @@ export class ProfileComponent implements OnInit {
   // }
   loadUserProfile() {
     // Simulate loading user data
-    this.usersService.getUserById(1).subscribe((user) => {
+    this.usersService.getUserProfile().subscribe((user) => {
       this.userData = user;
       this.profileForm.patchValue(user);
     });
@@ -127,22 +167,18 @@ export class ProfileComponent implements OnInit {
     if (this.profileForm.valid && this.userData) {
       const updatedUser: User = {
         ...this.userData, // Spread existing user data
-        name: {
-          fName: this.profileForm.value.firstName!, // Use form value for first name
-          lName: this.profileForm.value.lastName!, // Use form value for last name
-        },
-        address: {
-          street: this.profileForm.value.street!,
-          city: this.profileForm.value.city!,
-          state: this.profileForm.value.state!,
-          zipCode: this.profileForm.value.zipCode!,
-        },
+        firstName: this.profileForm.value.firstName!, // Use form value for first name
+        lastName: this.profileForm.value.lastName!, // Use form value for last name
+        address: this.profileForm.value.street!,
+        city: this.profileForm.value.city!,
+        state: this.profileForm.value.state!,
+        zipCode: this.profileForm.value.zipCode!,
         phone: this.profileForm.value.phone!,
         email: this.profileForm.value.email!,
         password: this.profileForm.value.password!,
       };
 
-      this.usersService.updateUser(1, updatedUser).subscribe({
+      this.usersService.updateUserProfile(updatedUser).subscribe({
         next: () => {
           alert('Profile updated successfully!');
           this.isEditMode = false;

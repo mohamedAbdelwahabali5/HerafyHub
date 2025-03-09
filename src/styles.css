@@ -1,3 +1,4 @@
+
 /* root Variables */
 :root {
   --teal-green: #3d8d7a;
@@ -8,6 +9,11 @@
   --light-gray: #d8d7d7;
 }
 
+html, body {
+  height: 100%;
+  /* margin: 0;
+  padding: 0; */
+}
 /* Utility Classes */
 .teal-green {
   color: var(--teal-green) !important;
@@ -51,6 +57,7 @@
     width: 100% !important;
   }
 }
+
 
 /* Responsive Width for Medium Screens (≥577px) */
 @media (min-width: 577px) and (max-width: 768px) {

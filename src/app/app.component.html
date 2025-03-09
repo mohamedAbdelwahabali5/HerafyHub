@@ -1,6 +1,11 @@
-<app-header></app-header>
-<!-- <router-outlet></router-outlet> -->
-<!-- <br><br> -->
- <app-favorites></app-favorites>
-<app-footer></app-footer>
+@if (showHeaderAndFooter) {
+    <app-header></app-header>
+  }
 
+  <router-outlet></router-outlet>
+  <br><br>
+  @if (showHeaderAndFooter) {
+    <app-footer></app-footer>
+  }
+
+<!-- <app-login></app-login> -->

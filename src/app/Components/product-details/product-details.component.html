@@ -1,54 +1,52 @@
 <div class="container py-4">
   @if (product) {
-    <div class="row g-4">
-      <div class="row g-2 align-items-stretch">
-        <!-- Product Image -->
-        <div class="col-md-6 d-flex">
-          <div class="p-5 rounded flex-fill d-flex align-items-center ">
-            <div class="image-container">
+    <div class="row g-2 align-items-stretch">
+      <!-- Product Image -->
+      <div class="col-md-6">
+        <div class="p-2 rounded">
+          <div class="image-container">
             <img
               [src]="product.image"
               [alt]="product.title"
-              class="img-fluid rounded product-image"
+              class="product-image"
               loading="lazy"
             />
           </div>
         </div>
-        </div>
+      </div>
 
-        <!-- Product Info -->
-        <div class="col-md-6 d-flex justify-content-center">
-          <div class="p-5 flex-fill d-flex flex-column justify-content-between">
-            <div>
-              <small class="text-muted">{{ product.category }}</small>
-              <h2 class="product-title my-2">{{ product.title }}</h2>
-              <!-- Rating -->
-              <div class="mb-3 fs-5 text-warning">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-              </div>
-              <!-- Price -->
-              <div class="d-flex align-items-center gap-3 mb-3">
-                <span class="original-price fs-5">$27.23</span>
-                <span class="current-price fs-3">${{ product.currentprice }}</span>
-              </div>
-              <!-- Description -->
-              <p class="mb-4 text-dark fs-6 lh-base w-75">
-                {{ product.description }}
-              </p>
+      <!-- Product Info (Compact) -->
+      <div class="col-md-6 d-flex justify-content-center">
+        <div class="p-2 p-md-3 flex-fill d-flex flex-column justify-content-evenly">
+          <div>
+            <small class="text-muted">{{ product.category }}</small>
+            <h2 class="product-title my-2">{{ product.title }}</h2> 
+            <!-- Rating -->
+            <div class="mb-2 fs-5 text-warning">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-half"></i>
             </div>
-            <!-- Buttons -->
-            <div class="d-flex flex-column gap-4 w-100">
-              <button class="btn btn-checkout w-75 py-3 fw-medium rounded-4">
-                Checkout Now
-              </button>
-              <button class="btn btn-dark w-75 py-3 fw-medium rounded-4">
-                Add to Cart
-              </button>
+            <!-- Price -->
+            <div class="d-flex align-items-center gap-2 mb-4 mb-md-2"> 
+              <span class="original-price fs-5 fs-md-6">$27.23</span>
+              <span class="current-price fs-3 fs-md-4">${{ product.currentprice }}</span>
             </div>
+            <!-- Description -->
+            <p class="mb-3 text-dark fs-5 fs-md-7 lh-sm w-100"> 
+              {{ product.description }}
+            </p>
+          </div>
+          <!-- Buttons -->
+          <div class="d-flex flex-column gap-3 w-100"> 
+            <button class="btn btn-checkout w-100 py-3 fw-medium rounded-4">
+              Checkout Now
+            </button>
+            <button class="btn btn-dark w-100 py-3 fw-medium rounded-4">
+              Add to Cart
+            </button>
           </div>
         </div>
       </div>

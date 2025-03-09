@@ -1,64 +1,91 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
+import { User, RegisterResponse } from '../models/user.model';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { handleError } from '../Utils/handleError';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private readonly usersUrl = 'http://localhost:3000/users';
+  // Update this URL to point to your Node.js backend auth routes
+  private readonly apiUrl = 'http://localhost:5555/auth';
 
   constructor(private http: HttpClient) {}
 
-  // Get all users
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl);
+  // users.service.ts
+  addUser(user: User): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, user).pipe(
+      catchError(handleError)
+    );
   }
 
-  // Get a single user by ID
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.usersUrl}/${id}`);
+  
+  // Login user
+  loginUser(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        tap((response) => {
+          // Store the token in localStorage for authentication
+          if (response && response.token) {
+            localStorage.setItem('auth_token', response.token);
+          }
+        }),
+        catchError((error) => {
+          console.error('Login error:', error);
+          let errorMessage = 'Login failed';
+
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
 
-  // Add a new user
-  addUser(user: User): Observable<User> {
-    return this.getAllUsers().pipe(
-      switchMap((users) => {
-        // Find the maximum id in the existing users
-        const maxId = users.reduce((max, user) => {
-          const userId = Number(user.id);
-          return userId > max ? userId : max;
-        }, 0);
-
-        // Assign the new id (maxId + 1)
-        user.id = maxId + 1; // Assign as a number
-
-        // Check if the user already exists
-        if (users.find((u) => u.email === user.email)) {
-          alert('User already exists');
-          return throwError(() => new Error('User already exists'));
-        }
-
-        // Add the new user
-        return this.http.post<User>(this.usersUrl, user);
-      }),
+  // Get authenticated user profile (requires token)
+  getUserProfile(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/profile`).pipe(
       catchError((error) => {
-        console.error('Error adding user:', error);
-        alert('Error adding user: ' + error.message);
-        return throwError(() => error);
+        console.error('Error fetching user profile:', error);
+        return throwError(() => new Error('Failed to fetch user profile'));
+      })
+    );
+  }
+  // Update user profile (requires token)
+  updateUserProfile(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/profile`, user).pipe(
+      catchError((error) => {
+        console.error('Error updating user profile:', error);
+        return throwError(() => new Error('Failed to update user profile'));
+      })
+    );
+  }
+  // Delete user (requires token)
+  deleteUser(): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/profile`).pipe(
+      catchError((error) => {
+        console.error('Error deleting user:', error);
+        return throwError(() => new Error('Failed to delete user'));
       })
     );
   }
 
-  // Update an existing user
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.usersUrl}/${id}`, user);
+  // Logout user
+  logout(): void {
+    localStorage.removeItem('auth_token');
   }
 
-  // Delete a user
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.usersUrl}/${id}`);
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('auth_token');
+  }
+
+  // Get authentication token
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
   }
 }

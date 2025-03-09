@@ -17,6 +17,6 @@ export class CartService {
     getAllProducts() {
       return this.http.get(this.cart_URL);
     }
-    
-   
+
+
 }

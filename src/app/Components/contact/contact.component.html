@@ -21,37 +21,65 @@
         >
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="firstName" class="form-label text-teal-green">First Name</label>
+              <label for="firstName" class="form-label text-teal-green"
+                >First Name</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="firstName"
                 formControlName="firstName"
-                [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+                placeholder="First Name"
               />
-              <div
-                class="invalid-feedback"
-                *ngIf="submitted && f['firstName'].errors?.['required']"
-              >
-                First name is required
-              </div>
+              @if ((formControls.firstName.touched ||
+              formControls.firstName.dirty) && formControls.firstName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("firstName")
+              }}</small>
+              }
             </div>
-
+            <div class="col-md-6 mb-3 m-auto" id="contact">
+              <div class="form-label text-teal-green">
+                <i class="bi bi-envelope-fill mb-2"></i>
+                <label for="contact" class="px-2">Our Email </label>
+              </div>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Contact@gmail.com"
+                disabled
+              />
+            </div>
             <div class="col-md-6 mb-3">
-              <label for="lastName" class="form-label text-teal-green">Last Name</label>
+              <label for="lastName" class="form-label text-teal-green"
+                >Last Name</label
+              >
               <input
                 type="text"
                 class="form-control"
                 id="lastName"
                 formControlName="lastName"
-                [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+                placeholder="Last Name"
               />
-              <div
-                class="invalid-feedback"
-                *ngIf="submitted && f['lastName'].errors?.['required']"
-              >
-                Last name is required
+              @if ((formControls.lastName.touched ||
+              formControls.lastName.dirty) && formControls.lastName.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("lastName")
+              }}</small>
+              }
+            </div>
+            <div class="col-md-6 mb-3 m-auto" id="contact">
+              <div class="form-label text-teal-green">
+                <i class="bi bi-telephone-fill mb-2"></i>
+                <label for="contact" class="px-2">Call us </label>
               </div>
+
+              <input
+                type="text"
+                class="form-control text-secondary"
+                placeholder="01016047883"
+                disabled
+              />
             </div>
           </div>
 
@@ -62,58 +90,53 @@
               class="form-control"
               id="email"
               formControlName="email"
-              [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+              placeholder="example@gmail.com"
             />
-            <div
-              class="invalid-feedback"
-              *ngIf="submitted && f['email'].errors?.['required']"
-            >
-              Email is required
-            </div>
-            <div
-              class="invalid-feedback"
-              *ngIf="submitted && f['email'].errors?.['email']"
-            >
-              Please enter a valid email address
-            </div>
+            @if ((formControls.email.touched || formControls.email.dirty) &&
+            formControls.email.invalid) {
+            <small class="text-danger">{{ getErrorMessage("email") }}</small>
+            }
           </div>
 
           <div class="mb-3">
-            <label for="subject" class="form-label text-teal-green">Subject</label>
+            <label for="subject" class="form-label text-teal-green"
+              >Subject</label
+            >
             <input
               type="text"
               class="form-control"
               id="subject"
               formControlName="subject"
-              [ngClass]="{ 'is-invalid': submitted && f['subject'].errors }"
+              placeholder="subject"
             />
-            <div
-              class="invalid-feedback"
-              *ngIf="submitted && f['subject'].errors?.['required']"
-            >
-              Subject is required
-            </div>
+            @if ((formControls.subject.touched || formControls.subject.dirty) &&
+            formControls.subject.invalid) {
+            <small class="text-danger">{{ getErrorMessage("subject") }}</small>
+            }
           </div>
 
           <div class="mb-4">
-            <label for="message" class="form-label text-teal-green">Message</label>
+            <label for="message" class="form-label text-teal-green"
+              >Message</label
+            >
             <textarea
               class="form-control"
               id="message"
               rows="6"
               formControlName="message"
-              [ngClass]="{ 'is-invalid': submitted && f['message'].errors }"
+              placeholder="message"
             ></textarea>
-            <div
-              class="invalid-feedback"
-              *ngIf="submitted && f['message'].errors?.['required']"
-            >
-              Message is required
-            </div>
+            @if ((formControls.message.touched || formControls.message.dirty) &&
+            formControls.message.invalid) {
+            <small class="text-danger">{{ getErrorMessage("message") }}</small>
+            }
           </div>
 
           <div class="text-center">
-            <button type="submit" class="btn bg-teal-green text-white send-message-btn">
+            <button
+              type="submit"
+              class="btn bg-teal-green text-white send-message-btn"
+            >
               <!-- [disabled]="loading" -->
               <!-- <span
                 *ngIf="loading"
@@ -124,25 +147,6 @@
             </button>
           </div>
         </form>
-
-        <div class="contact-info mt-5">
-          <div class="row justify-content-center">
-            <div class="col-md-6 text-center mb-3">
-              <div class="contact-card">
-                <i class="bi bi-envelope-fill mb-2"></i>
-                <h3 class="teal-green">Our Email</h3>
-                <p>Contact&#64;gmail.com</p>
-              </div>
-            </div>
-            <div class="col-md-6 text-center mb-3">
-              <div class="contact-card">
-                <i class="bi bi-telephone-fill mb-2"></i>
-                <h3 class="teal-green">Call us</h3>
-                <p>01016047883</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
