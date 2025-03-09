@@ -91,6 +91,8 @@ export class ProductsListComponent {
         (response: any) => {
           this.searchedProducts = response.data;
           this.pageProducts = this.searchedProducts;
+
+          //note: remember to update the pagination when sorting or filtering results
           this.calculateSearchPagination();
         },
         (error) => {
@@ -111,9 +113,9 @@ export class ProductsListComponent {
 
 
     if (event.target.innerText === 'Low to High') {
-      this.pageProducts.sort((a, b) => a.currentprice - b.currentprice);
+      this.products.sort((a, b) => a.currentprice - b.currentprice);
     } else if (event.target.innerText === 'High to Low') {
-      this.pageProducts.sort((a, b) => b.currentprice - a.currentprice);
+      this.products.sort((a, b) => b.currentprice - a.currentprice);
     }
 
     console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
