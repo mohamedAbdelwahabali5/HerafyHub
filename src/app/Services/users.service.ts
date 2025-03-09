@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User, RegisterResponse } from '../models/user.model';
+import { User, RegisterResponse } from '../Models/user.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { handleError } from '../Utils/handleError';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,28 +12,35 @@ import { handleError } from '../Utils/handleError';
 export class UsersService {
   // Update this URL to point to your Node.js backend auth routes
   private readonly apiUrl = 'http://localhost:5555/auth';
+  private storageType: Storage | null = null;
+  constructor(private http: HttpClient, private router: Router) {
+    if (typeof window !== 'undefined') {
+      this.storageType = sessionStorage;
+    }
 
-  constructor(private http: HttpClient) {}
+  }
 
   // users.service.ts
   addUser(user: User): Observable<RegisterResponse> {
+
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, user).pipe(
       catchError(handleError)
     );
   }
 
-  
+
   // Login user
   loginUser(email: string, password: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap((response) => {
-          // Store the token in localStorage for authentication
+          // Store the token in sessionStorage for authentication
           if (response && response.token) {
-            localStorage.setItem('auth_token', response.token);
+            this.setToken(response.token, false);
           }
         }),
+
         catchError((error) => {
           console.error('Login error:', error);
           let errorMessage = 'Login failed';
@@ -74,18 +82,27 @@ export class UsersService {
     );
   }
 
-  // Logout user
-  logout(): void {
-    localStorage.removeItem('auth_token');
+  setToken(token: string, rememberMe: boolean = false) {
+    if (rememberMe) {
+      localStorage.setItem('authToken', token);
+      this.storageType = localStorage;
+    } else {
+      sessionStorage.setItem('authToken', token);
+      this.storageType = sessionStorage;
+    }
   }
-
-  // Check if user is logged in
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('auth_token');
-  }
-
-  // Get authentication token
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
   }
 }
+

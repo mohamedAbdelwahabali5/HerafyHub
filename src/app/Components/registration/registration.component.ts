@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { RegisterResponse, User } from '../../models/user.model';
+import { RegisterResponse, User } from '../../Models/user.model';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
@@ -22,7 +22,7 @@ import { finalize } from 'rxjs/operators';
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  constructor(private userService: UsersService, private router: Router) {}
+  constructor(private userService: UsersService, private router: Router) { }
 
   submitted = false;
   registrationError = '';
@@ -88,21 +88,21 @@ export class RegistrationComponent {
       this.markFormGroupTouched(this.registrationForm);
       return;
     }
-  
+
     this.loading = true;
     const formValues = this.registrationForm.value;
-        const newUser: User = {
-          firstName: formValues.firstName!,
-          lastName: formValues.lastName!,
-          email: formValues.email!,
-          phone: formValues.phone!,
-          address: formValues.address!,
-          password: formValues.password!,
-          city: formValues.city || '',
-          state: formValues.state || '',
-          zipCode: formValues.zipCode || ''
-        };
-  
+    const newUser: User = {
+      firstName: formValues.firstName!,
+      lastName: formValues.lastName!,
+      email: formValues.email!,
+      phone: formValues.phone!,
+      address: formValues.address!,
+      password: formValues.password!,
+      city: formValues.city || '',
+      state: formValues.state || '',
+      zipCode: formValues.zipCode || ''
+    };
+
     this.userService.addUser(newUser).pipe(
       finalize(() => this.loading = false)
     ).subscribe({
@@ -124,7 +124,7 @@ export class RegistrationComponent {
     this.successMessage = response.message;
     this.registrationForm.reset();
     this.submitted = false;
-    
+
     setTimeout(() => {
       this.router.navigate(['/login'], {
         state: { email, message: 'Registration successful! Please login to continue.' }
@@ -142,25 +142,25 @@ export class RegistrationComponent {
   }
   getErrorMessage(controlName: string): string {
     const control = this.registrationForm.get(controlName);
-  
+
     if (control?.errors?.['required']) {
       return `${this.getFieldLabel(controlName)} is required.`;
     }
-  
+
     if (control?.errors?.['minlength']) {
       const minLength = control.errors?.['minlength'].requiredLength;
       return `${this.getFieldLabel(
         controlName
       )} must be at least ${minLength} characters.`;
     }
-  
+
     if (control?.errors?.['maxlength']) {
       const maxLength = control.errors?.['maxlength'].requiredLength;
       return `${this.getFieldLabel(
         controlName
       )} must be less than ${maxLength} characters.`;
     }
-  
+
     if (control?.errors?.['pattern']) {
       switch (controlName) {
         case 'firstName':
@@ -178,14 +178,14 @@ export class RegistrationComponent {
           return 'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.';
       }
     }
-  
+
     if (
       controlName === 'confirmPassword' &&
       this.registrationForm.errors?.['passwordMismatch']
     ) {
       return 'Passwords do not match.';
     }
-  
+
     return '';
   }
   getFieldLabel(controlName: string): string {
@@ -201,7 +201,7 @@ export class RegistrationComponent {
       password: 'Password',
       confirmPassword: 'Confirm Password',
     };
-  
+
     return labels[controlName] || controlName;
   }
 }
