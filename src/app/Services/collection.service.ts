@@ -9,10 +9,15 @@ import {Product,ProductApiResponse} from '../Utils/interface'
 })
 export class ProductService {
   // private readonly Collection_URL = 'https://fakestoreapi.com/products';
-  private readonly products_URL = 'http://localhost:5555/product';
-  private readonly all_Products_URL = 'http://localhost:5555/product/all';
-  private readonly searchProduct_URL = 'http://localhost:5555/product/search';
-  private readonly Categories_URL = 'http://localhost:5555/category';
+  // private readonly products_URL = 'http://localhost:5555/product';
+  // private readonly all_Products_URL = 'http://localhost:5555/product/all';
+  // private readonly searchProduct_URL = 'http://localhost:5555/product/search';
+  // private readonly Categories_URL = 'http://localhost:5555/category';
+
+  private readonly products_URL = 'https://herafy-hub-api.vercel.app/product';
+  private readonly all_Products_URL = 'https://herafy-hub-api.vercel.app/product/all';
+  private readonly searchProduct_URL = 'https://herafy-hub-api.vercel.app/search';
+  private readonly Categories_URL = 'https://herafy-hub-api.vercel.app/category';
   
   constructor(private http: HttpClient) {}
   

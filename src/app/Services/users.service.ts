@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class UsersService {
   // Update this URL to point to your Node.js backend auth routes
-  private readonly apiUrl = 'http://localhost:5555/auth';
+  private readonly apiUrl = 'https://herafy-hub-api.vercel.app/auth';
   private storageType: Storage | null = null;
   constructor(private http: HttpClient, private router: Router) {
     if (typeof window !== 'undefined') {
