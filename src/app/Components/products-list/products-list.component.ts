@@ -3,7 +3,7 @@ import { ProductService } from '../../Services/collection.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+ 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
@@ -21,7 +21,7 @@ export class ProductsListComponent {
   pageProducts: any[] = [];
   searchedProducts: any[] = [];
   searchTerm: string = '';
-
+ 
   // Pagination Properties
   currentPage: number = 1;
   totalPages: number = 0;
@@ -82,16 +82,16 @@ export class ProductsListComponent {
       });
     }
   }
-
+ 
   searchProduct() {
     const searchText = this.searchTerm.trim();
-
+ 
     if (searchText) {
       this.productService.searchByTitleInCategory(searchText,this.categoryId).subscribe(
         (response: any) => {
           this.searchedProducts = response.data;
           this.pageProducts = this.searchedProducts;
-
+ 
           //note: remember to update the pagination when sorting or filtering results
           this.calculateSearchPagination();
         },
@@ -105,35 +105,35 @@ export class ProductsListComponent {
       this.loadProducts();
     }
   }
-
+ 
   sort(event: any) {
     console.log('event.target', event.target.innerText);
     console.log('event', event);
     console.log('Sorted prices:', this.pageProducts.map(product => product.currentprice));
-
-
+ 
+ 
     if (event.target.innerText === 'Low to High') {
       this.products.sort((a, b) => a.currentprice - b.currentprice);
     } else if (event.target.innerText === 'High to Low') {
       this.products.sort((a, b) => b.currentprice - a.currentprice);
     }
-
+ 
     console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
-
+ 
   }
-
+ 
   calculateSearchPagination() {
     this.totalProducts = this.searchedProducts.length;
     this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
     this.currentPage = 1;
   }
-
+ 
   changePage(page: number) {
     this.currentPage = page;
     this.loadProducts();
     this.updatePageProducts();
   }
-
+ 
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
@@ -141,7 +141,7 @@ export class ProductsListComponent {
       this.updatePageProducts();
     }
   }
-
+ 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
@@ -149,18 +149,18 @@ export class ProductsListComponent {
       this.updatePageProducts();
     }
   }
-
+ 
   updatePageProducts() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
-
+ 
     const sourceArray = this.searchedProducts.length > 0
       ? this.searchedProducts
       : this.products;
-
+ 
     this.pageProducts = sourceArray.slice(start, end);
   }
-
+ 
   get pageNumbers(): number[] {
     return Array.from(
       { length: this.totalPages },
@@ -168,3 +168,5 @@ export class ProductsListComponent {
     );
   }
 }
+ 
+ 

@@ -1,21 +1,28 @@
 <div class="container-fluid mt-2">
-
   <div class="row justify-content-between">
     <div class="col-md-12 col-sm-12">
       <h3 class="mb-3 mt-3">Favorite Items</h3>
     </div>
   </div>
-
-  <!-- favorite-->
-  <div class="row justify-content-between mt-2">
-    <div class="col-md-12 col-sm-12 left p-4">
-      @for(Favorite of Favorites;track Favorite.id){
-        <app-favorites-item [Favorite]="Favorite"></app-favorites-item>
-        }
-        
-        
+  <div *ngIf="favorites.length > 0; else noFavorites">
+    <div class="row justify-content-between mt-2">
+      <div class="col-md-12 col-sm-12 left p-4 justify-content-center">
+        <button (click)="clearFavorites()" class="clear">Clear All</button>
+ 
+        <!-- Loop through favorite items -->
+        <app-favorite-item
+          *ngFor="let favorite of favorites"
+          [product]="favorite"
+          (remove)="removeFromFavorite($event)">
+        </app-favorite-item>
+      </div>
     </div>
-
   </div>
-  
 </div>
+ 
+<!-- No favorites template -->
+<ng-template #noFavorites>
+  <p>No favorite products found.</p>
+</ng-template>
+ 
+ 
