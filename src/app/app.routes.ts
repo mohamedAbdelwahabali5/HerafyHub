@@ -8,12 +8,14 @@ import { ContactComponent } from './Components/contact/contact.component';
 import { RegistrationComponent } from './Components/registration/registration.component';
 import { CartComponent } from './Components/cart/cart.component';
 import { ProductsListComponent } from './Components/products-list/products-list.component';
-import { FavoritesComponent } from './Components/favorites/favorites.component';
+//import { FavoritesComponent } from './Components/favorites/favorites.component';
 import { ProductsComponent } from './Components/products/products.component';
 import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
 import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { AuthGuardService } from './Services/auth.guard.service';
+import { FavoriteItemComponent } from './Components/favorites-item/favorites-item.component';
+import { FavoriteComponent } from './Components/favorites/favorites.component';
 
 
 export const routes: Routes = [
@@ -29,7 +31,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'favorite', component: FavoritesComponent },
+  { path: 'favorite', component: FavoriteComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
 

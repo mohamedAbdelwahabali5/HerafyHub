@@ -1,17 +1,16 @@
-<div class="row gap-2 p-2 m-3">
-  <div class="img-container col-md-2 col-sm-12" [ngStyle]="{'background-image': 'url(' + cart.productImage + ')'}">
+<div class="row p-2 m-3">
+  <div class="img-container col-md-2 col-sm-12" [ngStyle]="{'background-image': 'url(' + cart.image + ')'}">
   </div>
   <div class="card-body col-md-2 col-sm-12">
-    <h5 class="title">{{cart.productName}}</h5>
-    <p class="card-text mt-2">{{cart.productCatigory}}</p>
+    <h5 class="title">{{cart.Name}}</h5>
   </div>
   <div class="card-body col-md-2  col-sm-12">
     <p class="card-title">Price</p>
     <p class="card-text mt-5">${{cart.price}}</p>
   </div>
-  <div class="card-body col-md-2 col-sm-12">
+  <div class="card-body col-md-2 col-sm-12 ">
     <p class="card-title">Quantity</p>
-    <div class="d-flex mt-5 quantity justify-content-center">
+    <div class="d-flex quantity mt-5">
       <button (click)="decrease()" class="icon me-2">
         <i class="fa-solid fa-minus d-flex align-items-center justify-content-center"></i>
       </button>
@@ -19,11 +18,18 @@
       <button (click)="increase()" class="icon ms-2">
         <i class="fa-solid  fa-plus d-flex align-items-center justify-content-center"></i>
       </button>
-
     </div>
   </div>
   <div class="card-body col-md-2  col-sm-12">
     <p class="card-title">Total Price</p>
-    <p class="card-text mt-5 ">{{totalPrice}}</p>
+    <p class="card-text mt-5 ">  {{ totalPrice | currency }}</p>
+  </div>
+  <div class="card-body col-md-2  col-sm-12">
+    <p class="card-title">Action</p>
+    <button (click)="removeItem()" class="cursor-pointer card-text remove border-0">
+      <i class=" mt-5 mb-3 fa-solid fa-trash fs-5 ms-3" ></i>
+    </button>
   </div>
 </div>
+ 
+ 
