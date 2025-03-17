@@ -17,11 +17,22 @@
   color: black;
   font-weight:400;
 }
+ 
 .title{
   color: var(--teal-green);
 }
 .card-text{
   color: var(--dark-gray);
+}
+.remove {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: transparent;
+ 
+}
+.remove:hover {
+  color:rgb(187, 2, 2);
+  transform: scale(1.1);
 }
 .icon{
   font-size: 14px;
@@ -31,8 +42,8 @@
   border-radius: 10px;
   background-color: white;
 }
-
-
+ 
+ 
 @media (max-width: 768px){
   .row{
 margin: 0 !important;
@@ -59,12 +70,9 @@ margin-bottom: 15px !important;
   }
   .card-text{
     color: var(--dark-gray);
-    margin: 10px !important;
+    margin: 5px !important;
   }
-  .quantity{
-    margin: 10px !important;
-    margin: auto;
-  }
+ 
   .icon{
     font-size: 14px;
     padding: 7px;
@@ -73,14 +81,20 @@ margin-bottom: 15px !important;
     border-radius: 10px;
     background-color: white;
   }
+  .quantity{
+    justify-content: center;
+    margin-top: 10px !important;
+  }
  }
-
-
-
-
-
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
