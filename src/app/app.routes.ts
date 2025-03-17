@@ -31,7 +31,7 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoritesComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 
   // error page
   { path: 'error', component: ErrorComponent },

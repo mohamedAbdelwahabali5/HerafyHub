@@ -41,7 +41,7 @@ export class AppComponent {
   }
   // Helper function to check if the current route is an auth route
   private isAuthRoute(url: string): boolean {
-    const authRoutes = ['/login', '/register', '/reset-password', '/forgot-password', '/error'];
+    const authRoutes = ['/login', '/register', '/reset-password/', '/forgot-password', '/error'];
     return authRoutes.includes(url);
 
   }
