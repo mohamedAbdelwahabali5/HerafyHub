@@ -28,12 +28,10 @@ export const routes: Routes = [
   { path: 'contact-us', component: ContactComponent },
   { path: 'product-details/:id', component: ProductDetailsComponent, canActivate: [AuthGuardService] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuardService] },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'reset-password/:token', component: ResetPasswordComponent },
 
   // error page
   { path: 'error', component: ErrorComponent },
