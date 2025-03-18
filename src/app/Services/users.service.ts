@@ -53,6 +53,17 @@ export class UsersService {
         })
       );
   }
+  // reset password
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  // Verify email token for password reset
+  resetPassword(token: string, password: string, confirmPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password/${token}`, { password, confirmPassword });
+  }
+
+
 
   // Get authenticated user profile (requires token)
   getUserProfile(): Observable<User> {
@@ -92,7 +103,10 @@ export class UsersService {
     }
   }
   getToken(): string | null {
-    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (typeof window !== 'undefined' && localStorage) {
+      return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    }
+    return null;
   }
 
   isLoggedIn(): boolean {
