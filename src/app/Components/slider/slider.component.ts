@@ -42,10 +42,13 @@ export class SliderComponent implements OnInit {
   }
 
   get visibleCategories() {
+    if (!this.categories || this.categories.length === 0) {
+      return [];
+    }
+
     const result = [];
-    // Always get 3 items, CSS will handle visibility
     const itemsToShow = 3;
-    for (let i = 0; i < itemsToShow; i++) {
+    for (let i = 0; i < itemsToShow && i < this.categories.length; i++) {
       const index = (this.currentIndex + i) % this.categories.length;
       result.push(this.categories[index]);
     }
