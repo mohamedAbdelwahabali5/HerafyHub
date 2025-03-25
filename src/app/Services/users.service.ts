@@ -1,64 +1,125 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../Models/user.model';
+import { User, RegisterResponse } from '../Models/user.model';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { handleError } from '../Utils/handleError';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private readonly usersUrl = 'http://localhost:3000/users';
+  // Update this URL to point to your Node.js backend auth routes
+  private readonly apiUrl = 'https://herafy-hub-api.vercel.app/auth';
+  // private readonly apiUrl = 'http://localhost:5555/auth/';
+  private storageType: Storage | null = null;
+  constructor(private http: HttpClient, private router: Router) {
+    if (typeof window !== 'undefined') {
+      this.storageType = sessionStorage;
+    }
 
-  constructor(private http: HttpClient) {}
-
-  // Get all users
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersUrl);
   }
 
-  // Get a single user by ID
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.usersUrl}/${id}`);
+  
+
+  // users.service.ts
+  addUser(user: User): Observable<RegisterResponse> {
+
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, user).pipe(
+      catchError(handleError)
+    );
   }
 
-  // Add a new user
-  addUser(user: User): Observable<User> {
-    return this.getAllUsers().pipe(
-      switchMap((users) => {
-        // Find the maximum id in the existing users
-        const maxId = users.reduce((max, user) => {
-          const userId = Number(user.id);
-          return userId > max ? userId : max;
-        }, 0);
 
-        // Assign the new id (maxId + 1)
-        user.id = maxId + 1; // Assign as a number
+  // Login user
+  loginUser(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(`${this.apiUrl}/login`, { email, password })
+      .pipe(
+        tap((response) => {
+          // Store the token in sessionStorage for authentication
+          if (response && response.token) {
+            this.setToken(response.token, false);
+          }
+        }),
 
-        // Check if the user already exists
-        if (users.find((u) => u.email === user.email)) {
-          alert('User already exists');
-          return throwError(() => new Error('User already exists'));
-        }
+        catchError((error) => {
+          console.error('Login error:', error);
+          let errorMessage = 'Login failed';
 
-        // Add the new user
-        return this.http.post<User>(this.usersUrl, user);
-      }),
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+
+          return throwError(() => new Error(errorMessage));
+        })
+      );
+  }
+  // reset password
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  // Verify email token for password reset
+  resetPassword(token: string, password: string, confirmPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/reset-password/${token}`, { password, confirmPassword });
+  }
+
+
+
+  // Get authenticated user profile (requires token)
+  getUserProfile(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/profile`).pipe(
       catchError((error) => {
-        console.error('Error adding user:', error);
-        alert('Error adding user: ' + error.message);
-        return throwError(() => error);
+        console.error('Error fetching user profile:', error);
+        return throwError(() => new Error('Failed to fetch user profile'));
+      })
+    );
+  }
+  // Update user profile (requires token)
+  updateUserProfile(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/profile`, user).pipe(
+      catchError((error) => {
+        console.error('Error updating user profile:', error);
+        return throwError(() => new Error('Failed to update user profile'));
+      })
+    );
+  }
+  // Delete user (requires token)
+  deleteUser(): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/profile`).pipe(
+      catchError((error) => {
+        console.error('Error deleting user:', error);
+        return throwError(() => new Error('Failed to delete user'));
       })
     );
   }
 
-  // Update an existing user
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.usersUrl}/${id}`, user);
+  setToken(token: string, rememberMe: boolean = false) {
+    if (rememberMe) {
+      localStorage.setItem('authToken', token);
+      this.storageType = localStorage;
+    } else {
+      sessionStorage.setItem('authToken', token);
+      this.storageType = sessionStorage;
+    }
+  }
+  getToken(): string | null {
+    if (typeof window !== 'undefined' && localStorage) {
+      return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    }
+    return null;
   }
 
-  // Delete a user
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.usersUrl}/${id}`);
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  logout() {
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    this.router.navigate(['/login']);
   }
 }
+

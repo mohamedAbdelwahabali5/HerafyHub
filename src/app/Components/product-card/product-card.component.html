@@ -12,6 +12,7 @@
         <button class="wishlist-button" (click)="toggleHeart($event)">
           <svg
             class="heart-icon"
+            [ngClass]="{'filled':isProductInFavorites()}"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -34,8 +35,11 @@
       type="submit"
       (click)="addToCart()"
       class="btn w-100 bg-teal-green text-white px-2"
+      [disabled]="isProductInCart(product._id)"
     >
-      ADD TO CART
+      {{ isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart' }}
     </button>
   </div>
 </div>
+ 
+ 

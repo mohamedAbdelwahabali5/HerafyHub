@@ -1,16 +1,17 @@
 export interface User {
-  id?: number;
-  name: {
-    fName: string;
-    lName: string;
-  };
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
-  address: {
-    city: string;
-    street: string;
-    state: string;
-    zipCode: string;
-  };
+  address: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   password: string;
+  role?: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+  user: Omit<User, 'password'>;
 }

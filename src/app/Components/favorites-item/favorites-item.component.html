@@ -1,0 +1,27 @@
+<div class="row gap-2 p-2 m-3">
+  <div class="img-container col-md-2 col-sm-12 " [ngStyle]="{'background-image': 'url(' + product.image + ')'}" > <!-- [ngStyle]="{'background-image': 'url(' + cart.productImage + ')'}" -->
+  </div>
+  <div class="card-body col-md-2 col-sm-12">
+    <p class="card-text mt-5 me-2">{{product.title}}</p>
+  </div>
+  <div class="card-body col-md-2  col-sm-12">
+    <p class="card-title me-5 titles-price">Price</p>
+    <p class="card-text mt-5 ms-2">{{product.currentprice}}$</p>
+  </div>
+  <div class="card-body col-md-2 col-sm-12">
+    <p class="card-title titles-category ">Catigory</p>
+    <div class="d-flex mt-5 category-name ms-2 ">
+    <p>{{category.title}}</p>
+  </div>
+  </div>
+  <div class="card-body col-md-2  col-sm-12">
+    <p class="card-title mb-5 titles-action">Action</p>
+    <button (click)="addToCart()" class="cart-icon me-4 border-0" [ngClass]="{'in-cart': isProductInCart()}">
+      <i class="fa-solid fa-cart-shopping"></i>
+    </button>
+    <button (click)="removeFromFavorite()" class="border-0 remove">
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+</div>
+

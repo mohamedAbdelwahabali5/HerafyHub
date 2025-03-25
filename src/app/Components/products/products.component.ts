@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CategoryInfoComponent } from "../category-info/category-info.component";
 import { ProductsListComponent } from "../products-list/products-list.component";
+import { ProductService } from '../../Services/collection.service';
 
 @Component({
   selector: 'app-products',
@@ -9,12 +11,38 @@ import { ProductsListComponent } from "../products-list/products-list.component"
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })
-export class ProductsComponent {
-  categoryId: string = ''; // Changed from selectedCategoryId to categoryId
+export class ProductsComponent implements OnInit {
+  categoryId: string = '';
+  selectedCategory: any = null;
+
+  constructor(private router: Router, private productService: ProductService) {
+    // Get state during navigation
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { categoryId: string } | undefined;
+    if (state?.categoryId) {
+      this.categoryId = state.categoryId;
+      this.loadCategory(this.categoryId);
+    }
+  }
+
+  ngOnInit() {
+    // Handle case when page is refreshed or accessed directly
+    if (this.categoryId && !this.selectedCategory) {
+      this.loadCategory(this.categoryId);
+    }
+  }
 
   onCategorySelected(categoryId: string) {
     this.categoryId = categoryId;
-    console.log('Category ID in ProductsComponent:', this.categoryId);
+    this.loadCategory(categoryId);
+  }
 
+  private loadCategory(categoryId: string) {
+    this.productService.getCategoryById(categoryId).subscribe({
+      next: (category: any) => {
+        this.selectedCategory = category;
+      },
+      error: (error) => console.error('Error fetching category:', error)
+    });
   }
 }

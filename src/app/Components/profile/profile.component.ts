@@ -100,7 +100,7 @@ export class ProfileComponent implements OnInit {
     return labels[controlName] || controlName;
   }
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService) { }
 
   ngOnInit() {
     this.loadUserProfile();
@@ -124,7 +124,7 @@ export class ProfileComponent implements OnInit {
   // }
   loadUserProfile() {
     // Simulate loading user data
-    this.usersService.getUserById(1).subscribe((user) => {
+    this.usersService.getUserProfile().subscribe((user) => {
       this.userData = user;
       this.profileForm.patchValue(user);
     });
@@ -167,22 +167,18 @@ export class ProfileComponent implements OnInit {
     if (this.profileForm.valid && this.userData) {
       const updatedUser: User = {
         ...this.userData, // Spread existing user data
-        name: {
-          fName: this.profileForm.value.firstName!, // Use form value for first name
-          lName: this.profileForm.value.lastName!, // Use form value for last name
-        },
-        address: {
-          street: this.profileForm.value.street!,
-          city: this.profileForm.value.city!,
-          state: this.profileForm.value.state!,
-          zipCode: this.profileForm.value.zipCode!,
-        },
+        firstName: this.profileForm.value.firstName!, // Use form value for first name
+        lastName: this.profileForm.value.lastName!, // Use form value for last name
+        address: this.profileForm.value.street!,
+        city: this.profileForm.value.city!,
+        state: this.profileForm.value.state!,
+        zipCode: this.profileForm.value.zipCode!,
         phone: this.profileForm.value.phone!,
         email: this.profileForm.value.email!,
         password: this.profileForm.value.password!,
       };
 
-      this.usersService.updateUser(1, updatedUser).subscribe({
+      this.usersService.updateUserProfile(updatedUser).subscribe({
         next: () => {
           alert('Profile updated successfully!');
           this.isEditMode = false;
