@@ -41,7 +41,7 @@ export class LoginComponent {
 
       this.userServ.loginUser(email, password).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
+          // console.log('Login successful', response);
           console.log(response.success);
           if (response.success) {
             this.userServ.setToken(response.token, rememberMe);
