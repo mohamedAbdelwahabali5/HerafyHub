@@ -1,0 +1,22 @@
+.checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.checkout-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.checkout-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+@media (max-width: 900px) {
+  .checkout-column {
+    flex-basis: 100%;
+  }
+}
