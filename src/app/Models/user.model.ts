@@ -9,6 +9,8 @@ export interface User {
   zipCode?: string;
   password: string;
   role?: string;
+  profileImage?: string;
+
 }
 
 export interface RegisterResponse {
