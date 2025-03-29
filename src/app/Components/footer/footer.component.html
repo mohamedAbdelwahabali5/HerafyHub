@@ -1,85 +1,184 @@
-<footer class="bd-footer py-4 py-md-5 mt-5">
-  <div class="container py-4 py-md-5 px-4 px-md-3 text-body-secondary">
-    <div class="row">
-      <div class="col-lg-6 mb-3">
-        <a
-          class="d-inline-flex align-items-center mb-2 text-body-emphasis text-decoration-none"
-          href="/"
-          aria-label="Bootstrap"
-        >
-          <img
-            class
-            src="/images/logo.PNG"
-            alt="Logo"
-            class="img-fluid me-5"
-            
-          />
-        </a>
-        <ul class="list-unstyled small">
-          <li class="desc mb-1 mt-2">Handmade with Love,</li>
-          <li class="desc">Crafted for You</li>
-        </ul>
+<footer class="bd-footer py-5 bg-light border-top">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Logo Section -->
+      <div class="col-12 col-lg-4 mb-lg-0">
+        <div class="d-flex flex-column align-items-center align-items-lg-start">
+          <a class="d-inline-block mb-4" href="/">
+            <img
+              src="/images/logo.PNG"
+              alt="Logo"
+              class="img-fluid"
+              style="width: 180px"
+            />
+          </a>
+          <p class="text-center text-lg-start text-secondary mb-0 px-3 px-lg-0">
+            Handcrafted with Love, Created for You.<br />
+            Bringing you unique handmade products since 2023.
+          </p>
+        </div>
       </div>
 
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Products</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2"><a href="">decorations</a></li>
-          <li class="mb-2"><a href="">chairs</a></li>
-          <li class="mb-2"><a href="">rings</a></li>
-          <li class="mb-2"><a href="">necklaces</a></li>
-          <li class="mb-2"><a href="">pullovers</a></li>
-          <li class="mb-2"><a href="">paintings</a></li>
-        </ul>
-      </div>
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Catigories</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Fashion</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Accessories</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Furniture</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Homeware</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener"> paintings</a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-6 col-lg-2 mb-3">
-        <h5>Links</h5>
-        <ul class="list-unstyled">
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Products</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">About Us</a>
-          </li>
-          <li class="mb-2">
-            <a href="" target="_blank" rel="noopener">Contact Us</a>
-          </li>
-        </ul>
+      <!-- Products & Links Row -->
+      <div class="col-12 col-lg-8">
+        <div class="row g-5">
+          <!-- Products Section -->
+          <div class="col-12 col-md-6 col-lg-6">
+            <div class="h-100">
+              <h5
+                class="text-center mb-4 fw-bold text-teal position-relative section-title"
+              >
+                <span class="bg-light px-3">Our Products</span>
+              </h5>
+              <div class="row" *ngIf="isLoggedIn">
+                <div class="col-6">
+                  <ul class="list-unstyled text-center text-md-start">
+                    <li
+                      *ngFor="let product of products.slice(0, 5)"
+                      class="mb-3"
+                    >
+                      <a
+                        [routerLink]="['/product-details', product._id]"
+                        class="text-secondary hover-teal text-decoration-none"
+                      >
+                        {{
+                          product.title.length > 15
+                            ? (product.title | slice : 0 : 15) + "..."
+                            : product.title
+                        }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-6">
+                  <ul class="list-unstyled text-center text-md-start">
+                    <li
+                      *ngFor="let product of products.slice(5, 10)"
+                      class="mb-3"
+                    >
+                      <a
+                        [routerLink]="['/product-details', product._id]"
+                        class="text-secondary hover-teal text-decoration-none"
+                      >
+                        {{
+                          product.title.length > 15
+                            ? (product.title | slice : 0 : 15) + "..."
+                            : product.title
+                        }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Combined Categories & Links -->
+          <div class="col-12 col-md-6 col-lg-6">
+            <div class="row h-100 g-4">
+              <!-- Categories -->
+              <div class="col-12 col-md-6">
+                <h5
+                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+                >
+                  <span class="bg-light px-3">Categories</span>
+                </h5>
+                <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
+                  <li *ngFor="let category of categories" class="mb-3">
+                    <a
+                      [routerLink]="['/products', category._id]"
+                      class="text-secondary hover-teal text-decoration-none"
+                    >
+                      {{ category.title }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Quick Links -->
+              <div class="col-12 col-md-6">
+                <h5
+                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+                >
+                  <span class="bg-light px-3">Quick Links</span>
+                </h5>
+                <div class="row justify-content-center">
+                  <div class="col-auto">
+                    <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
+                      <li class="mb-3">
+                        <a
+                          routerLink="/profile"
+                          class="text-secondary hover-teal text-decoration-none"
+                          >Profile</a
+                        >
+                      </li>
+                      <li class="mb-3">
+                        <a
+                          routerLink="/cart"
+                          class="text-secondary hover-teal text-decoration-none"
+                          >Cart</a
+                        >
+                      </li>
+                      <li class="mb-3">
+                        <a
+                          routerLink="/favorite"
+                          class="text-secondary hover-teal text-decoration-none"
+                          >Favorites</a
+                        >
+                      </li>
+                      <li class="mb-3">
+                        <a
+                          routerLink="/about-us"
+                          class="text-secondary hover-teal text-decoration-none"
+                          >About Us</a
+                        >
+                      </li>
+                      <li class="mb-3">
+                        <a
+                          routerLink="/contact-us"
+                          class="text-secondary hover-teal text-decoration-none"
+                          >Contact</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="mb-4 border-bottom small-border"></div>
-    <div class="m-0 p-0 row">
-      <div class="col-6 col-lg-6 text-start">
-        <p>
-          <i class="fa-regular fa-copyright"></i> 2025 Herafy. All rights
-          reserved
+
+    <!-- Divider -->
+    <hr class="my-5 opacity-25" />
+
+    <!-- Copyright & Social -->
+    <div class="row align-items-center mt-4">
+      <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
+        <p class="mb-0 text-muted small">
+          <i class="fa-regular fa-copyright me-1"></i>2025 Herafy -
+          <span class="d-block d-md-inline mt-1 mt-md-0"
+            >All rights reserved</span
+          >
         </p>
       </div>
-      <div class="col-6 col-lg-6 text-end ps-5">
-        <i class="fa-brands fa-facebook me-2"></i>
-        <i class="fa-brands fa-instagram me-2"></i>
-        <i class="fa-brands fa-x-twitter me-2"></i>
-        <i class="fa-brands fa-linkedin"></i>
+
+      <div class="col-12 col-md-6 text-center text-md-end">
+        <div class="social-links d-inline-flex gap-3">
+          <a href="#" class="text-teal hover-dark fs-5">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="text-teal hover-dark fs-5">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="#" class="text-teal hover-dark fs-5">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="#" class="text-teal hover-dark fs-5">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+        </div>
       </div>
     </div>
   </div>

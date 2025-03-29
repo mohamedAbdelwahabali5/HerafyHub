@@ -24,15 +24,12 @@ export class UsersService {
     }
   }
 
-
-
   // users.service.ts
   addUser(user: User): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.apiUrlAuth}/register`, user).pipe(
-      catchError(handleError)
-    );
+    return this.http
+      .post<RegisterResponse>(`${this.apiUrlAuth}/register`, user)
+      .pipe(catchError(handleError));
   }
-
 
   // Login user
   loginUser(email: string, password: string): Observable<any> {
@@ -64,11 +61,16 @@ export class UsersService {
   }
 
   // Verify email token for password reset
-  resetPassword(token: string, password: string, confirmPassword: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrlAuth}/reset-password/${token}`, { password, confirmPassword });
+  resetPassword(
+    token: string,
+    password: string,
+    confirmPassword: string
+  ): Observable<any> {
+    return this.http.post<any>(`${this.apiUrlAuth}/reset-password/${token}`, {
+      password,
+      confirmPassword,
+    });
   }
-
-
 
   // Get authenticated user profile (requires token)
   getUserProfile(): Observable<User> {
@@ -109,7 +111,9 @@ export class UsersService {
   }
   getToken(): string | null {
     if (typeof window !== 'undefined' && localStorage) {
-      return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      return (
+        localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+      );
     }
     return null;
   }
@@ -123,5 +127,16 @@ export class UsersService {
     sessionStorage.removeItem('authToken');
     this.router.navigate(['/login']);
   }
-}
 
+  getCategories(): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}/category`)
+      .pipe(catchError(handleError));
+  }
+
+  getProducts(): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}/product`)
+      .pipe(catchError(handleError));
+  }
+}
