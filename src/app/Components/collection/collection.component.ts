@@ -20,7 +20,7 @@ export class CollectionComponent {
     this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (response: any) => {
-        console.log('Raw product data:', response);
+        // console.log('Raw product data:', response);
 
         // Access the products array from the response.products
         this.products = response.products?.slice(0, 9).map((product: any) => ({
@@ -30,7 +30,7 @@ export class CollectionComponent {
               ? product.title.substring(0, 30) + '...'
               : product.title,
         })) || [];
-        console.log('Processed products:', this.products);
+        // console.log('Processed products:', this.products);
         this.loading = false;
       },
       error: (err) => {

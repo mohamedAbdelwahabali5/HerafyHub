@@ -2,14 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
+import { environment } from '../../environments/environment.prod';
  
 @Injectable({
   providedIn: 'root'
 })
 export class FavoriteService {
  
-  private readonly favorite_URL = 'http://localhost:5555/favorite/';
-  private readonly addToFavorite_URL = 'http://localhost:5555/favorite/add';
+  // private readonly favorite_URL = 'http://localhost:5555/favorite/';
+  // private readonly addToFavorite_URL = 'http://localhost:5555/favorite/add';
+  private readonly apiUrl = environment.apiUrl;
+  private readonly addToFavorite_URL = `${this.apiUrl}/favorite/add`;
+  private readonly favorite_URL = `${this.apiUrl}/favorite`;
+
  
   constructor(private http: HttpClient, private userService: UsersService) {}
  
