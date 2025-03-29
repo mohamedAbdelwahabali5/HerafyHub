@@ -1,0 +1,59 @@
+.payment-section {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+h2{
+  font-weight: bolder;
+}
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.card-details .form-group {
+  margin-bottom: 15px;
+}
+
+.card-details input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.card-info-row {
+  display: flex;
+  gap: 15px;
+}
+
+.card-info-row .form-group {
+  flex: 1;
+}
+
+.error {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.review-order-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.card-icons img {
+  width: 40px;
+  height: 10px;
+}
