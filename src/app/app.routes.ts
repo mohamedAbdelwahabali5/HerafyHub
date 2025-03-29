@@ -17,7 +17,6 @@ import { AuthGuardService } from './Services/auth.guard.service';
 import { FavoriteItemComponent } from './Components/favorites-item/favorites-item.component';
 import { FavoriteComponent } from './Components/favorites/favorites.component';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -26,8 +25,22 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactComponent },
-  { path: 'product-details/:id', component: ProductDetailsComponent, canActivate: [AuthGuardService] },
-  { path: 'products', component: ProductsComponent, canActivate: [AuthGuardService] },
+  {
+    path: 'product-details/:id',
+    component: ProductDetailsComponent,
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'products',
+    component: ProductsComponent,
+    canActivate: [AuthGuardService],
+  },
+
+  {
+    path: 'products/:categoryId',
+    component: ProductsComponent,
+    canActivate: [AuthGuardService],
+  },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -35,6 +48,5 @@ export const routes: Routes = [
 
   // error page
   { path: 'error', component: ErrorComponent },
-  { path: '**', redirectTo: 'error' }
+  { path: '**', redirectTo: 'error' },
 ];
-
