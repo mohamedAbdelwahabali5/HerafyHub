@@ -10,11 +10,16 @@ import { User } from '../../Models/user.model';
 import { UsersService } from '../../Services/users.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
@@ -52,10 +57,15 @@ export class ProfileComponent implements OnInit {
       Validators.required,
       Validators.email,
     ]),
-    // Removed password field
+
   });
 
-  constructor(private usersService: UsersService, private router:Router) {}
+
+  constructor(
+    private usersService: UsersService, 
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     if (!this.usersService.isLoggedIn()) {
@@ -134,28 +144,16 @@ export class ProfileComponent implements OnInit {
     this.submitted = true;
     this.errorMessage = null;
   
-    // Log form validity and errors
-    console.log('Form valid:', this.profileForm.valid);
     if (!this.profileForm.valid) {
-      console.log('Form errors:', this.profileForm.errors);
-      Object.keys(this.profileForm.controls).forEach(key => {
-        const control = this.profileForm.get(key);
-        if (control?.invalid) {
-          console.log(`Field ${key} has errors:`, control.errors);
-        }
-      });
       return;
     }
   
     if (!this.userData) {
-      console.error('No user data available');
       this.errorMessage = 'No user data available';
       return;
     }
   
     const formValue = this.profileForm.getRawValue();
-    console.log('Form raw value:', formValue);
-  
     const updatedUser: User = {
       ...this.userData,
       firstName: formValue.firstName!,
@@ -166,26 +164,22 @@ export class ProfileComponent implements OnInit {
       zipCode: formValue.zipCode!,
       phone: formValue.phone!,
       email: formValue.email!
-
-      // email: this.userData.email, // Using original email since field is disabled
     };
   
-    console.log('Prepared update payload:', updatedUser);
-    
     this.isLoading = true;
     
-    this.usersService.updateUserProfile(updatedUser).subscribe({
+    this.usersService.updateUserProfile(updatedUser, this.selectedFile || undefined).subscribe({
       next: (response) => {
-        console.log('Update successful:', response);
-        this.isLoading = false;
-        if (response.success) {
-          this.userData = response.user;
-          this.isEditMode = false;
-          this.disableForm();
-          alert('Profile updated successfully!');
-        } else {
-          this.errorMessage = response.message || 'Failed to update profile';
+        this.toastr.success('Profile updated successfully');
+        this.userData = response.user;
+        
+        // If a new profile image was uploaded
+        if (response.user.profileImage) {
+          this.imagePreview = response.user.profileImage;
         }
+        
+        this.patchFormWithUserData(response.user);
+        this.isLoading = false;
       },
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
@@ -193,25 +187,34 @@ export class ProfileComponent implements OnInit {
         
         if (err.status === 401) {
           this.errorMessage = 'Session expired. Please login again.';
+          this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
           this.usersService.logout();
         } else if (err.status === 400) {
-          // Bad request - show validation errors from server
           this.errorMessage = err.error?.message || 'Invalid data provided';
-          if (err.error?.errors) {
-            // Handle field-specific errors if available
-            console.log('Field errors:', err.error.errors);
-          }
+          this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
         } else {
           this.errorMessage = err.error?.message || 'Error updating profile';
+          this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
         }
       }
     });
   }
 
-  
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
+      // Validate file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        this.toastr.error('File size should not exceed 10MB', 'Error');
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.toastr.error('Please upload only image files', 'Error');
+        return;
+      }
+
       this.selectedFile = file;
       const reader = new FileReader();
       reader.onload = () => {

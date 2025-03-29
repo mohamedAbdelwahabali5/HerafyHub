@@ -1,16 +1,18 @@
 export interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
+  _id?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  address?: string;
   city?: string;
   state?: string;
   zipCode?: string;
-  password: string;
-  role?: string;
   profileImage?: string;
 
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface RegisterResponse {

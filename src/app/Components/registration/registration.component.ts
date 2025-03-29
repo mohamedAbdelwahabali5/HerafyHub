@@ -107,7 +107,7 @@ export class RegistrationComponent {
       finalize(() => this.loading = false)
     ).subscribe({
       next: (response) => {
-        this.handleSuccessfulRegistration(response, newUser.email);
+        this.handleSuccessfulRegistration(response, newUser.email || '');
       },
       error: (error) => this.handleRegistrationError(error)
     });

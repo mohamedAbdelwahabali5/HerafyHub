@@ -1,11 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, RegisterResponse } from '../Models/user.model';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { handleError } from '../Utils/handleError';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.prod';
+import { HttpHeaders } from '@angular/common/http';
 
 
 interface UpdateProfileResponse {
@@ -18,13 +19,15 @@ interface UpdateProfileResponse {
   providedIn: 'root',
 })
 export class UsersService {
-  // Update this URL to point to your Node.js backend auth routes
-  // private readonly apiUrl = 'https://herafy-hub-api.vercel.app/auth'; // old url doesn't work
-  // private readonly apiUrl = 'https://herafy-hub-api-wjex.vercel.app/auth';
+
   private readonly apiUrl = environment.apiUrl;
   private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  // private readonly apiUrl = 'http://localhost:5555/auth/';
+  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
+  private profileImageSubject = new BehaviorSubject<string | null>(null);
+  
+  // Observable that components can subscribe to
+  profileImage$ = this.profileImageSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     if (typeof window !== 'undefined') {
@@ -78,58 +81,37 @@ export class UsersService {
 
 
   // Update user profile (requires token)
-  updateUserProfile(user: User): Observable<UpdateProfileResponse> {
+  updateUserProfile(userData: User, profileImage?: File): Observable<any> {
+    const formData = new FormData();
     const token = this.getToken();
-    if (!token) {
-      this.logout();
-      return throwError(() => new Error('No authentication token found'));
+    
+    // Append user data
+    (Object.keys(userData) as Array<keyof User>).forEach(key => {
+      // Skip password and profileImage fields
+      if (key !== 'password' && key !== 'profileImage' && userData[key] !== undefined && userData[key] !== null) {
+        formData.append(key, String(userData[key]));
+      }
+    });
+
+    // Append image if exists
+    if (profileImage) {
+      formData.append('profileImage', profileImage);
     }
-  
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    };
-  
-    // Prepare the payload according to backend expectations
-    const payload = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      address: user.address,
-      city: user.city,
-      state: user.state,
-      zipCode: user.zipCode,
-      phone: user.phone,
-      email: user.email 
-      // Note: Not including email since it shouldn't be changed
-    };
-  
-    console.log('Sending update payload:', payload);
-  
-    return this.http.put<UpdateProfileResponse>(
-      `${this.apiUrlAuth}/update-profile`, 
-      payload,
-      { headers }
-    ).pipe(
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.put<any>(`${this.apiUrlAuth}/update-profile`, formData, { headers }).pipe(
       tap(response => {
-        console.log('Update response:', response);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Update error details:', error);
-        let errorMessage = 'Failed to update profile';
-  
-        if (error.status === 400) {
-          // Bad request - show validation errors
-          errorMessage = error.error?.message || 'Invalid data provided';
-        } else if (error.status === 401) {
-          errorMessage = 'Unauthorized. Please login again.';
-          this.logout();
-        } else if (error.status === 404) {
-          errorMessage = 'User not found';
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
+        // Update the profile image in the service
+        if (response.user?.profileImage) {
+          this.profileImageSubject.next(response.user.profileImage);
         }
-  
-        return throwError(() => new Error(errorMessage));
+      }),
+      catchError(error => {
+        console.error('Update error:', error);
+        return throwError(() => new Error(error.error?.message || 'Update failed'));
       })
     );
   }
@@ -152,6 +134,8 @@ export class UsersService {
   // Update getUserProfile method to include default image
   getUserProfile(): Observable<User> {
     const token = this.getToken();
+    console.log('Current environment:', environment);
+    console.log('API URL:', this.apiUrlAuth);
     if (!token) {
       return throwError(() => new Error('No token found'));
     }
@@ -227,6 +211,11 @@ export class UsersService {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('authToken');
     this.router.navigate(['/login']);
+  }
+
+  // Method to get current profile image
+  getCurrentProfileImage(): string | null {
+    return this.profileImageSubject.getValue();
   }
 }
 
