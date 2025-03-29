@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit {
   userData: User | null = null;
   isLoading = false;
   errorMessage: string | null = null;
+  isPasswordResetLoading = false;
 
   profileForm = new FormGroup({
     firstName: new FormControl('', [
@@ -286,5 +287,31 @@ export class ProfileComponent implements OnInit {
     this.imagePreview = this.userData?.profileImage || null;
     
     this.disableForm();
+  }
+
+  sendPasswordResetLink() {
+    if (!this.userData?.email) {
+      this.toastr.error('No email found', 'Error');
+      return;
+    }
+
+    this.isPasswordResetLoading = true;
+    this.usersService.sendPasswordResetLink(this.userData.email)
+      .subscribe({
+        next: (response) => {
+          this.isPasswordResetLoading = false;
+          this.toastr.success(
+            'Password reset link sent to your email', 
+            'Success'
+          );
+        },
+        error: (error) => {
+          this.isPasswordResetLoading = false;
+          this.toastr.error(
+            error.message || 'Failed to send reset link', 
+            'Error'
+          );
+        }
+      });
   }
 }

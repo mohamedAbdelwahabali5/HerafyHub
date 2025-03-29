@@ -217,5 +217,18 @@ export class UsersService {
   getCurrentProfileImage(): string | null {
     return this.profileImageSubject.getValue();
   }
+
+  // Add this method to the UsersService class
+  sendPasswordResetLink(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrlAuth}/forgot-password`, { email }).pipe(
+      tap(response => {
+        console.log('Password reset link sent:', response);
+      }),
+      catchError(error => {
+        console.error('Password reset link error:', error);
+        return throwError(() => new Error(error.error?.message || 'Failed to send password reset link'));
+      })
+    );
+  }
 }
 

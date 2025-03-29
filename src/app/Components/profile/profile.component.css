@@ -61,7 +61,7 @@ main {
 .btn-custom {
   background-color: #3d8d7a;
   color: white;
-  padding: 8px 20px;
+  /* padding: 10px; */
   border: none;
   border-radius: 5px;
   transition: all 0.3s ease;

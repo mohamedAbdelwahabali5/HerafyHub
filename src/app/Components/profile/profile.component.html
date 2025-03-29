@@ -188,15 +188,10 @@
               </div>
             </div>
 
-  
+          
+         
 
-            <!-- Add this before the form buttons
-            @if (errorMessage) {
-            <div class="alert alert-danger mx-3 mb-3">
-              {{ errorMessage }}
-            </div>
-            } -->
-
+   
             <!-- Update the submit button to show loading state -->
             <div class="d-flex justify-content-center">
               @if (isEditMode) {
@@ -207,9 +202,18 @@
                   Cancel
                 </button>
               } @else {
-                <button type="button" class="btn btn-custom w-75" (click)="toggleEditMode()">
+                <button type="button" class="btn btn-custom w-75 m-2" (click)="toggleEditMode()">
                   Update
                 </button>
+                <div >
+                  <button 
+                    class="btn btn-bg-color m-2 text-white" 
+                    (click)="sendPasswordResetLink()"
+                    [disabled]="isPasswordResetLoading"
+                  >
+                    {{ isPasswordResetLoading ? 'Sending...' : 'Reset Password' }}
+                  </button>
+                </div>
               }
             </div>
           </form>
