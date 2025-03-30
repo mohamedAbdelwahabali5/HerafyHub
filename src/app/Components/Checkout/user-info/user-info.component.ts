@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CartService } from '../../../Services/cart.service';
 import { OrderService } from '../../../Services/order.service';
 import { UsersService } from '../../../Services/users.service';
@@ -10,7 +15,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-user-info',
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './user-info.component.html',
-  styleUrl: './user-info.component.css'
+  styleUrl: './user-info.component.css',
 })
 export class UserInfoComponent {
   isEditing = false;
@@ -30,7 +35,7 @@ export class UserInfoComponent {
     this.checkoutForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]]
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]],
     });
   }
 
@@ -64,7 +69,7 @@ export class UserInfoComponent {
 
   calculateTotal(): void {
     this.totalPrice = this.cartItems.reduce(
-      (total, item) => total + (item.price * item.quantity),
+      (total, item) => total + item.price * item.quantity,
       0
     );
   }
@@ -87,7 +92,6 @@ export class UserInfoComponent {
       //     console.error('Error updating user data:', error);
       //   }
       // );
-
     }
   }
 
@@ -103,18 +107,18 @@ export class UserInfoComponent {
       shippingAddress: this.checkoutForm.value,
       paymentMethod: this.selectedPaymentMethod,
       status: 'Pending',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
-    this.orderService.createOrder(orderData).subscribe(
-      (response) => {
-        alert('Order placed successfully!');
-        this.cartService.clearCart();
-      },
-      (error) => {
-        console.error('Error placing order:', error);
-        alert('Failed to place order. Please try again.');
-      }
-    );
+    // this.orderService.createOrder(orderData).subscribe(
+    //   (response) => {
+    //     alert('Order placed successfully!');
+    //     this.cartService.clearCart();
+    //   },
+    //   (error) => {
+    //     console.error('Error placing order:', error);
+    //     alert('Failed to place order. Please try again.');
+    //   }
+    // );
   }
 }

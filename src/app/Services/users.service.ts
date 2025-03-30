@@ -18,10 +18,10 @@ interface UpdateProfileResponse {
   providedIn: 'root',
 })
 export class UsersService {
-  // private readonly apiUrl = environment.apiUrl;
-  private readonly apiUrl = 'http://localhost:5555';
-  // private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  private readonly apiUrlAuth = 'http://localhost:5555/auth';
+  private readonly apiUrl = environment.apiUrl;
+  // private readonly apiUrl = 'http://localhost:5555';
+  private readonly apiUrlAuth = `${this.apiUrl}/auth`;
+  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
 
@@ -163,34 +163,35 @@ export class UsersService {
       Authorization: `Bearer ${token}`,
     };
 
-    return this.http.get<{ success: boolean; user: User }>(
-      `${this.apiUrlAuth}/users/${PayloadToken.id}`,
-      { headers }
-    ).pipe(
-      map(response => ({
-        ...response.user,
-        profileImage: response.user.profileImage || this.defaultProfileImage
-      })),
-      tap(user => {
-        console.log('User profile loaded:', user);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error fetching profile:', error);
-        let errorMessage = 'Failed to fetch user profile';
+    return this.http
+      .get<{ success: boolean; user: User }>(
+        `${this.apiUrlAuth}/users/${PayloadToken.id}`,
+        { headers }
+      )
+      .pipe(
+        map((response) => ({
+          ...response.user,
+          profileImage: response.user.profileImage || this.defaultProfileImage,
+        })),
+        tap((user) => {
+          console.log('User profile loaded:', user);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching profile:', error);
+          let errorMessage = 'Failed to fetch user profile';
 
-        if (error.status === 401) {
-          errorMessage = 'Unauthorized. Please login again.';
-          this.logout();
-        } else if (error.status === 404) {
-          errorMessage = 'User not found';
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
+          if (error.status === 401) {
+            errorMessage = 'Unauthorized. Please login again.';
+            this.logout();
+          } else if (error.status === 404) {
+            errorMessage = 'User not found';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
 
-        return throwError(() => new Error(errorMessage));
-      })
-    );
-
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
   // Delete user (requires token)
   deleteUser(): Observable<any> {

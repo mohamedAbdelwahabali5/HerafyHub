@@ -1,7 +1,11 @@
-import { UsersService } from "./users.service";
-import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http';
+import { UsersService } from './users.service';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -19,69 +23,62 @@ interface CartResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
-
-
   // private readonly cart_URL = 'http://localhost:5555/cart/';
   // private readonly addToCart_URL = 'http://localhost:5555/cart/add';
   private readonly apiUrl = environment.apiUrl;
   private readonly cart_URL = `${this.apiUrl}/cart/`;
   private readonly addToCart_URL = `${this.apiUrl}/cart/add`;
   private readonly cartKey = 'productsInCart';
-  constructor(private http: HttpClient, private userService: UsersService) { }
-
-
+  constructor(private http: HttpClient, private userService: UsersService) {}
 
   //private readonly cart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/';
   //private readonly addToCart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/add';
- 
+
   addProductToCart(newCart: any): Observable<any> {
     const token = this.userService.getToken();
-    console.log("Token being sent:", token); // Debugging
+    console.log('Token being sent:', token); // Debugging
     if (!token) {
-      console.error("No authentication token found");
-      return throwError(() => new Error("No authentication token available"));
+      console.error('No authentication token found');
+      return throwError(() => new Error('No authentication token available'));
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
-    return this.http.post<any>(this.addToCart_URL, newCart, { headers })
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http
+      .post<any>(this.addToCart_URL, newCart, { headers })
+      .pipe(catchError(this.handleError));
   }
-
 
   getAllProducts(): Observable<CartResponse> {
     const token = this.userService.getToken();
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
     return this.http.get<CartResponse>(this.cart_URL, { headers });
   }
 
-  removeFromCart(productId: string): Observable<any> {
-    const token = this.userService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    const removeUrl = `${this.cart_URL}remove/${productId}`;
-    return this.http.delete(removeUrl, { headers });
-  }
-  clearCart(): Observable<any> {
-    const token = this.userService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    const clearUrl = `${this.cart_URL}clear`;
-    return this.http.delete(clearUrl, { headers });
-  }
-
+  // removeFromCart(productId: string): Observable<any> {
+  //   const token = this.userService.getToken();
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //   });
+  //   const removeUrl = `${this.cart_URL}remove/${productId}`;
+  //   return this.http.delete(removeUrl, { headers });
+  // }
+  // clearCart(): Observable<any> {
+  //   const token = this.userService.getToken();
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${token}`,
+  //   });
+  //   const clearUrl = `${this.cart_URL}clear`;
+  //   return this.http.delete(clearUrl, { headers });
+  // }
 
   // local storage Handler
   // Get all cart items
@@ -89,7 +86,7 @@ export class CartService {
     const cartData = localStorage.getItem(this.cartKey);
     return cartData ? JSON.parse(cartData) : [];
   }
-  
+
   // Add item to cart
   addToCart(itemId: string): void {
     const currentCart: string[] = this.getCartItems();
@@ -103,14 +100,16 @@ export class CartService {
 
   // Remove item from cart
   removeItemsFromCart(itemId: number): void {
-    const currentCart = this.getCartItems().filter(item => item.id !== itemId);
+    const currentCart = this.getCartItems().filter(
+      (item) => item.id !== itemId
+    );
     this.saveCart(currentCart);
   }
 
   // Update item quantity
   updateQuantity(itemId: number, newQuantity: number): void {
     const currentCart = this.getCartItems();
-    const item = currentCart.find(i => i.id === itemId);
+    const item = currentCart.find((i) => i.id === itemId);
 
     if (item) {
       item.quantity = newQuantity;
@@ -126,7 +125,7 @@ export class CartService {
   // Calculate total price
   calculateTotal(): number {
     return this.getCartItems().reduce(
-      (sum, item) => sum + (item.price * item.quantity),
+      (sum, item) => sum + item.price * item.quantity,
       0
     );
   }
@@ -136,34 +135,35 @@ export class CartService {
     localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
   }
   removeFromCart(productId: string): Observable<any> {
-  const token = this.userService.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  const removeUrl = `${this.cart_URL}remove/${productId}`;
-  return this.http.delete(removeUrl, { headers });
-}
-clearCart(): Observable<any> {
-  const token = this.userService.getToken();
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`
-  });
-  const clearUrl =`${this.cart_URL}clear`;
-  return this.http.delete(clearUrl, { headers });
-}
-private handleError(error: HttpErrorResponse) {
-  let errorMessage = 'An unknown error occurred!';
-
-  if (error.error instanceof ErrorEvent) {
-    errorMessage = `Client Error: ${error.error.message}`;
-  } else {
-    errorMessage = `Server Error Code: ${error.status}\nMessage: ${error.message}`;
-    console.error(`Backend returned code ${error.status}, body was: `, error.error);
+    const token = this.userService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    const removeUrl = `${this.cart_URL}remove/${productId}`;
+    return this.http.delete(removeUrl, { headers });
   }
+  clearCart(): Observable<any> {
+    const token = this.userService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+    const clearUrl = `${this.cart_URL}clear`;
+    return this.http.delete(clearUrl, { headers });
+  }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
 
-  console.error(errorMessage);
-  return throwError(() => new Error(errorMessage));
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Client Error: ${error.error.message}`;
+    } else {
+      errorMessage = `Server Error Code: ${error.status}\nMessage: ${error.message}`;
+      console.error(
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
+    }
+
+    console.error(errorMessage);
+    return throwError(() => new Error(errorMessage));
+  }
 }
-
-}
-
