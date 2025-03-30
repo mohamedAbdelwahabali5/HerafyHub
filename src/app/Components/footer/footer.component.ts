@@ -40,4 +40,18 @@ export class FooterComponent implements OnInit {
       error: (error) => console.error('Error fetching products:', error),
     });
   }
+
+  // footer.component.ts
+  loadCategoryProducts(categoryId: string) {
+    // Clear previous products
+    this.products = [];
+
+    this.userService.getProductsByCategory(categoryId).subscribe({
+      next: (data: any) => {
+        this.products = data.products || [];
+      },
+      error: (error) =>
+        console.error('Error fetching category products:', error),
+    });
+  }
 }

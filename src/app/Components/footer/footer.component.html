@@ -26,9 +26,9 @@
           <div class="col-12 col-md-6 col-lg-6">
             <div class="h-100">
               <h5
-                class="text-center mb-4 fw-bold text-teal position-relative section-title"
+                class="text-left mb-4 fw-bold text-teal position-relative section-title"
               >
-                <span class="bg-light px-3">Our Products</span>
+                <span class="bg-light">Our Products</span>
               </h5>
               <div class="row" *ngIf="isLoggedIn">
                 <div class="col-6">
@@ -76,18 +76,20 @@
           <!-- Combined Categories & Links -->
           <div class="col-12 col-md-6 col-lg-6">
             <div class="row h-100 g-4">
-              <!-- Categories -->
+              <!-- Categories Section -->
               <div class="col-12 col-md-6">
                 <h5
-                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+                  class="text-left mb-4 fw-bold text-teal position-relative section-title"
                 >
-                  <span class="bg-light px-3">Categories</span>
+                  <span class="bg-light">Categories</span>
                 </h5>
-                <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
+                <ul class="list-unstyled text-left" *ngIf="isLoggedIn">
                   <li *ngFor="let category of categories" class="mb-3">
                     <a
                       [routerLink]="['/products', category._id]"
                       class="text-secondary hover-teal text-decoration-none"
+                      [state]="{ scrollToCategory: true }"
+                      (click)="loadCategoryProducts(category._id)"
                     >
                       {{ category.title }}
                     </a>
@@ -98,51 +100,48 @@
               <!-- Quick Links -->
               <div class="col-12 col-md-6">
                 <h5
-                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+                  class="text-left mb-4 fw-bold text-teal position-relative section-title"
                 >
-                  <span class="bg-light px-3">Quick Links</span>
+                  <span class="bg-light">Quick Links</span>
                 </h5>
-                <div class="row justify-content-center">
-                  <div class="col-auto">
-                    <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
-                      <li class="mb-3">
-                        <a
-                          routerLink="/profile"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Profile</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/cart"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Cart</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/favorite"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Favorites</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/about-us"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >About Us</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/contact-us"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Contact</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+
+                <ul class="list-unstyled text-left" *ngIf="isLoggedIn">
+                  <li class="mb-3">
+                    <a
+                      routerLink="/profile"
+                      class="text-secondary hover-teal text-decoration-none"
+                      >Profile</a
+                    >
+                  </li>
+                  <li class="mb-3">
+                    <a
+                      routerLink="/cart"
+                      class="text-secondary hover-teal text-decoration-none"
+                      >Cart</a
+                    >
+                  </li>
+                  <li class="mb-3">
+                    <a
+                      routerLink="/favorite"
+                      class="text-secondary hover-teal text-decoration-none"
+                      >Favorites</a
+                    >
+                  </li>
+                  <li class="mb-3">
+                    <a
+                      routerLink="/about-us"
+                      class="text-secondary hover-teal text-decoration-none"
+                      >About Us</a
+                    >
+                  </li>
+                  <li class="mb-3">
+                    <a
+                      routerLink="/contact-us"
+                      class="text-secondary hover-teal text-decoration-none"
+                      >Contact Us</a
+                    >
+                  </li>
+                </ul>
               </div>
             </div>
           </div>

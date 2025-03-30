@@ -6,17 +6,25 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { UsersService } from '../../Services/users.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-contact',
-  // standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css',
 })
 export class ContactComponent {
+  constructor(
+    private userService: UsersService,
+    private toastr: ToastrService
+  ) {}
+
   submitted = false;
-  // loading = false;
+  loading = false;
+  success = false;
+  errorMessage: string | null = null;
 
   contactForm = new FormGroup({
     firstName: new FormControl('', [
@@ -75,10 +83,26 @@ export class ContactComponent {
 
   onSubmit(): void {
     this.submitted = true;
+    this.errorMessage = null;
 
     if (this.contactForm.invalid) {
+      this.toastr.warning('Please fill all required fields correctly');
       return;
     }
-    // this.loading = true;
+
+    this.loading = true;
+
+    this.userService.sendContactMessage(this.contactForm.value).subscribe({
+      next: () => {
+        this.toastr.success('Your message has been sent successfully!');
+        this.contactForm.reset();
+        this.submitted = false;
+      },
+      error: (err) => {
+        this.toastr.error(err.message || 'Failed to send message');
+        this.loading = false;
+      },
+      complete: () => (this.loading = false),
+    });
   }
 }
