@@ -42,7 +42,7 @@
               <button (click)="viewOrderDetails(order)">
                 View Details
               </button>
-              @if (order.status === 'In-Progress') {
+              @if (order.status === 'In-Progress' && order._id) {
               <button (click)="cancelOrder(order._id)" class="cancel">
                 Cancel Order
               </button>
@@ -84,9 +84,9 @@
               </tr>
             </thead>
             <tbody>
-              @for (product of selectedOrderDetails.products; track product.product) {
+              @for (product of selectedOrderDetails.orderItems; track product.product) {
               <tr>
-                <td>{{ product.name }}</td>
+                <td>{{ product.product }}</td>
                 <td>{{ product.quantity }}</td>
               </tr>
               }

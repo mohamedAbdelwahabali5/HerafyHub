@@ -1,26 +1,35 @@
-export type OrderStatus = 'In-Progress' | 'delivered' | 'cancelled';
+export type OrderStatus = 
+  | 'In-Progress' 
+  | 'Confirmed' 
+  | 'Processing' 
+  | 'Shipping' 
+  | 'Out for Delivery' 
+  | 'Delivered' 
+  | 'Cancelled';
 
-export interface OrderProduct {
-  product: string;
-  name: string;
-  quantity: number;
-}
 export interface ShippingAddress {
-  name?: string;
-  address?: string;
-  phone?: string;
+  name: string;
+  address: string;
+  phone: string;
 }
 
 export interface Order {
-  _id: string;
-  user: string;
-  products: OrderProduct[];
-  shippingAddress?: ShippingAddress;
+  _id?: string;
+  user?: string;
+  shippingAddress: ShippingAddress;
   totalPrice: number;
-  status: OrderStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  deliveredAt?: Date | null;
-  cancelledAt?: Date | null;
-  IsCancelled: boolean;
+  status?: OrderStatus;
+  paymentMethod: 'Credit Card' | 'Cash on Delivery';
+  IsCancelled?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+  orderItems?: OrderItem[];
+}
+
+export interface OrderItem {
+  _id?: string;
+  order?: string;
+  product: string;
+  quantity: number;
+  price: number;
 }

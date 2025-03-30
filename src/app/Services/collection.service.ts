@@ -9,6 +9,7 @@ import { environment } from '../../environments/environment.prod';
   providedIn: 'root',
 })
 export class ProductService {
+
   private readonly apiUrl = environment.apiUrl;
   private readonly product_URL = `${this.apiUrl}/product`;
   private readonly all_Products_URL = `${this.apiUrl}/product/all`;
