@@ -16,6 +16,7 @@ import { ProfileComponent } from './Components/profile/profile.component';
 import { AuthGuardService } from './Services/auth.guard.service';
 import { FavoriteItemComponent } from './Components/favorites-item/favorites-item.component';
 import { FavoriteComponent } from './Components/favorites/favorites.component';
+import { MainCheckoutComponent } from './Components/Checkout/main-checkout/main-checkout.component';
 
 
 export const routes: Routes = [
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'contact-us', component: ContactComponent },
   { path: 'product-details/:id', component: ProductDetailsComponent, canActivate: [AuthGuardService] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuardService] },
+  { path: 'checkout', component: MainCheckoutComponent, canActivate: [AuthGuardService] },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
