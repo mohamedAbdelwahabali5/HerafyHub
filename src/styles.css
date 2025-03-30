@@ -1,3 +1,4 @@
+@import 'ngx-toastr/toastr';
 
 /* root Variables */
 :root {
@@ -7,6 +8,7 @@
   --line-text-color: #6e6e6e;
   --line-color: #7b7878;
   --light-gray: #d8d7d7;
+  --btn-bg-color: #000000;
 }
 
 html, body {
@@ -40,6 +42,10 @@ html, body {
 
 .text-light-gray {
   color: var(--light-gray) !important;
+}
+
+.btn-bg-color{
+  background-color: var(--btn-bg-color) !important;
 }
 
 /* Responsive Width for Small Screens (≤576px) */

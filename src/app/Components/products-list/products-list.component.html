@@ -27,7 +27,7 @@
         <li class="dropdown-item">High to Low</li>
       </ul>
     </div>
-
+ 
     <div class="col-auto px-0">
       <div style="position: relative; width: fit-content; width: 50%">
         <input
@@ -47,7 +47,7 @@
       </div>
     </div>
   </div>
-
+ 
   @if (loading) {
     <div class="row my-5">
       <div class="col-12 text-center py-4">
@@ -84,7 +84,7 @@
     </div>
     }
   </div>
-
+ 
   <!-- Pagination Section -->
 <div class="d-flex justify-content-center mt-5 fw-bold">
   <nav aria-label="Page navigation">
@@ -97,7 +97,7 @@
           <span class="pagination-text">Previous</span>
         </button>
       </li>
-
+ 
       @for (page of pageNumbers; track page) {
       <li class="page-item page-number" [class.active]="currentPage === page">
         <button class="page-link" (click)="changePage(page)">
@@ -105,7 +105,7 @@
         </button>
       </li>
       }
-
+ 
       <li class="page-item" [class.disabled]="currentPage === totalPages">
         <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
           <span class="pagination-text">Next</span>
@@ -117,6 +117,8 @@
     </ul>
   </nav>
 </div>
-
+ 
   }
 </div>
+ 
+ 

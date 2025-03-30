@@ -4,6 +4,23 @@
       <h2 class="text-center teal-green">Registration Form</h2>
       <p class="text-center">Please fill in the form below</p>
 
+      @if(successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+      }
+
+      @if(registrationError) {
+      <div class="alert alert-danger d-flex align-items-center">
+        @if(loading) {
+          <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        }
+        {{ registrationError }}
+      </div>
+      }
+
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <!-- Full Name -->
         <div class="mb-3 mx-3">
@@ -19,7 +36,8 @@
                 placeholder="First Name"
               />
               @if ((formControls.firstName.touched ||
-              formControls.firstName.dirty) && formControls.firstName.invalid) {
+              formControls.firstName.dirty || submitted) &&
+              formControls.firstName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("firstName")
               }}</small>
@@ -32,8 +50,8 @@
                 formControlName="lastName"
                 placeholder="Last Name"
               />
-              @if ((formControls.lastName.touched ||
-              formControls.lastName.dirty) && formControls.lastName.invalid) {
+              @if ((formControls.lastName.touched || formControls.lastName.dirty
+              || submitted) && formControls.lastName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("lastName")
               }}</small>
@@ -50,12 +68,12 @@
           <input
             type="text"
             class="form-control mb-2"
-            formControlName="street"
-            placeholder="Street"
+            formControlName="address"
+            placeholder="Address"
           />
-          @if ((formControls.street.touched || formControls.street.dirty) &&
-          formControls.street.invalid) {
-          <small class="text-danger">{{ getErrorMessage("street") }}</small>
+          @if ((formControls.address.touched || formControls.address.dirty ||
+          submitted) && formControls.address.invalid) {
+          <small class="text-danger">{{ getErrorMessage("address") }}</small>
           }
 
           <div class="row g-2 mb-3">
@@ -66,8 +84,8 @@
                 formControlName="city"
                 placeholder="City"
               />
-              @if ((formControls.city.touched || formControls.city.dirty) &&
-              formControls.city.invalid) {
+              @if ((formControls.city.touched || formControls.city.dirty ||
+              submitted) && formControls.city.invalid) {
               <small class="text-danger">{{ getErrorMessage("city") }}</small>
               }
             </div>
@@ -78,8 +96,8 @@
                 formControlName="state"
                 placeholder="State"
               />
-              @if ((formControls.state.touched || formControls.state.dirty) &&
-              formControls.state.invalid) {
+              @if ((formControls.state.touched || formControls.state.dirty ||
+              submitted) && formControls.state.invalid) {
               <small class="text-danger">{{ getErrorMessage("state") }}</small>
               }
             </div>
@@ -90,8 +108,8 @@
                 formControlName="zipCode"
                 placeholder="Zip Code"
               />
-              @if ((formControls.zipCode.touched || formControls.zipCode.dirty)
-              && formControls.zipCode.invalid) {
+              @if ((formControls.zipCode.touched || formControls.zipCode.dirty
+              || submitted) && formControls.zipCode.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("zipCode")
               }}</small>
@@ -107,8 +125,8 @@
               >Phone Number <span class="text-danger">*</span></label
             >
             <input type="text" class="form-control" formControlName="phone" />
-            @if ((formControls.phone.touched || formControls.phone.dirty) &&
-            formControls.phone.invalid) {
+            @if ((formControls.phone.touched || formControls.phone.dirty ||
+            submitted) && formControls.phone.invalid) {
             <small class="text-danger">{{ getErrorMessage("phone") }}</small>
             }
           </div>
@@ -122,8 +140,8 @@
               formControlName="email"
               placeholder="example@gmail.com"
             />
-            @if ((formControls.email.touched || formControls.email.dirty) &&
-            formControls.email.invalid) {
+            @if ((formControls.email.touched || formControls.email.dirty ||
+            submitted) && formControls.email.invalid) {
             <small class="text-danger">{{ getErrorMessage("email") }}</small>
             }
           </div>
@@ -140,8 +158,8 @@
               class="form-control"
               formControlName="password"
             />
-            @if ((formControls.password.touched || formControls.password.dirty)
-            && formControls.password.invalid) {
+            @if ((formControls.password.touched || formControls.password.dirty
+            || submitted) && formControls.password.invalid) {
             <small class="text-danger">{{ getErrorMessage("password") }}</small>
             }
           </div>
@@ -155,7 +173,7 @@
               formControlName="confirmPassword"
             />
             @if ((formControls.confirmPassword.touched ||
-            formControls.confirmPassword.dirty) &&
+            formControls.confirmPassword.dirty || submitted) &&
             (formControls.confirmPassword.errors?.['required'] ||
             registrationForm.errors?.['passwordMismatch'])) {
             <small class="text-danger">{{
@@ -166,7 +184,26 @@
         </div>
 
         <div class="d-flex justify-content-center">
-          <button type="submit" class="btn btn-custom w-75">Submit</button>
+          <button
+            type="submit"
+            class="btn btn-custom w-75"
+            [disabled]="loading"
+          >
+            @if(loading) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Registering...
+            } @else {
+              Register
+            }
+          </button>
+        </div>
+        <div class="text-center mt-3">
+          <p>
+            Already have an account?
+            <a class="login-link  teal-green" routerLinkActive="active" routerLink="/login"
+              >Login here</a
+            >
+          </p>
         </div>
       </form>
     </div>

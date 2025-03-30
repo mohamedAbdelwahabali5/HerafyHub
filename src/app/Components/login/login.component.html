@@ -1,20 +1,18 @@
 <div
-  class="vh-100 d-flex align-items-center justify-content-center overflow-hidden"
+  class="vh-100 d-flex align-items-center justify-content-center overflow-auto "
 >
   <div class="row align-items-center w-100 h-100 m-0">
     <div
       class="col-12 col-lg-6 h-100 d-flex align-items-center justify-content-center"
     >
-      <div class="login-form-container p-4 p-md-5 shadow">
+      <div class="login-form-container p-4 p-md-5  mt-4">
         <div class="m-auto">
           <h1 class="text-center text-teal-green mb-4 fs-2">Welcome Back</h1>
           <p class="text-center text-dark-gray">Please Enter your Details</p>
 
-          <form [formGroup]="loginForm" id="" class="row g-3">
+          <form [formGroup]="loginForm" id="" (ngSubmit)="formCheck()" class="row g-3">
             <div class="col-12">
-              <label for="inputEmail4" class="form-label text-teal-green"
-                >Email</label
-              >
+              <label for="inputEmail4" class="form-label text-teal-green">Email</label>
               <input
                 formControlName="email"
                 type="email"
@@ -22,17 +20,26 @@
                 id="inputEmail4"
               />
             </div>
-            @if(loginForm.controls['email'].invalid &&
-            loginForm.controls['email'].touched) {
-            @if(loginForm.controls['email'].errors?.['required']) {
-            <p class="error text-danger">Email is required</p>
-            } @else if(loginForm.controls['email'].errors?.['email']) {
-            <p class="error text-danger">Invalid email format</p>
-            } }
+            @if(loginForm.controls['email'].invalid && loginForm.controls['email'].touched) {
+              @if(loginForm.controls['email'].errors?.['required']) {
+                <p class="error text-danger small mb-2">
+                  <i class="bi bi-exclamation-circle me-1"></i>Please enter your email address
+                </p>
+              } @else if(loginForm.controls['email'].errors?.['email']) {
+                <div class="error text-danger small mb-2">
+                  <p class="mb-1"><i class="bi bi-exclamation-circle me-1"></i>Your email must contain:</p>
+                  <ul class="mb-0 ps-4">
+                    <li>A username portion (before the &#64; symbol)</li>
+                    <li>The &#64; symbol</li>
+                    <li>A domain name (after the &#64; symbol)</li>
+                    <li>A top-level domain (.com, .org, etc.)</li>
+                    <li>Example: name&#64;example.com</li>
+                  </ul>
+                </div>
+              }
+            }
             <div class="col-12">
-              <label for="inputPassword4" class="form-label text-teal-green"
-                >Password</label
-              >
+              <label for="inputPassword4" class="form-label text-teal-green">Password</label>
               <input
                 formControlName="password"
                 type="password"
@@ -40,7 +47,26 @@
                 id="inputPassword4"
               />
             </div>
-            @if(loginForm.controls['password'].invalid &&
+            @if(loginForm.controls['password'].invalid && loginForm.controls['password'].touched) {
+              @if(loginForm.controls['password'].errors?.['required']) {
+                <p class="error text-danger small mb-2">
+                  <i class="bi bi-exclamation-circle me-1"></i>Please enter a new password
+                </p>
+              } @else if(loginForm.controls['password'].errors?.['pattern']) {
+                <div class="error text-danger small mb-2">
+                  <p class="mb-1"><i class="bi bi-exclamation-circle me-1"></i>Your password must contain:</p>
+                  <ul class="mb-0 ps-4">
+                    <li>At least 8 characters</li>
+                    <li>At least one uppercase letter (A-Z)</li>
+                    <li>At least one lowercase letter (a-z)</li>
+                    <li>At least one number (0-9)</li>
+                    <li>At least one special character</li>
+                  </ul>
+                </div>
+              }
+            }
+
+            <!-- @if(loginForm.controls['password'].invalid &&
             loginForm.controls['password'].touched) {
             @if(loginForm.controls['password'].errors?.['required']) {
             <p class="error text-danger">Password is required</p>
@@ -53,7 +79,7 @@
               Password must include one uppercase letter, one lowercase letter,
               one digit, and one special character
             </p>
-            } }
+            } } -->
             <div class="col-12 text-center mt-3">
               <p class="mb-0">
                 Need an account?
@@ -66,20 +92,21 @@
               <div
                 class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center"
               >
-                <div class="form-check mb-2 mb-sm-0">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="gridCheck"
-                  />
-                  <label
-                    class="form-check-label text-teal-green"
-                    for="gridCheck"
-                  >
-                    Keep me logged in
-                  </label>
-                </div>
-                <a routerLink="/forget-password" class="text-dark-gray text-decoration-none"
+              <div class="form-check mb-2 mb-sm-0">
+                <input
+                  class="form-check-input"
+                  formControlName="rememberMe"
+                  type="checkbox"
+                  id="gridCheck"
+                />
+                <label
+                  class="form-check-label text-teal-green"
+                  for="gridCheck"
+                >
+                  Keep me logged in
+                </label>
+              </div>
+                <a routerLink="/forgot-password" class="text-dark-gray text-decoration-none"
                   >Forgot your password?</a
                 >
               </div>
@@ -88,20 +115,19 @@
             <div class="col-12">
               <button
                 type="submit"
-                (onsubmit)="formCheack()"
                 class="btn w-100 bg-teal-green text-white"
               >
                 Sign in
               </button>
             </div>
 
-            <div class="col-12">
+            <!-- <div class="col-12">
               <div class="divider text-center">
                 <span class="px-3">or</span>
               </div>
-            </div>
+            </div> -->
 
-            <div class="col-12">
+            <!-- <div class="col-12">
               <button
                 type="button"
                 class="btn btn-light w-100 border d-flex align-items-center justify-content-center gap-2"
@@ -114,7 +140,7 @@
                 />
                 Sign in with Google
               </button>
-            </div>
+            </div> -->
           </form>
         </div>
       </div>

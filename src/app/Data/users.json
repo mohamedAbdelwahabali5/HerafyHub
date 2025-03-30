@@ -1,36 +1,3 @@
 {
-  "users": [
-    {
-      "id": "1",
-      "name": {
-        "fName": "Mostafa",
-        "lName": "Ramadan"
-      },
-      "email": "bolbolR@gmail.com",
-      "phone": "01122334455",
-      "address": {
-        "street": "omar",
-        "city": "Zagazig",
-        "state": "El Sherkia",
-        "zipCode": "05523"
-      },
-      "password": "Bol_123456"
-    },
-    {
-      "id": "2",
-      "name": {
-        "fName": "Ali",
-        "lName": "Ahmed"
-      },
-      "email": "Ali@gmail.com",
-      "phone": "01245484448",
-      "address": {
-        "city": "Zagazig",
-        "street": "omar",
-        "state": "El Sherkia",
-        "zipCode": "05523"
-      },
-      "password": "Ali_123456"
-    }
-  ]
+  "users": []
 }
