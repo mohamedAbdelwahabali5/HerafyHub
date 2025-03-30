@@ -27,6 +27,9 @@
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="products">Products</a>
         </li>
+        <li class="nav-item" *ngIf="userServ.isLoggedIn()">
+          <a class="nav-link" routerLinkActive="active" routerLink="order">Orders</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="contact-us">Contact Us</a>
         </li>
