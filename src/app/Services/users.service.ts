@@ -18,9 +18,10 @@ interface UpdateProfileResponse {
   providedIn: 'root',
 })
 export class UsersService {
-  private readonly apiUrl = environment.apiUrl;
-  private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
+  // private readonly apiUrl = environment.apiUrl;
+  private readonly apiUrl = 'http://localhost:5555';
+  // private readonly apiUrlAuth = `${this.apiUrl}/auth`;
+  private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
 
@@ -271,5 +272,23 @@ export class UsersService {
     return this.http
       .get(`${this.apiUrl}/product/category/${categoryId}`)
       .pipe(catchError(handleError));
+  }
+
+  sendContactMessage(contactData: any): Observable<any> {
+    console.log('Sending to:', `${this.apiUrl}/contact`);
+    return this.http.post<any>(`${this.apiUrl}/contact`, contactData).pipe(
+      catchError((error) => {
+        console.error('Contact error:', error);
+        let errorMessage = 'Failed to send message. Please try again later.';
+
+        if (error.status === 404) {
+          errorMessage = 'Contact endpoint not found';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 }
