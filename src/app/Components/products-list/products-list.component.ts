@@ -9,11 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
   standalone: true,
-  imports: [
-    ProductCardComponent,
-    CommonModule,
-    FormsModule
-  ]
+  imports: [ProductCardComponent, CommonModule, FormsModule],
 })
 export class ProductsListComponent {
   @Input() categoryId: string = ''; // Changed from selectedCategoryId to categoryId
@@ -29,13 +25,16 @@ export class ProductsListComponent {
   pageSize: number = 12;
   loading: boolean = true;
   err: any = null;
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
   ngOnInit() {
     this.loadProducts();
   }
+  private lastCategoryId: string = '';
+
   // Add this new method to detect category changes
   ngOnChanges(changes: any) {
-    if (changes.categoryId) {
+    if (changes.categoryId && this.categoryId !== this.lastCategoryId) {
+      this.lastCategoryId = this.categoryId;
       this.currentPage = 1; // Reset to first page when category changes
       this.loadProducts();
     }
@@ -43,31 +42,36 @@ export class ProductsListComponent {
   loadProducts() {
     this.loading = true;
     console.log('Category ID in ProductsListComponent:', this.categoryId);
-    if (this.categoryId != "allProducts") {
-      this.productService.getProductsCategory(this.currentPage, this.pageSize, this.categoryId).subscribe({
-        next: (response: any) => {
-          this.products = response.products;
-          this.pageProducts = this.products;
-          this.totalPages = response.totalPages;
-          this.totalProducts = response.totalProducts;
-          this.loading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.err = err;
-          this.loading = false;
-          this.pageProducts = [];
-        }
-      });
+    if (this.categoryId != 'allProducts') {
+      this.productService
+        .getProductsCategory(this.currentPage, this.pageSize, this.categoryId)
+        .subscribe({
+          next: (response: any) => {
+            this.products = response.products;
+            this.pageProducts = this.products;
+            this.totalPages = response.totalPages;
+            this.totalProducts = response.totalProducts;
+            this.loading = false;
+          },
+          error: (err) => {
+            console.error(err);
+            this.err = err;
+            this.loading = false;
+            this.pageProducts = [];
+          },
+        });
     } else {
       this.productService.getAllProducts().subscribe({
         next: (response: any) => {
           this.products = response.products;
           this.totalProducts = response.totalProducts;
           // console.log('All products fetched:', this.products);
-          this.totalPages = Math.ceil(this.totalProducts / this.pageSize),
+          (this.totalPages = Math.ceil(this.totalProducts / this.pageSize)),
             // console.log('Total pages:', this.totalPages);
-            this.pageProducts = this.products.slice((this.currentPage - 1) * this.pageSize, this.pageSize * this.currentPage);
+            (this.pageProducts = this.products.slice(
+              (this.currentPage - 1) * this.pageSize,
+              this.pageSize * this.currentPage
+            ));
           // console.log('this.pageSize:', this.pageSize);
           // console.log('this.currentPage:', this.currentPage);
           // console.log('Page products:', this.pageProducts);
@@ -78,7 +82,7 @@ export class ProductsListComponent {
           this.err = err;
           this.loading = false;
           this.pageProducts = [];
-        }
+        },
       });
     }
   }
@@ -87,19 +91,21 @@ export class ProductsListComponent {
     const searchText = this.searchTerm.trim();
 
     if (searchText) {
-      this.productService.searchByTitleInCategory(searchText, this.categoryId).subscribe(
-        (response: any) => {
-          this.searchedProducts = response.data;
-          this.pageProducts = this.searchedProducts;
+      this.productService
+        .searchByTitleInCategory(searchText, this.categoryId)
+        .subscribe(
+          (response: any) => {
+            this.searchedProducts = response.data;
+            this.pageProducts = this.searchedProducts;
 
-          //note: remember to update the pagination when sorting or filtering results
-          this.calculateSearchPagination();
-        },
-        (error) => {
-          console.error("Error fetching products:", error);
-          this.pageProducts = [];
-        }
-      );
+            //note: remember to update the pagination when sorting or filtering results
+            this.calculateSearchPagination();
+          },
+          (error) => {
+            console.error('Error fetching products:', error);
+            this.pageProducts = [];
+          }
+        );
     } else {
       this.searchedProducts = [];
       this.loadProducts();
@@ -111,7 +117,6 @@ export class ProductsListComponent {
     // console.log('event', event);
     // console.log('Sorted prices:', this.pageProducts.map(product => product.currentprice));
 
-
     if (event.target.innerText === 'Low to High') {
       this.products.sort((a, b) => a.currentprice - b.currentprice);
     } else if (event.target.innerText === 'High to Low') {
@@ -119,7 +124,6 @@ export class ProductsListComponent {
     }
 
     // console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
-
   }
 
   calculateSearchPagination() {
@@ -154,18 +158,13 @@ export class ProductsListComponent {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
 
-    const sourceArray = this.searchedProducts.length > 0
-      ? this.searchedProducts
-      : this.products;
+    const sourceArray =
+      this.searchedProducts.length > 0 ? this.searchedProducts : this.products;
 
     this.pageProducts = sourceArray.slice(start, end);
   }
 
   get pageNumbers(): number[] {
-    return Array.from(
-      { length: this.totalPages },
-      (_, index) => index + 1
-    );
+    return Array.from({ length: this.totalPages }, (_, index) => index + 1);
   }
 }
-

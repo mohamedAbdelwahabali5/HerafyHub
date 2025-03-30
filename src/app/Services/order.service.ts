@@ -1,21 +1,37 @@
-import { HttpClient } from '@angular/common/http';
+// src/app/services/order.service.ts
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Order } from '../Models/order.model';
+import { UsersService } from '../Services/users.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
+  private apiUrl = 'http://localhost:3000/orders';
 
-  private apiUrl = 'https://your-api-url.com/orders';
+  constructor(
+    private http: HttpClient,
+    private usersService: UsersService
+  ) {}
 
-  constructor(private http: HttpClient) { }
-
-  createOrder(orderData: any): Observable<any> {
-    return this.http.post(this.apiUrl, orderData);
+  // Get all orders for the current user
+  getUserOrders(): Observable<Order[]> {
+    const token = this.usersService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<Order[]>(`${this.apiUrl}`, { headers });
   }
+  // Cancel an order
+  cancelOrder(orderId: string): Observable<Order> {
+    const token = this.usersService.getToken();
 
-  getOrderHistory(userId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}?userId=${userId}`);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.patch<Order>(`${this.apiUrl}/${orderId}/cancel`, {}, { headers });
   }
 }

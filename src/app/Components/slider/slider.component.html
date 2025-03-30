@@ -1,9 +1,11 @@
 <div class="container py-5">
-  <div id="categorySlider" class="carousel slide position-relative" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
+  <h1 class=" text-center mb-4 teal-green">FEATURED CATEGORIES</h1>
+  <div id="categorySlider" class="carousel slide position-relative">
+    <div class="carousel-inner rounded-4 overflow-hidden">
+      @for (slideGroup of categoryGroups; track $index) {
+      <div class="carousel-item" [ngClass]="{'active': $index === 0}">
         <div class="row g-3">
-          @for (category of visibleCategories; track $index) {
+          @for (category of slideGroup; track $index) {
           <div class="category-column">
             <div class="card border-0 rounded-4 overflow-hidden category-card">
               <img
@@ -12,10 +14,13 @@
                 [alt]="category.title"
                 loading="lazy"
               />
-              <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-black bg-opacity-50">
-                <h2 class="card-tite text-white mb-3">
+              <div class="card-img-overlay d-flex flex-column justify-content-end p-4">
+                <h2 class="card-title text-white mb-3">
                   {{ category.title }}
                 </h2>
+                <p class="text-white mb-3 category-description">
+                  {{ category.description || 'Explore our collection' }}
+                </p>
                 <button (click)="navigateToProducts(category._id)" class="btn btn-light rounded-4 py-2 category-btn">
                   See Details
                 </button>
@@ -25,21 +30,35 @@
           }
         </div>
       </div>
+      }
     </div>
 
-    <button 
-      class="carousel-control-prev rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
-      type="button" 
+    <button
+      class="carousel-control-prev rounded-circle bg-black bg-opacity-50 carousel-control m-3"
+      type="button"
       (click)="prevSlide()">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button 
-      class="carousel-control-next rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
-      type="button" 
+    <button
+      class="carousel-control-next rounded-circle bg-black bg-opacity-50 carousel-control m-3"
+      type="button"
       (click)="nextSlide()">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>
+
+    <div class="carousel-indicators">
+      @for (group of categoryGroups; track $index) {
+      <button
+        type="button"
+        [attr.data-bs-target]="'#categorySlider'"
+        [attr.data-bs-slide-to]="$index"
+        [ngClass]="{'active': $index === currentIndex}"
+        aria-current="true"
+        [attr.aria-label]="'Slide ' + ($index + 1)">
+      </button>
+      }
+    </div>
   </div>
 </div>

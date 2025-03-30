@@ -1,3 +1,9 @@
+.row {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.189);
+}
+
 /* Hover effect for the title */
 .card-title:hover {
   color: var(--teal-green) !important; /* Change to green on hover */
@@ -15,6 +21,108 @@
 .card-img-top {
   object-fit: cover;
   width: 100%;
-  height: 250px; /* Fixed height for uniform display */
-  border-radius: 10px;
+  height: 200px; /* Smaller height for mobile */
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+
+/* Responsive header styles */
+.teal-green {
+  color: var(--teal-green);
+  position: relative;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.teal-green::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: var(--teal-green);
+}
+
+/* Card body adjustments for mobile */
+.card-body {
+  padding: 0.75rem;
+}
+
+/* Responsive typography adjustments */
+.display-5 {
+  font-size: 2rem;
+}
+
+/* Media Queries */
+@media (min-width: 576px) {
+  .card-img-top {
+    height: 220px;
+  }
+}
+
+@media (min-width: 768px) {
+  /* Restore desktop styles */
+  .row {
+    padding-bottom: 30px;
+  }
+
+  .card-img-top {
+    height: 250px;
+    border-radius: 10px;
+  }
+
+  .card-body {
+    padding: 1rem 1rem;
+  }
+
+  .display-md-4 {
+    font-size: 2.5rem;
+  }
+
+  .teal-green::after {
+    width: 70px;
+    bottom: -15px;
+  }
+
+  .fs-md-5 {
+    font-size: 1.25rem !important;
+  }
+
+  .rounded-md-4 {
+    border-radius: 0.5rem !important;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 375px) {
+  .container-fluid {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .card-img-top {
+    height: 180px;
+  }
+
+  .g-3 {
+    --bs-gutter-x: 0.75rem;
+  }
+
+  .display-5 {
+    font-size: 1.75rem;
+  }
+
+  .card-body {
+    padding: 0.5rem;
+  }
+
+  .fs-6 {
+    font-size: 0.875rem !important;
+  }
+
+  .card-text.fs-5 {
+    font-size: 1rem !important;
+  }
 }
