@@ -3,7 +3,7 @@
     <div class="row g-2 align-items-stretch">
       <!-- Product Image -->
       <div class="col-md-6">
-        <div class="p-2 rounded">
+        <div class="p-2 rounded shadow-sm bg-light">
           <div class="image-container">
             <img
               [src]="product.image"
@@ -22,7 +22,6 @@
             <small class="text-muted">{{ product.category }}</small>
             <h2 class="product-title my-2">{{ product.title }}</h2> 
             <!-- Rating -->
-            <!-- Replace the rating section -->
             <div class="mb-2 fs-5 text-warning">
               @for (star of stars; track star) {
                 <i [class]="'bi ' + getStarType(star - 1)"></i>
