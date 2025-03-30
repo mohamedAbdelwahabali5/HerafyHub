@@ -17,7 +17,7 @@
   color: black;
   font-weight:400;
 }
- 
+
 .title{
   color: var(--teal-green);
 }
@@ -28,7 +28,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   background-color: transparent;
- 
+
 }
 .remove:hover {
   color:rgb(187, 2, 2);
@@ -42,8 +42,8 @@
   border-radius: 10px;
   background-color: white;
 }
- 
- 
+
+
 @media (max-width: 768px){
   .row{
 margin: 0 !important;
@@ -66,13 +66,12 @@ margin-bottom: 15px !important;
   .title{
     color: var(--teal-green);
   }
-  .card-body{
-  }
+
   .card-text{
     color: var(--dark-gray);
     margin: 5px !important;
   }
- 
+
   .icon{
     font-size: 14px;
     padding: 7px;
@@ -86,15 +85,4 @@ margin-bottom: 15px !important;
     margin-top: 10px !important;
   }
  }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+

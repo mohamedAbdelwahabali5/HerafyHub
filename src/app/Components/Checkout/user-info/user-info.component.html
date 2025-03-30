@@ -1,0 +1,69 @@
+<div class="checkout-container container py-1">
+  <div class="row">
+    <!-- Shipping Information Section -->
+    <div class=" col-12">
+      <div class="card shipping-card">
+        <div class="card-header">
+          <h4>Shipping Information</h4>
+          <button *ngIf="!isEditing" class="btn bg-teal-green  text-white" (click)="toggleEdit()">
+            Edit Shipping Info
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- Display User Information -->
+          <div *ngIf="!isEditing && userData" class="user-data-view">
+            <div class="data-row">
+              <span class="data-label">Name:</span>
+              <span class="data-value">{{ userData.name }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Address:</span>
+              <span class="data-value">{{ userData.address }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Phone:</span>
+              <span class="data-value">{{ userData.phone }}</span>
+            </div>
+          </div>
+
+          <!-- Edit Form -->
+          <form *ngIf="isEditing" [formGroup]="checkoutForm" class="edit-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" formControlName="name" class="form-control" required>
+              <div *ngIf="checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched" class="error-message">
+                Please enter your name
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea id="address" formControlName="address" class="form-control" rows="3" required></textarea>
+              <div *ngIf="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched"
+                class="error-message">
+                Please enter your address
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" formControlName="phone" class="form-control" required>
+              <div *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
+                class="error-message">
+                Please enter a valid phone number
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="saveChanges()" [disabled]="!checkoutForm.valid">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FavoriteItemComponent } from '../favorites-item/favorites-item.component';
 
 
- 
+
 @Component({
   selector: 'app-favorites',
   standalone: true,
@@ -14,23 +14,18 @@ import { FavoriteItemComponent } from '../favorites-item/favorites-item.componen
 })
 export class FavoriteComponent implements OnInit {
   favorites: any[] = [];
- 
+
   constructor(private favoriteService: FavoriteService) {}
- 
+
   ngOnInit(): void {
     this.getFavorites();
   }
-// In favorites.component.ts
 getFavorites(): void {
-  // Check localStorage first
   const savedFavorites = localStorage.getItem('productsInFavorite');
   if (savedFavorites && JSON.parse(savedFavorites).length === 0) {
-    // If localStorage shows no favorites, skip the API call
     this.favorites = [];
     return;
   }
- 
-  // Otherwise, proceed with the API call
   this.favoriteService.getAllFavorites().subscribe({
     next: (response) => {
       console.log('API Response:', response);
@@ -38,7 +33,6 @@ getFavorites(): void {
     },
     error: (error) => {
       console.error('Error fetching favorites', error);
-      // Fallback to empty array on error
       this.favorites = [];
     },
     complete: () => {
@@ -64,7 +58,7 @@ getFavorites(): void {
   private updateFavoritesInStorage(productId: string, isAdding: boolean): void {
     let favorites: string[] = [];
     const savedState = localStorage.getItem('productsInFavorite');
- 
+
     if (savedState) {
       try {
         favorites = JSON.parse(savedState);
@@ -72,7 +66,7 @@ getFavorites(): void {
         console.error('Error parsing favorites state:', e);
       }
     }
- 
+
     if (isAdding) {
       if (!favorites.includes(productId)) {
         favorites.push(productId);
@@ -83,7 +77,7 @@ getFavorites(): void {
         favorites.splice(index, 1);
       }
     }
- 
+
     localStorage.setItem('productsInFavorite', JSON.stringify(favorites));
     console.log('Current favorites in localStorage:', favorites);
   }
@@ -94,8 +88,6 @@ getFavorites(): void {
       (response) => {
         console.log(response.message);
         this.favorites = [];
- 
-        // Clear localStorage favorites - ADD THIS CODE
         localStorage.setItem('productsInFavorite', JSON.stringify([]));
       },
       (error) => {
@@ -104,5 +96,4 @@ getFavorites(): void {
     );
   }
 }
- 
- 
+
