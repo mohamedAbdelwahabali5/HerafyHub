@@ -1,26 +1,37 @@
 import { UsersService } from "./users.service";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders,HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
- 
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
- 
-  private readonly cart_URL = 'http://localhost:5555/cart/';
-  private readonly addToCart_URL = 'http://localhost:5555/cart/add';
+
+  private readonly cart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/';
+  private readonly addToCart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/add';
   constructor(private http:HttpClient,private userService: UsersService) {}
- 
- 
   addProductToCart(newCart: any): Observable<any> {
     const token = this.userService.getToken();
+    console.log("Token being sent:", token); // Debugging
+    if (!token) {
+      console.error("No authentication token found");
+      return throwError(() => new Error("No authentication token available"));
+    }
+
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
     });
-    return this.http.post<any>(this.addToCart_URL, newCart, { headers });
+
+    return this.http.post<any>(this.addToCart_URL, newCart, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
- 
+
+
+
   getAllProducts() {
     const token = this.userService.getToken();
     const headers = new HttpHeaders({
@@ -28,7 +39,7 @@ export class CartService {
     });
     return this.http.get(this.cart_URL, { headers });
   }
- 
+
   removeFromCart(productId: string): Observable<any> {
   const token = this.userService.getToken();
   const headers = new HttpHeaders({
@@ -45,8 +56,20 @@ clearCart(): Observable<any> {
   const clearUrl =`${this.cart_URL}clear`;
   return this.http.delete(clearUrl, { headers });
 }
- 
- 
+private handleError(error: HttpErrorResponse) {
+  let errorMessage = 'An unknown error occurred!';
+
+  if (error.error instanceof ErrorEvent) {
+    errorMessage = `Client Error: ${error.error.message}`;
+  } else {
+    errorMessage = `Server Error Code: ${error.status}\nMessage: ${error.message}`;
+    console.error(`Backend returned code ${error.status}, body was: `, error.error);
+  }
+
+  console.error(errorMessage);
+  return throwError(() => new Error(errorMessage));
 }
- 
- 
+
+
+}
+

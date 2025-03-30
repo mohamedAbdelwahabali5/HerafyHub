@@ -16,6 +16,9 @@ import { ProfileComponent } from './Components/profile/profile.component';
 import { AuthGuardService } from './Services/auth.guard.service';
 import { FavoriteItemComponent } from './Components/favorites-item/favorites-item.component';
 import { FavoriteComponent } from './Components/favorites/favorites.component';
+import { OrderPageComponent } from './Components/Order/order/order.component';
+import { MainCheckoutComponent } from './Components/Checkout/main-checkout/main-checkout.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -43,8 +46,10 @@ export const routes: Routes = [
   },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
+  { path: 'order', component: OrderPageComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
+  { path: 'checkout', component: MainCheckoutComponent },
 
   // error page
   { path: 'error', component: ErrorComponent },

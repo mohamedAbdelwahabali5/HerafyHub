@@ -6,8 +6,11 @@ nav{
     width:135px;
 }
 button{
-    background-color: #3D8D7A;
+    background-color: var(--teal-green);
+    border-radius: 30px;
+    padding: 10px 20px;
     color: white;
+    text-align: center;
 }
 button:hover{
   background-color: var(--teal-green-hover);
@@ -20,8 +23,7 @@ div i{
 }
 
 li .nav-link{
-    color: #3D8D7A;
-    font-weight: 600;
+    color: black;
 }
 .navbar-nav{
     margin-left: 32%;
@@ -29,16 +31,16 @@ li .nav-link{
 .container-fluid{
     padding-right:5% ;
     padding-left:5% ;
+    width: 100%;
 }
-
 /* Custom styling for active nav links */
 .nav-link.active {
-  /* color: #4238d1 !important; */
-  color: black !important;
-  font-weight: 500;
-  background-color: #3d8d7ac6;
-
+  font-weight: 600;
+  color: #3d8d7ac6 !important;
+  text-decoration: underline #3D8D7A;
+  text-underline-offset: 4px;
 }
+
 @media (max-width: 991.98px) {
     .navbar-nav{
         margin-left: 0%;

@@ -25,7 +25,7 @@ export class UsersService {
   // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
-  
+
   // Observable that components can subscribe to
   profileImage$ = this.profileImageSubject.asObservable();
 
@@ -92,7 +92,7 @@ export class UsersService {
   updateUserProfile(userData: User, profileImage?: File): Observable<any> {
     const formData = new FormData();
     const token = this.getToken();
-    
+
     // Append user data
     (Object.keys(userData) as Array<keyof User>).forEach(key => {
       // Skip password and profileImage fields
@@ -134,11 +134,11 @@ export class UsersService {
       return null;
     }
   }
-  
+
   // Update getUserProfile method
   // Add this constant at the top of the class
   private readonly defaultProfileImage = 'images/img-preview.png';
-  
+
   // Update getUserProfile method to include default image
   getUserProfile(): Observable<User> {
     const token = this.getToken();
@@ -147,18 +147,18 @@ export class UsersService {
     if (!token) {
       return throwError(() => new Error('No token found'));
     }
-  
+
     const PayloadToken = this.getPayload(token);
     if (!PayloadToken?.id) {
       return throwError(() => new Error('Invalid token'));
     }
-  
+
     const headers = {
       'Authorization': `Bearer ${token}`
     };
-  
+
     return this.http.get<{ success: boolean; user: User }>(
-      `${this.apiUrlAuth}/users/${PayloadToken.id}`, 
+      `${this.apiUrlAuth}/users/${PayloadToken.id}`,
       { headers }
     ).pipe(
       map(response => ({
@@ -171,7 +171,7 @@ export class UsersService {
       catchError((error: HttpErrorResponse) => {
         console.error('Error fetching profile:', error);
         let errorMessage = 'Failed to fetch user profile';
-  
+
         if (error.status === 401) {
           errorMessage = 'Unauthorized. Please login again.';
           this.logout();
@@ -180,7 +180,7 @@ export class UsersService {
         } else if (error.error?.message) {
           errorMessage = error.error.message;
         }
-  
+
         return throwError(() => new Error(errorMessage));
       })
     );
@@ -241,13 +241,13 @@ export class UsersService {
     );
   }
 
-  
+
   getCategories(): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.apiUrl}/category`)
       .pipe(catchError(handleError));
   }
-  
+
   getProducts(): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.apiUrl}/product`)

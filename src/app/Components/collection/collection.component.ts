@@ -23,7 +23,7 @@ export class CollectionComponent {
         // console.log('Raw product data:', response);
 
         // Access the products array from the response.products
-        this.products = response.products?.slice(0, 9).map((product: any) => ({
+        this.products = response.products?.slice(0, 8).map((product: any) => ({
           ...product,
           title:
             product.title.length > 50
