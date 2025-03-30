@@ -17,6 +17,7 @@ import { AuthGuardService } from './Services/auth.guard.service';
 import { FavoriteItemComponent } from './Components/favorites-item/favorites-item.component';
 import { FavoriteComponent } from './Components/favorites/favorites.component';
 import { OrderPageComponent } from './Components/Order/order/order.component';
+
 import { MainCheckoutComponent } from './Components/Checkout/main-checkout/main-checkout.component';
 
 
@@ -28,6 +29,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactComponent },
+
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent,
