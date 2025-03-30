@@ -1,7 +1,7 @@
 import { UsersService } from "./users.service";
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
