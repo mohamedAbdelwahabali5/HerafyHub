@@ -5,7 +5,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { handleError } from '../Utils/handleError';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
 interface UpdateProfileResponse {
@@ -18,10 +18,10 @@ interface UpdateProfileResponse {
   providedIn: 'root',
 })
 export class UsersService {
-  // private readonly apiUrl = environment.apiUrl;
-  private readonly apiUrl = 'http://localhost:5555';
-  // private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  private readonly apiUrlAuth = 'http://localhost:5555/auth';
+  private readonly apiUrl = environment.apiUrl;
+  // private readonly apiUrl = 'http://localhost:5555';
+  private readonly apiUrlAuth = `${this.apiUrl}/auth`;
+  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
 

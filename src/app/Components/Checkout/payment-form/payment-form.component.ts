@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { OrderService } from '../../../Services/order.service';
 
 interface PaymentMethod {
   id: string;
@@ -19,6 +20,8 @@ interface PaymentMethod {
   styleUrl: './payment-form.component.css'
 })
 export class PaymentFormComponent implements OnInit {
+  @Input() shippingAddress: any;
+
   paymentMethods: PaymentMethod[] = [
     {
       id: 'cod',
@@ -37,7 +40,7 @@ export class PaymentFormComponent implements OnInit {
   selectedMethod: PaymentMethod | null = null;
   paymentForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private orderService: OrderService) { }
 
   ngOnInit() {
     this.initForm();
@@ -73,6 +76,19 @@ export class PaymentFormComponent implements OnInit {
     }
   }
 
+  // loadCartItems(): void {
+  //   this.cartItems = this.cartService.getCartItems();
+  //   this.calculateTotal();
+  // }
+
+  // calculateTotal(): void {
+  //   this.totalPrice = this.cartItems.reduce(
+  //     (total, item) => total + (item.price * item.quantity),
+  //     0
+  //   );
+  // }
+
+
   isFieldInvalid(fieldName: string): boolean {
     const field = this.paymentForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
@@ -82,6 +98,7 @@ export class PaymentFormComponent implements OnInit {
     if (this.selectedMethod && (this.selectedMethod.id == "cod" || this.paymentForm.valid)) {
       console.log('Payment Form Submitted', this.paymentForm.value);
       console.log('Selected Method', this.selectedMethod);
+      this.orderService.createOrder(this.paymentForm.value);
     } else {
       Object.keys(this.paymentForm.controls).forEach(field => {
         const control = this.paymentForm.get(field);

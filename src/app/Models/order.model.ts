@@ -5,11 +5,17 @@ export interface OrderProduct {
   name: string;
   quantity: number;
 }
+export interface ShippingAddress {
+  name?: string;
+  address?: string;
+  phone?: string;
+}
 
 export interface Order {
   _id: string;
   user: string;
   products: OrderProduct[];
+  shippingAddress?: ShippingAddress;
   totalPrice: number;
   status: OrderStatus;
   createdAt: Date;

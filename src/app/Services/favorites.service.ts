@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class FavoriteService {
   private readonly addToFavorite_URL = `${this.apiUrl}/favorite/add`;
   constructor(private http: HttpClient, private userService: UsersService) { }
 
-//   private readonly favorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/';
-//   private readonly addToFavorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/add';
+  //   private readonly favorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/';
+  //   private readonly addToFavorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/add';
 
 
   // Add product to favorites

@@ -4,9 +4,9 @@
     <div class=" col-12">
       <div class="card shipping-card">
         <div class="card-header">
-          <h4>Shipping Information</h4>
-          <button *ngIf="!isEditing" class="btn bg-teal-green  text-white" (click)="toggleEdit()">
-            Edit Shipping Info
+          <h4 class="shipping-title">Shipping Information</h4>
+          <button *ngIf="!isEditing" class="btn bg-teal-green text-white" (click)="toggleEdit()">
+            Edit Info
           </button>
         </div>
 
@@ -15,25 +15,41 @@
           <div *ngIf="!isEditing && userData" class="user-data-view">
             <div class="data-row">
               <span class="data-label">Name:</span>
-              <span class="data-value">{{ userData.name }}</span>
-            </div>
-            <div class="data-row">
-              <span class="data-label">Address:</span>
-              <span class="data-value">{{ userData.address }}</span>
+              <span class="data-value">{{ getFullName() }}</span>
             </div>
             <div class="data-row">
               <span class="data-label">Phone:</span>
               <span class="data-value">{{ userData.phone }}</span>
             </div>
+            <div class="data-row">
+              <span class="data-label">Address:</span>
+              <span class="data-value">{{ userData.address }}</span>
+            </div>
           </div>
 
           <!-- Edit Form -->
           <form *ngIf="isEditing" [formGroup]="checkoutForm" class="edit-form">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" formControlName="name" class="form-control" required>
-              <div *ngIf="checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched" class="error-message">
-                Please enter your name
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-12 col-lg-6">
+                <div class="mb-3">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" formControlName="name" class="form-control" required>
+                  <div *ngIf="checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched"
+                    class="error-message">
+                    Please enter your name
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 col-md-12 col-lg-6">
+                <div class="mb-3">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" formControlName="phone" class="form-control" required>
+                  <div *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
+                    class="error-message">
+                    Please enter a valid phone number
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -46,18 +62,11 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" formControlName="phone" class="form-control" required>
-              <div *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
-                class="error-message">
-                Please enter a valid phone number
-              </div>
-            </div>
 
             <div class="form-actions">
               <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
-              <button type="button" class="btn btn-primary" (click)="saveChanges()" [disabled]="!checkoutForm.valid">
+              <button type="button" class="btn bg-teal-green text-white" (click)="saveChanges()"
+                [disabled]="!checkoutForm.valid">
                 Save Changes
               </button>
             </div>

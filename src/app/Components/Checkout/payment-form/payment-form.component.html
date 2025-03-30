@@ -3,9 +3,9 @@
     <div class="col-12 ">
       <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
         <div class="card shadow-sm">
-          <div class="card-header text-center bg-teal-green text-white">
+          <div class="card-header text-center text-black" style="background-color: #f8f9fa;">
             <h2 class="mb-0">
-              <i class="fas fa-money-check-alt me-2 "></i> Payment Method
+              <i class="fas fa-money-check-alt me-2 teal-green"></i> Payment Method
             </h2>
           </div>
 
@@ -14,12 +14,11 @@
 
             <div class="row g-3 d-flex ">
               <div *ngFor="let method of paymentMethods" class="col-6">
-                <div class="card h-100 payment-option "
-                     [class.border-primary]="selectedMethod === method"
-                     (click)="selectPaymentMethod(method)">
+                <div class="card h-100 payment-option " [class.border-primary]="selectedMethod === method"
+                  (click)="selectPaymentMethod(method)">
                   <div class="card-body text-center">
-                    <div class="mb-3">
-                      <i [class]="method.icon" class="fa-4x teal-green mb-3"></i>
+                    <div class="mb-1">
+                      <i [class]="method.icon" class="fa-4x teal-green mb-1"></i>
                     </div>
                     <h5 class="card-title">{{ method.name }}</h5>
                     <p class="card-text text-muted">{{ method.description }}</p>
@@ -34,11 +33,11 @@
 
             <!-- Credit Card Form -->
             <div *ngIf="selectedMethod?.id === 'card'" class="card-details mt-4">
-              <div class="row">
+              <div class="row gy-2">
                 <div class="col-12 col-md-6 mb-3">
                   <label for="cardholderName" class="form-label">Cardholder Name</label>
                   <input type="text" class="form-control" id="cardholderName" formControlName="cardholderName"
-                         placeholder="Name on Card" [class.is-invalid]="isFieldInvalid('cardholderName')">
+                    placeholder="Name on Card" [class.is-invalid]="isFieldInvalid('cardholderName')">
                   <div *ngIf="isFieldInvalid('cardholderName')" class="invalid-feedback">
                     Cardholder name is required
                   </div>
@@ -47,7 +46,7 @@
                 <div class="col-12 col-md-6 mb-3">
                   <label for="cardNumber" class="form-label">Card Number</label>
                   <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber"
-                         placeholder="1234 5678 9012 3456" maxlength="16" [class.is-invalid]="isFieldInvalid('cardNumber')">
+                    placeholder="1234 5678 9012 3456" maxlength="16" [class.is-invalid]="isFieldInvalid('cardNumber')">
                   <div *ngIf="isFieldInvalid('cardNumber')" class="invalid-feedback">
                     Valid card number is required
                   </div>
@@ -56,7 +55,7 @@
                 <div class="col-md-6 mb-3">
                   <label for="expirationDate" class="form-label">Expiration Date</label>
                   <input type="text" class="form-control" id="expirationDate" formControlName="expirationDate"
-                         placeholder="MM/YY" maxlength="5" [class.is-invalid]="isFieldInvalid('expirationDate')">
+                    placeholder="MM/YY" maxlength="5" [class.is-invalid]="isFieldInvalid('expirationDate')">
                   <div *ngIf="isFieldInvalid('expirationDate')" class="invalid-feedback">
                     Valid expiration date is required
                   </div>
@@ -64,8 +63,8 @@
 
                 <div class="col-md-6 mb-3">
                   <label for="cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="cvv" formControlName="cvv"
-                         placeholder="123" maxlength="3" [class.is-invalid]="isFieldInvalid('cvv')">
+                  <input type="text" class="form-control" id="cvv" formControlName="cvv" placeholder="123" maxlength="3"
+                    [class.is-invalid]="isFieldInvalid('cvv')">
                   <div *ngIf="isFieldInvalid('cvv')" class="invalid-feedback">
                     Valid CVV is required
                   </div>
@@ -75,10 +74,10 @@
           </div>
 
           <div class="card-footer">
-            <button type="submit" class="btn bg-teal-green w-100 text-white"
-              [disabled]="!isFormValid()" (click)="onSubmit()">
-                  Review Order
-          </button>
+            <button type="submit" class="btn bg-teal-green w-100 text-white" [disabled]="!isFormValid()"
+              (click)="onSubmit()">
+              Place Order
+            </button>
           </div>
         </div>
       </form>
