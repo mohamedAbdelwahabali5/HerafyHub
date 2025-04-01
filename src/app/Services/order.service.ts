@@ -7,32 +7,6 @@ import { UsersService } from '../Services/users.service';
 import { environment } from '../../environments/environment.prod';
 
 
-// export interface Order {
-//   id?: string;
-//   userId: string;
-//   items: OrderItem[];
-//   shippingInfo: ShippingInfo;
-//   paymentMethod: string;
-//   totalAmount: number;
-//   status: 'pending' | 'processing' | 'cancelled';
-//   createdAt?: Date;
-//   updatedAt?: Date;
-// }
-
-// export interface OrderItem {
-//   productId: string;
-//   name: string;
-//   quantity: number;
-//   price: number;
-//   image?: string;
-// }
-
-// export interface ShippingInfo {
-//   name: string;
-//   address: string;
-//   phone: string;
-// }
-
 
 @Injectable({
   providedIn: 'root'

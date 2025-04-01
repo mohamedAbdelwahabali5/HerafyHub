@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { OrderService } from '../../../Services/order.service';
+import { ShippingAddress, Order } from './../../../Models/order.model';
 
 interface PaymentMethod {
   id: string;
@@ -21,7 +22,7 @@ interface PaymentMethod {
 })
 export class PaymentFormComponent implements OnInit {
   @Input() shippingAddress: any;
-
+  // @Input() cartItems!: OrderItem[];
   paymentMethods: PaymentMethod[] = [
     {
       id: 'cod',
@@ -45,6 +46,7 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit() {
     this.initForm();
   }
+
 
   initForm() {
     this.paymentForm = this.fb.group({
@@ -94,19 +96,37 @@ export class PaymentFormComponent implements OnInit {
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
+  // onSubmit() {
+  //   if (this.selectedMethod && (this.selectedMethod.id == "cod" || this.paymentForm.valid)) {
+  //     console.log('Payment Form Submitted', this.paymentForm.value);
+  //     console.log('Selected Method', this.selectedMethod);
+  //     this.orderService.createOrder(this.paymentForm.value);
+  //   } else {
+  //     Object.keys(this.paymentForm.controls).forEach(field => {
+  //       const control = this.paymentForm.get(field);
+  //       control?.markAsTouched({ onlySelf: true });
+  //     });
+  //   }
+  // }
+
   onSubmit() {
     if (this.selectedMethod && (this.selectedMethod.id == "cod" || this.paymentForm.valid)) {
-      console.log('Payment Form Submitted', this.paymentForm.value);
-      console.log('Selected Method', this.selectedMethod);
-      this.orderService.createOrder(this.paymentForm.value);
-    } else {
-      Object.keys(this.paymentForm.controls).forEach(field => {
-        const control = this.paymentForm.get(field);
-        control?.markAsTouched({ onlySelf: true });
+      const orderData = {
+        shippingAddress: this.shippingAddress,
+        paymentMethod: this.selectedMethod,
+        paymentDetails: this.paymentForm.value
+      };
+
+      this.orderService.createOrder(orderData: Order).subscribe({
+        next: (response) => {
+          console.log('Order created successfully', response);
+        },
+        error: (err) => {
+          console.error('Error creating order', err);
+        }
       });
     }
   }
-
 
   isFormValid(): boolean {
     // console.log(this.selectedMethod?.id);
@@ -116,4 +136,5 @@ export class PaymentFormComponent implements OnInit {
     }
     return true; // For non-card methods (like cash)
   }
+}
 }
