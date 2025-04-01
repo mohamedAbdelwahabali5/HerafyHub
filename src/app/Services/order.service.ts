@@ -2,11 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Order } from '../Models/order.model';
-import { UsersService } from '../Services/users.service';
-import { environment } from '../../environments/environment.prod';
-
-
+import { UsersService } from './users.service';
+import { environment } from '../../environments/environment';
+import { Order, ShippingAddress } from '../Models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +12,7 @@ import { environment } from '../../environments/environment.prod';
 export class OrderService {
   private readonly apiUrl = environment.apiUrl;
   private readonly apiUrlOrder = `${this.apiUrl}/order`;
+
   constructor(
     private http: HttpClient,
     private usersService: UsersService
@@ -25,25 +24,39 @@ export class OrderService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<Order[]>(`${this.apiUrlOrder}`, { headers });
+    return this.http.get<Order[]>(`${this.apiUrlOrder}/user`, { headers });
   }
-  // Cancel an order
+
+  // Create a new order
+  createOrder(orderData: {
+    shippingAddress: ShippingAddress;
+    paymentMethod: 'Credit Card' | 'Cash on Delivery';
+    products: { productId: string; quantity: number }[];
+  }): Observable<Order> {
+    const token = this.usersService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<Order>(`${this.apiUrlOrder}`, orderData, { headers });
+  }
+
+  // Cancel an existing order
   cancelOrder(orderId: string): Observable<Order> {
     const token = this.usersService.getToken();
-
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.patch<Order>(`${this.apiUrlOrder}/${orderId}/cancel`, {}, { headers });
+    return this.http.delete<Order>(`${this.apiUrlOrder}/${orderId}`, { headers });
   }
-  createOrder(orderData: Order): Observable<any> {
+
+  // Get all orders (admin functionality)
+  getAllOrders(): Observable<Order[]> {
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-
-    return this.http.post(this.apiUrl, orderData, { headers });
+    return this.http.get<Order[]>(`${this.apiUrlOrder}`, { headers });
   }
-
-
 }

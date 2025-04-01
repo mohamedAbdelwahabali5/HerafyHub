@@ -2,8 +2,15 @@
   <div class="row g-3">
     <!-- Payment Form (Left Column) -->
     <div class="col-lg-7 col-12">
-      <app-user-info></app-user-info>
-      <app-payment-form></app-payment-form>
+      <app-user-info
+        (shippingAddressChange)="onShippingAddressChange($event)"
+        (shippingAddressEdited)="isShippingAddressEdited = true">
+      </app-user-info>
+      <app-payment-form
+        [userData]="userData"
+        [shippingAddress]="shippingAddress"
+        [isShippingAddressEdited]="isShippingAddressEdited">
+      </app-payment-form>
     </div>
 
     <!-- Order Summary (Right Column) -->
