@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row g-5">
       <!-- Logo Section -->
-      <div class="col-12 col-lg-4 mb-lg-0">
+      <div class="col-12 col-lg-4 mb-4 mb-lg-0">
         <div class="d-flex flex-column align-items-center align-items-lg-start">
           <a class="d-inline-block mb-4" href="/">
             <img
@@ -21,130 +21,98 @@
 
       <!-- Products & Links Row -->
       <div class="col-12 col-lg-8">
-        <div class="row g-5">
+        <div class="row g-5 h-100">
           <!-- Products Section -->
-          <div class="col-12 col-md-6 col-lg-6">
-            <div class="h-100">
-              <h5
-                class="text-center mb-4 fw-bold text-teal position-relative section-title"
-              >
-                <span class="bg-light px-3">Our Products</span>
-              </h5>
-              <div class="row" *ngIf="isLoggedIn">
-                <div class="col-6">
-                  <ul class="list-unstyled text-center text-md-start">
-                    <li
-                      *ngFor="let product of products.slice(0, 5)"
-                      class="mb-3"
-                    >
-                      <a
-                        [routerLink]="['/product-details', product._id]"
-                        class="text-secondary hover-teal text-decoration-none"
-                      >
-                        {{
-                          product.title.length > 15
-                            ? (product.title | slice : 0 : 15) + "..."
-                            : product.title
-                        }}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col-6">
-                  <ul class="list-unstyled text-center text-md-start">
-                    <li
-                      *ngFor="let product of products.slice(5, 10)"
-                      class="mb-3"
-                    >
-                      <a
-                        [routerLink]="['/product-details', product._id]"
-                        class="text-secondary hover-teal text-decoration-none"
-                      >
-                        {{
-                          product.title.length > 15
-                            ? (product.title | slice : 0 : 15) + "..."
-                            : product.title
-                        }}
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div class="col-12 col-md-6 col-lg-4">
+            <h5
+              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
+            >
+              Popular Products
+            </h5>
+            <ul class="list-unstyled" *ngIf="isLoggedIn">
+              <li *ngFor="let product of products.slice(0, 5)" class="mb-3">
+                <a
+                  [routerLink]="['/product-details', product._id]"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
+                >
+                  <span
+                    class="d-inline-block text-truncate"
+                    style="max-width: 90%"
+                  >
+                    {{
+                      product.title.length > 15
+                        ? (product.title | slice : 0 : 15) + "..."
+                        : product.title
+                    }}
+                  </span>
+                </a>
+              </li>
+            </ul>
           </div>
 
-          <!-- Combined Categories & Links -->
-          <div class="col-12 col-md-6 col-lg-6">
-            <div class="row h-100 g-4">
-              <!-- Categories -->
-              <div class="col-12 col-md-6">
-                <h5
-                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+          <!-- Categories Section -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <h5
+              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
+            >
+              Categories
+            </h5>
+            <ul class="list-unstyled" *ngIf="isLoggedIn">
+              <li *ngFor="let category of categories" class="mb-3">
+                <a
+                  [routerLink]="['/products', category._id]"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
                 >
-                  <span class="bg-light px-3">Categories</span>
-                </h5>
-                <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
-                  <li *ngFor="let category of categories" class="mb-3">
-                    <a
-                      [routerLink]="['/products', category._id]"
-                      class="text-secondary hover-teal text-decoration-none"
-                    >
-                      {{ category.title }}
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                  {{ category.title }}
+                </a>
+              </li>
+            </ul>
+          </div>
 
-              <!-- Quick Links -->
-              <div class="col-12 col-md-6">
-                <h5
-                  class="text-center mb-4 fw-bold text-teal position-relative section-title"
+          <!-- Quick Links -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <h5
+              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
+            >
+              Quick Links
+            </h5>
+            <ul class="list-unstyled" *ngIf="isLoggedIn">
+              <li class="mb-3">
+                <a
+                  routerLink="/profile"
+                  class="text-secondary hover-teal text-decoration-none"
+                  >Profile</a
                 >
-                  <span class="bg-light px-3">Quick Links</span>
-                </h5>
-                <div class="row justify-content-center">
-                  <div class="col-auto">
-                    <ul class="list-unstyled text-center" *ngIf="isLoggedIn">
-                      <li class="mb-3">
-                        <a
-                          routerLink="/profile"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Profile</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/cart"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Cart</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/favorite"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Favorites</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/about-us"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >About Us</a
-                        >
-                      </li>
-                      <li class="mb-3">
-                        <a
-                          routerLink="/contact-us"
-                          class="text-secondary hover-teal text-decoration-none"
-                          >Contact</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+              </li>
+              <li class="mb-3">
+                <a
+                  routerLink="/cart"
+                  class="text-secondary hover-teal text-decoration-none"
+                  >Cart</a
+                >
+              </li>
+              <li class="mb-3">
+                <a
+                  routerLink="/favorite"
+                  class="text-secondary hover-teal text-decoration-none"
+                  >Favorites</a
+                >
+              </li>
+              <li class="mb-3">
+                <a
+                  routerLink="/about-us"
+                  class="text-secondary hover-teal text-decoration-none"
+                  >About Us</a
+                >
+              </li>
+              <li class="mb-3">
+                <a
+                  routerLink="/contact-us"
+                  class="text-secondary hover-teal text-decoration-none"
+                  >Contact Us</a
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </div>

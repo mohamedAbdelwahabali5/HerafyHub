@@ -1,9 +1,14 @@
-<div class="checkout-container ">
-  <div class="checkout-content row">
-    <div class="d-flex flex-column col-md-6">
-      <app-cart-items class="checkout-column mb-3"></app-cart-items>
-      <app-order-summary class="checkout-column"></app-order-summary>
+<div class="checkout-container">
+  <div class="row g-3">
+    <!-- Payment Form (Left Column) -->
+    <div class="col-lg-7 col-12">
+      <app-user-info></app-user-info>
+      <app-payment-form></app-payment-form>
     </div>
-    <app-payment-form class="checkout-column col-md-6"></app-payment-form>
+
+    <!-- Order Summary (Right Column) -->
+    <div class="col-lg-5 col-12">
+      <app-order-summary></app-order-summary>
+    </div>
   </div>
 </div>

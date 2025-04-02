@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
     }
   }
+  
 
   ngOnDestroy() {
     // Unsubscribe to prevent memory leaks

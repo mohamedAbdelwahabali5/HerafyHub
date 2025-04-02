@@ -1,0 +1,63 @@
+{
+  "orders": [
+    {
+      "_id": "660352a45f5f7b001f3e4001",
+      "user": "660352a45f5f7b001f3e4101",
+      "products": [
+        {
+          "product": "660352a45f5f7b001f3e4201",
+          "name": "Handwoven Wool Scarf",
+          "quantity": 2
+        },
+        {
+          "product": "660352a45f5f7b001f3e4202",
+          "name": "Handwoven Wool Scarf",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 199.98,
+      "status": "In-Progress",
+      "createdAt": "2024-03-26T10:30:00.000Z",
+      "updatedAt": "2024-03-26T10:30:00.000Z",
+      "deliveredAt": null,
+      "cancelledAt": null,
+      "IsCancelled": false
+    },
+    {
+      "_id": "660352a45f5f7b001f3e4002",
+      "user": "660352a45f5f7b001f3e4102",
+      "products": [
+        {
+          "product": "660352a45f5f7b001f3e4203",
+          "name": "Multicolor Patchwork Scarf",
+          "quantity": 3
+        }
+      ],
+      "totalPrice": 149.97,
+      "status": "delivered",
+      "createdAt": "2024-03-25T15:45:00.000Z",
+      "updatedAt": "2024-03-26T09:15:00.000Z",
+      "deliveredAt": "2024-03-26T09:15:00.000Z",
+      "cancelledAt": null,
+      "IsCancelled": false
+    },
+    {
+      "_id": "660352a45f5f7b001f3e4003",
+      "user": "660352a45f5f7b001f3e4103",
+      "products": [
+        {
+          "product": "660352a45f5f7b001f3e4204",
+          "name": "Boho Crochet Fringe Scarf",
+          "quantity": 1
+        }
+      ],
+      "totalPrice": 79.99,
+      "status": "cancelled",
+      "createdAt": "2024-03-24T08:20:00.000Z",
+      "updatedAt": "2024-03-25T11:30:00.000Z",
+      "deliveredAt": null,
+      "cancelledAt": "2024-03-25T11:30:00.000Z",
+      "IsCancelled": true
+    }
+  ]
+}

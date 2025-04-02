@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.prod';
 import { HttpHeaders } from '@angular/common/http';
 
-
 interface UpdateProfileResponse {
   success: boolean;
   message: string;
@@ -19,13 +18,13 @@ interface UpdateProfileResponse {
   providedIn: 'root',
 })
 export class UsersService {
-
   private readonly apiUrl = environment.apiUrl;
+  // private readonly apiUrl = 'http://localhost:5555';
   private readonly apiUrlAuth = `${this.apiUrl}/auth`;
   // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
-  
+
   // Observable that components can subscribe to
   profileImage$ = this.profileImageSubject.asObservable();
 
@@ -34,7 +33,6 @@ export class UsersService {
       this.storageType = sessionStorage;
     }
   }
-
 
   // users.service.ts
   addUser(user: User): Observable<RegisterResponse> {
@@ -59,16 +57,16 @@ export class UsersService {
           console.error('Login error:', error);
           let errorMessage = 'Login failed';
 
-        if (error.status === 401) {
-          errorMessage = 'Unauthorized. Please login again.';
-          this.logout();
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
+          if (error.status === 401) {
+            errorMessage = 'Unauthorized. Please login again.';
+            this.logout();
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
 
-        return throwError(() => new Error(errorMessage));
-      })
-    );
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
   // reset password
   forgotPassword(email: string): Observable<any> {
@@ -87,16 +85,20 @@ export class UsersService {
     });
   }
 
-
   // Update user profile (requires token)
   updateUserProfile(userData: User, profileImage?: File): Observable<any> {
     const formData = new FormData();
     const token = this.getToken();
-    
+
     // Append user data
-    (Object.keys(userData) as Array<keyof User>).forEach(key => {
+    (Object.keys(userData) as Array<keyof User>).forEach((key) => {
       // Skip password and profileImage fields
-      if (key !== 'password' && key !== 'profileImage' && userData[key] !== undefined && userData[key] !== null) {
+      if (
+        key !== 'password' &&
+        key !== 'profileImage' &&
+        userData[key] !== undefined &&
+        userData[key] !== null
+      ) {
         formData.append(key, String(userData[key]));
       }
     });
@@ -107,21 +109,25 @@ export class UsersService {
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    return this.http.put<any>(`${this.apiUrlAuth}/update-profile`, formData, { headers }).pipe(
-      tap(response => {
-        // Update the profile image in the service
-        if (response.user?.profileImage) {
-          this.profileImageSubject.next(response.user.profileImage);
-        }
-      }),
-      catchError(error => {
-        console.error('Update error:', error);
-        return throwError(() => new Error(error.error?.message || 'Update failed'));
-      })
-    );
+    return this.http
+      .put<any>(`${this.apiUrlAuth}/update-profile`, formData, { headers })
+      .pipe(
+        tap((response) => {
+          // Update the profile image in the service
+          if (response.user?.profileImage) {
+            this.profileImageSubject.next(response.user.profileImage);
+          }
+        }),
+        catchError((error) => {
+          console.error('Update error:', error);
+          return throwError(
+            () => new Error(error.error?.message || 'Update failed')
+          );
+        })
+      );
   }
 
   // Get authenticated user profile (requires token)
@@ -134,11 +140,11 @@ export class UsersService {
       return null;
     }
   }
-  
+
   // Update getUserProfile method
   // Add this constant at the top of the class
   private readonly defaultProfileImage = 'images/img-preview.png';
-  
+
   // Update getUserProfile method to include default image
   getUserProfile(): Observable<User> {
     const token = this.getToken();
@@ -147,43 +153,45 @@ export class UsersService {
     if (!token) {
       return throwError(() => new Error('No token found'));
     }
-  
+
     const PayloadToken = this.getPayload(token);
     if (!PayloadToken?.id) {
       return throwError(() => new Error('Invalid token'));
     }
-  
+
     const headers = {
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
-  
-    return this.http.get<{ success: boolean; user: User }>(
-      `${this.apiUrlAuth}/users/${PayloadToken.id}`, 
-      { headers }
-    ).pipe(
-      map(response => ({
-        ...response.user,
-        profileImage: response.user.profileImage || this.defaultProfileImage
-      })),
-      tap(user => {
-        console.log('User profile loaded:', user);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.error('Error fetching profile:', error);
-        let errorMessage = 'Failed to fetch user profile';
-  
-        if (error.status === 401) {
-          errorMessage = 'Unauthorized. Please login again.';
-          this.logout();
-        } else if (error.status === 404) {
-          errorMessage = 'User not found';
-        } else if (error.error?.message) {
-          errorMessage = error.error.message;
-        }
-  
-        return throwError(() => new Error(errorMessage));
-      })
-    );
+
+    return this.http
+      .get<{ success: boolean; user: User }>(
+        `${this.apiUrlAuth}/users/${PayloadToken.id}`,
+        { headers }
+      )
+      .pipe(
+        map((response) => ({
+          ...response.user,
+          profileImage: response.user.profileImage || this.defaultProfileImage,
+        })),
+        tap((user) => {
+          console.log('User profile loaded:', user);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching profile:', error);
+          let errorMessage = 'Failed to fetch user profile';
+
+          if (error.status === 401) {
+            errorMessage = 'Unauthorized. Please login again.';
+            this.logout();
+          } else if (error.status === 404) {
+            errorMessage = 'User not found';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+
+          return throwError(() => new Error(errorMessage));
+        })
+      );
   }
   // Delete user (requires token)
   deleteUser(): Observable<any> {
@@ -230,29 +238,57 @@ export class UsersService {
 
   // Add this method to the UsersService class
   sendPasswordResetLink(email: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrlAuth}/forgot-password`, { email }).pipe(
-      tap(response => {
-        console.log('Password reset link sent:', response);
-      }),
-      catchError(error => {
-        console.error('Password reset link error:', error);
-        return throwError(() => new Error(error.error?.message || 'Failed to send password reset link'));
-      })
-    );
+    return this.http
+      .post<any>(`${this.apiUrlAuth}/forgot-password`, { email })
+      .pipe(
+        tap((response) => {
+          console.log('Password reset link sent:', response);
+        }),
+        catchError((error) => {
+          console.error('Password reset link error:', error);
+          return throwError(
+            () =>
+              new Error(
+                error.error?.message || 'Failed to send password reset link'
+              )
+          );
+        })
+      );
   }
 
-  
   getCategories(): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.apiUrl}/category`)
       .pipe(catchError(handleError));
   }
-  
+
   getProducts(): Observable<any[]> {
     return this.http
       .get<any[]>(`${this.apiUrl}/product`)
       .pipe(catchError(handleError));
   }
+  // users.service.ts
+  getProductsByCategory(categoryId: string): Observable<any> {
+    return this.http
+      .get(`${this.apiUrl}/product/category/${categoryId}`)
+      .pipe(catchError(handleError));
+  }
+
+  sendContactMessage(contactData: any): Observable<any> {
+    console.log('Sending to:', `${this.apiUrl}/contact`);
+    return this.http.post<any>(`${this.apiUrl}/contact`, contactData).pipe(
+      catchError((error) => {
+        console.error('Contact error:', error);
+        let errorMessage = 'Failed to send message. Please try again later.';
+
+        if (error.status === 404) {
+          errorMessage = 'Contact endpoint not found';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+
+        return throwError(() => new Error(errorMessage));
+      })
+    );
+  }
 }
-
-
