@@ -134,7 +134,7 @@ export class PaymentFormComponent implements OnInit {
 
           this.cartService.clearCart().subscribe({
             next: () => {
-              this.router.navigate(['/'], {
+              this.router.navigate(['/order'], {
                 queryParams: {
                   orderId: response.order?._id || response._id
                 }

@@ -46,6 +46,11 @@ export const routes: Routes = [
     component: ProductsComponent,
     canActivate: [AuthGuardService],
   },
+  {
+    path: 'order',
+    component: OrderPageComponent,
+    canActivate: [AuthGuardService],
+  },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
   { path: 'order', component: OrderPageComponent },
