@@ -3,55 +3,56 @@
     <h3 class="mb-3 mt-3">Shopping Bag</h3>
   </div>
   <div *ngIf="Carts.length > 0; else noProducts">
-  <div class="row justify-content-between">
-    <div class="col-md-7 col-sm-6 ">
-      <p>{{Carts.length}}items in your bag</p>
+    <div class="row justify-content-between">
+      <div class="col-md-7 col-sm-6 ">
+        <p>{{Carts.length}}items in your bag</p>
+      </div>
     </div>
-  </div>
-  <!-- left card and right card-->
-  <div class="row justify-content-between mt-2 ">
-    <div class="col-md-8 col-sm-12 left p-4 ">
-      <button class="clear" (click)="clearCart()">Clear Cart</button>
-      @if(isArray(Carts) && Carts.length > 0) {
+    <!-- left card and right card-->
+    <div class="row justify-content-between mt-2 ">
+      <div class="col-md-8 col-sm-12 left p-4 ">
+        <button class="clear" (click)="clearCart()">Clear Cart</button>
+        @if(isArray(Carts) && Carts.length > 0) {
         @for(cart of Carts; track cart.id ?? $index) {
-          <app-cart-item [cart]="cart" (itemRemoved)="handleItemRemoved($event)"></app-cart-item>
+        <app-cart-item [cart]="cart" (itemRemoved)="handleItemRemoved($event)"></app-cart-item>
         }
-      } @else {
+        } @else {
         <p>Your shopping bag is empty</p>
-      }
+        }
+      </div>
+      <!-- right card -->
+      <div class="col-md-3 col-sm-12 right">
+        <div class="card rounded-3  p-4">
+          <h5 class="mb-3">Cart Total</h5>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Cart subtotal</span>
+            <span>{{ calculateTotalFromItems() | currency }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-2">
+            <span>Discount</span>
+            <span>-$4.00</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3">
+            <span>Delivery Charge</span>
+            <span>Free</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mt-3">
+            <strong>Total Amount</strong>
+            <strong>{{ calculateTotalFromItems()-4 | currency }}</strong>
+          </div>
+        </div>
+        <div class=" checkout-btn mt-4 bg-teal-green rounded-3 p-2 ">
+          <button class="btn rounded-5 w-100 fa-bold fs-5 text-white" [routerLink]="['/checkout']">Proceed to
+            Checkout</button>
+        </div>
+      </div>
     </div>
-    <!-- right card -->
-    <div class="col-md-3 col-sm-12 right">
-    <div class="card rounded-3  p-4">
-      <h5 class="mb-3">Cart Total</h5>
-      <div class="d-flex justify-content-between mb-2">
-        <span>Cart subtotal</span>
-        <span>{{ calculateTotalFromItems() | currency }}</span>
-      </div>
- 
-      <div class="d-flex justify-content-between mb-2">
-        <span>Discount</span>
-        <span>-$4.00</span>
-      </div>
- 
-      <div class="d-flex justify-content-between mb-3">
-        <span>Delivery Charge</span>
-        <span>Free</span>
-      </div>
-      <hr />
-      <div class="d-flex justify-content-between mt-3">
-        <strong>Total Amount</strong>
-        <strong>{{ calculateTotalFromItems()-4 | currency }}</strong>
-      </div>
-    </div>
- 
-    </div>
-  </div>
   </div>
 </div>
 <!-- No favorites template -->
 <ng-template #noProducts>
   <p>No products found.</p>
 </ng-template>
- 
- 

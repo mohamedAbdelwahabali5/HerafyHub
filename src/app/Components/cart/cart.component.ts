@@ -2,32 +2,33 @@ import { Component } from '@angular/core';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { CartService } from '../../Services/cart.service';
 import { CommonModule } from '@angular/common';
- 
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-cart',
-  imports: [CartItemComponent, CommonModule],
+  imports: [CartItemComponent, CommonModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
 export class CartComponent {
   Carts: any[] = [];
   TotalAmount: number = 0;
- 
-  constructor(private cartService: CartService) {}
- 
+
+  constructor(private cartService: CartService) { }
+
   ngOnInit(): void {
     this.getAllProducts();
     this.loadCartFromLocalStorage();
   }
- 
+
   isArray(obj: any): boolean {
     return Array.isArray(obj);
   }
- 
+
   getCartLength(): number {
     return Array.isArray(this.Carts) ? this.Carts.length : 0;
   }
- 
+
   getAllProducts(): void {
     this.cartService.getAllProducts().subscribe({
       next: (data: any) => {
@@ -62,29 +63,29 @@ export class CartComponent {
       },
     });
   }
- 
+
   calculateTotal(): void {
     this.TotalAmount = 0;
     if (!this.Carts || this.Carts.length === 0) return;
- 
+
     console.log('Calculating total from item totals:', this.Carts);
- 
+
     this.Carts.forEach((cart) => {
       const price = Number(cart.price);
       const quantity = Number(cart.quantity);
- 
+
       if (!isNaN(price) && !isNaN(quantity)) {
         const itemTotal = price * quantity;
         console.log(`Item ${cart.id}: ${price} × ${quantity} = ${itemTotal}`);
         this.TotalAmount += itemTotal;
       } else {
-        console.error('Invalid price or quantity:', cart);
+        console.log('Invalid price or quantity:', cart);
       }
     });
- 
+
     console.log('Final total:', this.TotalAmount);
   }
- 
+
   handleItemRemoved(productId: string): void {
     this.Carts = this.Carts.filter((item) => item.id !== productId);
     this.calculateTotal();
@@ -102,10 +103,10 @@ export class CartComponent {
     const quantity = Number(item.quantity);
     return !isNaN(price) && !isNaN(quantity) ? price * quantity : 0;
   }
- 
+
   calculateTotalFromItems(): number {
     if (!this.Carts || this.Carts.length === 0) return 0;
- 
+
     return this.Carts.reduce((total, item) => {
       return total + this.getItemTotalPrice(item);
     }, 0);
@@ -128,7 +129,7 @@ export class CartComponent {
   clearCart(): void {
     const confirmClear = window.confirm('Are you sure you want to clear the entire cart?');
     if (!confirmClear) return;
- 
+
     this.cartService.clearCart().subscribe({
       next: (response) => {
         console.log('Cart cleared successfully:', response.message);
@@ -141,8 +142,7 @@ export class CartComponent {
       },
     });
   }
- 
- 
+
+
 }
- 
- 
+

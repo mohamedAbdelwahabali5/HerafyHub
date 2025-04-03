@@ -1,21 +1,88 @@
-<div class="summary-section">
-  <h2>Summary</h2>
-  <div class="summary-details">
-    <div class="summary-row">
-      <span>Subtotal</span>
-      <span>₹2000</span>
+<div class="cart-summary container bg-gray-50 p-4 md:p-6 rounded-lg shadow-sm ">
+  <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gray-800">🛒 Cart Summary</h3>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && !errorMessage" style="text-align: center; padding: 2rem 0;">
+    <div class="loading-circle"></div>
+    <p style="margin-top: 0.5rem; color: #6b7280;">Loading your cart...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="bg-red-50 border-l-4 border-red-500 p-3 md:p-4 mb-4 md:mb-6 rounded">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 pt-0.5">
+        <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-xs md:text-sm text-red-700">{{ errorMessage }}</p>
+      </div>
     </div>
-    <div class="summary-row">
-      <span>VAT</span>
-      <span>₹30.00</span>
+  </div>
+
+  <!-- Empty Cart State -->
+  <div *ngIf="!isLoading && !errorMessage && cartItems.length === 0" class="text-center py-6 md:py-8">
+    <svg class="mx-auto h-10 w-10 md:h-12 md:w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+    </svg>
+    <h3 class="mt-2 text-base md:text-lg font-medium text-gray-900">Your cart is empty</h3>
+    <p class="mt-1 text-xs md:text-sm text-gray-500">Start shopping to add items to your cart</p>
+  </div>
+
+  <!-- Scrollable Products List Container -->
+  <div class="cart-items-container bg-gray-50 rounded-lg border border-gray-200 p-3"
+    style="max-height: 500px; width: 100%; ">
+
+
+    <!-- Products List -->
+    <div *ngIf="cartItems.length > 0" class="cart-items-list overflow-y-auto" style="max-height: 450px;">
+      <div *ngFor="let item of cartItems"
+        class="cart-item bg-white p-3 rounded-lg mb-3 flex items-start border border-gray-200transition-shadow">
+
+        <!-- Product Image -->
+        <div class="image-container flex-shrink-0 mr-3 img-container">
+          <img [src]="item.image || 'assets/default-product.png'" [alt]="item.name"
+            class="product-image bi-image-fill  object-cover img-fluid rounded-md w-100 h-100" />
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details flex-1 min-w-0">
+          <h5 class="text-gray-800 font-medium mb-1 truncate text-start">{{ item.name }}</h5>
+
+          <div class="grid grid-cols-2 gap-2 text-sm text-gray-600 text-start">
+            <!-- Quantity -->
+            <div class="flex items-center">
+              <span class="mr-1">📦</span>
+              <span>{{ item.quantity }} ×</span>
+            </div>
+
+            <!-- Price -->
+            <div class="flex items-center">
+              <span class="mr-1">💰</span>
+              <span>{{ item.price | currency:' ':'symbol':'1.2-2' }} EGP</span>
+            </div>
+
+            <!-- Total -->
+            <div class="col-span-2 flex items-center pt-1 border-t border-gray-100 mt-1">
+              <span class="mr-1">💵</span>
+              <span class="font-medium">{{ item.total | currency:' ':'symbol':'1.2-2' }} EGP</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="summary-row">
-      <span>Shipping</span>
-      <span>₹100.00</span>
-    </div>
-    <div class="summary-row total">
-      <strong>Total</strong>
-      <strong>₹200</strong>
-    </div>
+  </div>
+
+  <!-- Total Price -->
+  <div *ngIf="cartItems.length > 0"
+    class="total-price bg-white p-3 md:p-4 rounded-lg mt-4 md:mt-6 border-t-2 border-gray-100">
+    <h3 class="text-lg md:text-xl font-bold text-gray-800 text-right">
+      Total Price: {{ totalPrice | currency:' ':'symbol':'1.2-2' }} EGP
+    </h3>
   </div>
 </div>
