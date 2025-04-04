@@ -28,6 +28,9 @@ export class CollectionCardComponent {
     public userServ: UsersService
   ) {}
     isProductInFavorites(): boolean {
+      if (!this.userServ.isLoggedIn()) {
+        return false;
+      }
       return this.productsInFavorite.has(this.product._id);
     }
     ngOnInit() {
@@ -67,6 +70,9 @@ export class CollectionCardComponent {
     }
 
     isProductInCart(productId: string): boolean {
+      if (!this.userServ.isLoggedIn()) {
+        return false;
+      }
       return this.productsInCart.has(productId);
     }
 
