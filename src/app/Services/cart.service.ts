@@ -135,22 +135,6 @@ export class CartService {
   }
 
 
-  // removeCartLocal(productId: string): Observable<any> {
-  //   const token = this.userService.getToken();
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`
-  //   });
-  //   const removeUrl = `${this.cart_URL}remove/${productId}`;
-  //   return this.http.delete(removeUrl, { headers });
-  // }
-  // clearFromCartLocal(): Observable<any> {
-  //   const token = this.userService.getToken();
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`
-  //   });
-  //   const clearUrl = `${this.cart_URL}clear`;
-  //   return this.http.delete(clearUrl, { headers });
-  // }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
 

@@ -1,25 +1,13 @@
 <div class="container-fluid mt-5">
   <div class="d-flex justify-content-between">
     <div class="dropdown col-auto">
-      <button
-        class="custom-dropdown px-2"
-        type="button"
-        id="dropdownMenuButton"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
+      <button class="custom-dropdown px-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+        aria-expanded="false">
         Sort
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 65 30"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="20" height="20" viewBox="0 0 65 30" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M29.278 28.9074C29.2821 28.904 29.2881 28.904 29.2922 28.9074C31.071 30.3661 33.9533 30.3642 35.7291 28.9016L63.0414 6.40598C64.8195 4.94142 64.8195 2.56298 63.0414 1.09842C61.2632 -0.366139 58.3755 -0.366139 56.5974 1.09842L51.5672 5.24153C40.4915 14.364 24.5066 14.3663 13.4283 5.24706L8.4026 1.11013C6.62446 -0.354424 3.73675 -0.354424 1.95861 1.11013C0.180464 2.57469 0.180464 4.95313 1.95861 6.41769L29.2638 28.9074C29.2679 28.9108 29.2739 28.9108 29.278 28.9074V28.9074Z"
-            fill="white"
-          />
+            fill="white" />
         </svg>
       </button>
       <ul class="dropdown-menu" (click)="sort($event)" aria-labelledby="dropdownMenuButton">
@@ -27,98 +15,87 @@
         <li class="dropdown-item">High to Low</li>
       </ul>
     </div>
- 
+
     <div class="col-auto px-0">
       <div style="position: relative; width: fit-content; width: 50%">
-        <input
-          class="search-field"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="searchProduct()"
-          type="search"
-          id="inputSearch"
-          placeholder="Search"
-        />
-        <img
-          src="/icons/search.svg"
-          alt="Search Icon"
-          width="16"
-          class="search-icon-style"
-        />
+        <input class="search-field" [(ngModel)]="searchTerm" (ngModelChange)="searchProduct()" type="search"
+          id="inputSearch" placeholder="Search" />
+        <img src="/icons/search.svg" alt="Search Icon" width="16" class="search-icon-style" />
       </div>
     </div>
   </div>
- 
+
   @if (loading) {
-    <div class="row my-5">
-      <div class="col-12 text-center py-4">
-        <div class="spinner-border text-teal-green" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-3 text-muted">Loading products...</p>
+  <div class="row my-5">
+    <div class="col-12 text-center py-4">
+      <div class="spinner-border text-teal-green" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
+      <p class="mt-3 text-muted">Loading products...</p>
     </div>
+  </div>
   }@else if (!pageProducts || pageProducts.length === 0) {
-    <div class="row my-5">
-      <div class="col-12 text-center py-4">
-        <div class="d-flex flex-column align-items-center">
-          <h5 class="text-muted">No products found</h5>
-          <p class="text-muted">Try adjusting your search or filters</p>
-        </div>
+  <div class="row my-5">
+    <div class="col-12 text-center py-4">
+      <div class="d-flex flex-column align-items-center">
+        <h5 class="text-muted">No products found</h5>
+        <p class="text-muted">Try adjusting your search or filters</p>
       </div>
     </div>
+  </div>
   }@else if (err) {
-    <div class="row my-5">
-      <div class="col-12 text-center py-4">
-        <div class="d-flex flex-column align-items-center">
-          <h5 class="text-danger">Coming Soon!</h5>
-        </div>
+  <div class="row my-5">
+    <div class="col-12 text-center py-4">
+      <div class="d-flex flex-column align-items-center">
+        <h5 class="text-danger">Coming Soon!</h5>
       </div>
     </div>
+  </div>
   }@else{
   <div class="row mt-4  d-flex justify-content-evenly">
     @for (product of pageProducts; track $index) {
-    <div
-      class="col-sm-5 col-md-4 col-lg-3 mb-5 d-flex justify-content-center align-content-center"
-    >
+    <div class="col-sm-5 col-md-4 col-lg-3 mb-5 d-flex justify-content-center align-content-center">
       <app-product-card [product]="product"></app-product-card>
     </div>
     }
   </div>
- 
+
   <!-- Pagination Section -->
-<div class="d-flex justify-content-center mt-5 fw-bold">
-  <nav aria-label="Page navigation">
-    <ul class="pagination">
-      <li class="page-item" [class.disabled]="currentPage === 1">
-        <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
-          <svg width="15" height="15" viewBox="0 0 30 60" fill="none" class="pagination-icon">
-            <path d="M1.09842 26.9742C-0.366139 28.6478 -0.366139 31.3656 1.09842 33.0392L23.594 58.7448C25.0586 60.4184 27.437 60.4184 28.9016 58.7448C30.3661 57.0713 30.3661 54.3535 28.9016 52.6799L9.0539 30L28.8899 7.32009C30.3544 5.64655 30.3544 2.92871 28.8899 1.25516C27.4253 -0.418387 25.0469 -0.418387 23.5823 1.25516L1.0867 26.9608L1.09842 26.9742Z" fill="#3D8D7A"/>
-          </svg>
-          <span class="pagination-text">Previous</span>
-        </button>
-      </li>
- 
-      @for (page of pageNumbers; track page) {
-      <li class="page-item page-number" [class.active]="currentPage === page">
-        <button class="page-link" (click)="changePage(page)">
-          {{ page }}
-        </button>
-      </li>
-      }
- 
-      <li class="page-item" [class.disabled]="currentPage === totalPages">
-        <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
-          <span class="pagination-text">Next</span>
-          <svg width="15" height="15" viewBox="0 0 30 60" fill="none" class="pagination-icon">
-            <path d="M28.2489 26.9608L28.2371 26.9742L28.5253 27.3035C29.8249 28.7885 29.8249 31.2249 28.5253 32.7099L6.02971 58.4156C4.76435 59.8615 2.74004 59.8615 1.47468 58.4156C0.175105 56.9305 0.175105 54.4942 1.47468 53.0092L21.3224 30.3293L21.6104 30.0001L21.3225 29.6708L1.4865 6.99093L1.4864 6.99082C0.186822 5.50579 0.186822 3.06946 1.4864 1.58444C2.75175 0.13852 4.77607 0.13852 6.04143 1.58444L28.2489 26.9608Z" fill="#3D8D7A" stroke="black"/>
-          </svg>
-        </button>
-      </li>
-    </ul>
-  </nav>
-</div>
- 
+  <div class="d-flex justify-content-center mt-5 fw-bold">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">
+            <svg width="15" height="15" viewBox="0 0 30 60" fill="none" class="pagination-icon">
+              <path
+                d="M1.09842 26.9742C-0.366139 28.6478 -0.366139 31.3656 1.09842 33.0392L23.594 58.7448C25.0586 60.4184 27.437 60.4184 28.9016 58.7448C30.3661 57.0713 30.3661 54.3535 28.9016 52.6799L9.0539 30L28.8899 7.32009C30.3544 5.64655 30.3544 2.92871 28.8899 1.25516C27.4253 -0.418387 25.0469 -0.418387 23.5823 1.25516L1.0867 26.9608L1.09842 26.9742Z"
+                fill="#3D8D7A" />
+            </svg>
+            <span class="pagination-text">Previous</span>
+          </button>
+        </li>
+
+        @for (page of pageNumbers; track page) {
+        <li class="page-item page-number" [class.active]="currentPage === page">
+          <button class="page-link" (click)="changePage(page)">
+            {{ page }}
+          </button>
+        </li>
+        }
+
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">
+            <span class="pagination-text">Next</span>
+            <svg width="15" height="15" viewBox="0 0 30 60" fill="none" class="pagination-icon">
+              <path
+                d="M28.2489 26.9608L28.2371 26.9742L28.5253 27.3035C29.8249 28.7885 29.8249 31.2249 28.5253 32.7099L6.02971 58.4156C4.76435 59.8615 2.74004 59.8615 1.47468 58.4156C0.175105 56.9305 0.175105 54.4942 1.47468 53.0092L21.3224 30.3293L21.6104 30.0001L21.3225 29.6708L1.4865 6.99093L1.4864 6.99082C0.186822 5.50579 0.186822 3.06946 1.4864 1.58444C2.75175 0.13852 4.77607 0.13852 6.04143 1.58444L28.2489 26.9608Z"
+                fill="#3D8D7A" stroke="black" />
+            </svg>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
   }
 </div>
- 
- 

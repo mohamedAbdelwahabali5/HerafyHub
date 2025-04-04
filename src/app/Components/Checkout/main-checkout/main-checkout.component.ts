@@ -22,7 +22,8 @@ export class MainCheckoutComponent implements OnInit {
   };
   isShippingAddressEdited = false;
 
-  constructor(private usersService: UsersService) {}
+
+  constructor(private usersService: UsersService) { }
 
   ngOnInit() {
     this.usersService.getUserProfile().subscribe(
