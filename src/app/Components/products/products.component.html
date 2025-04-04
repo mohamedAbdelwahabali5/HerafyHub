@@ -1,2 +1,5 @@
-<app-category-info [selectedCategory]="selectedCategory" (categorySelected)="onCategorySelected($event)"></app-category-info>
+<app-category-info
+  [selectedCategory]="selectedCategory"
+  (categorySelected)="onCategorySelected($event)"
+></app-category-info>
 <app-products-list [categoryId]="categoryId"></app-products-list>
