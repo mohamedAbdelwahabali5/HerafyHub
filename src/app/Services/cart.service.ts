@@ -122,6 +122,10 @@ export class CartService {
     localStorage.removeItem(this.cartKey);
   }
 
+  // Private method to save cart
+  private saveCart(cartItems: any[]): void {
+    localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
+  }
   // Calculate total price
   calculateTotal(): number {
     return this.getCartItems().reduce(
@@ -130,26 +134,6 @@ export class CartService {
     );
   }
 
-  // Private method to save cart
-  private saveCart(cartItems: any[]): void {
-    localStorage.setItem(this.cartKey, JSON.stringify(cartItems));
-  }
-  removeCartLocal(productId: string): Observable<any> {
-    const token = this.userService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    const removeUrl = `${this.cart_URL}remove/${productId}`;
-    return this.http.delete(removeUrl, { headers });
-  }
-  clearFromCartLocal(): Observable<any> {
-    const token = this.userService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    const clearUrl = `${this.cart_URL}clear`;
-    return this.http.delete(clearUrl, { headers });
-  }
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
 

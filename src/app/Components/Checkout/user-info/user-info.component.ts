@@ -7,7 +7,6 @@ import { UsersService } from '../../../Services/users.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-// import { ShippingAddress } from '../Models/order.model';
 
 @Component({
   selector: 'app-user-info',
@@ -16,7 +15,6 @@ import { RouterModule } from '@angular/router';
   styleUrl: './user-info.component.css'
 })
 export class UserInfoComponent implements OnInit {
-
   @Output() shippingAddressChange = new EventEmitter<ShippingAddress>();
   @Output() shippingAddressEdited = new EventEmitter<boolean>();
 
@@ -36,11 +34,12 @@ export class UserInfoComponent implements OnInit {
     private orderService: OrderService
   ) {
     this.checkoutForm = this.fb.group({
-      name: ['', Validators.required],
-      address: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern(/^[\p{L}]+(?:[\s-][\p{L}]+)*$/u)]],
+      address: ['', [Validators.required, Validators.pattern(/^[\p{L}0-9\s,.-]+$/u)]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]]
     });
   }
+
 
   ngOnInit(): void {
     this.loadUserData();
@@ -51,7 +50,7 @@ export class UserInfoComponent implements OnInit {
     this.userService.getUserProfile().subscribe(
       (data) => {
         this.userData = data;
-        
+
         // Set initial form values
         this.checkoutForm.patchValue({
           name: this.getFullName(),
@@ -80,7 +79,7 @@ export class UserInfoComponent implements OnInit {
       address: this.checkoutForm.value.address,
       phone: this.checkoutForm.value.phone
     };
-    
+
     this.shippingAddressChange.emit(shippingData);
     this.shippingAddressEdited.emit(true);
   }
@@ -108,12 +107,12 @@ export class UserInfoComponent implements OnInit {
 
   getFullName(): string {
     if (!this.userData) return '';
-    
+
     // Use the current form values if modified
     if (this.isShippingAddressModified && this.checkoutForm.valid) {
       return this.checkoutForm.value.name;
     }
-    
+
     return `${this.userData.firstName} ${this.userData.lastName}`.trim();
   }
 

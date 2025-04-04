@@ -47,7 +47,7 @@ export class PaymentFormComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private orderService: OrderService,
     private cartService: CartService,
     private router: Router,
@@ -57,7 +57,7 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.loadCartItems();
-    
+
     // Debug logging
     console.log('User Data:', this.userData);
     console.log('Shipping Address:', this.shippingAddress);
@@ -85,7 +85,7 @@ export class PaymentFormComponent implements OnInit {
 
       // Robust product mapping with fallback
       const orderProducts = this.cartItems.map(item => {
-        const productId = 
+        const productId =
           item.id ||           // Use 'id' field first
           item._id ||          // Then try '_id'
           item.product?._id || // Then nested product ID
@@ -113,8 +113,8 @@ export class PaymentFormComponent implements OnInit {
 
       const orderData = {
         shippingAddress,
-        paymentMethod: this.selectedMethod.id === 'cod' 
-          ? 'Cash on Delivery' as const 
+        paymentMethod: this.selectedMethod.id === 'cod'
+          ? 'Cash on Delivery' as const
           : 'Credit Card' as const,
         products: orderProducts
       };
@@ -134,18 +134,19 @@ export class PaymentFormComponent implements OnInit {
 
           this.cartService.clearCart().subscribe({
             next: () => {
-              this.router.navigate(['/'], { 
-                queryParams: { 
-                  orderId: response.order?._id || response._id 
+              this.router.navigate(['/order'], {
+                queryParams: {
+                  orderId: response.order?._id || response._id
                 }
               });
+              this.cartService.clearCartItems();
             },
             error: (clearError) => {
               console.error('Cart clearing failed:', clearError);
               // Still navigate even if cart clearing fails
-              this.router.navigate(['/'], { 
-                queryParams: { 
-                  orderId: response.order?._id || response._id 
+              this.router.navigate(['/'], {
+                queryParams: {
+                  orderId: response.order?._id || response._id
                 }
               });
             }
@@ -154,8 +155,8 @@ export class PaymentFormComponent implements OnInit {
         error: (error) => {
           // Error toast
           this.toastr.error(
-            error.error?.message || 'Failed to create order', 
-            'Order Error', 
+            error.error?.message || 'Failed to create order',
+            'Order Error',
             {
               timeOut: 5000,
               closeButton: true
@@ -179,6 +180,7 @@ export class PaymentFormComponent implements OnInit {
       });
     }
   }
+
 
   initForm() {
     this.paymentForm = this.fb.group({
@@ -239,9 +241,9 @@ export class PaymentFormComponent implements OnInit {
     // Handle cases where firstName or lastName might be undefined
     const firstName = this.userData.firstName || '';
     const lastName = this.userData.lastName || '';
-    
+
     const fullName = `${firstName} ${lastName}`.trim();
-    
+
     console.log('Constructed Full Name:', fullName);
     return fullName || '';
   }
@@ -249,7 +251,7 @@ export class PaymentFormComponent implements OnInit {
   // Helper method to get full address
   getUserFullAddress(): string {
     if (!this.userData) return '';
-    
+
     const addressParts = [
       this.userData.address,
       this.userData.city,
@@ -306,3 +308,4 @@ export class PaymentFormComponent implements OnInit {
     return true;
   }
 }
+

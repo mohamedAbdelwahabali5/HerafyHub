@@ -32,13 +32,23 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.categoryId = params['categoryId'];
-      // Handle case when page is refreshed or accessed directly
-      if (this.categoryId && !this.selectedCategory) {
-        this.loadCategory(this.categoryId);
-      }
-    });
+    // Check route state first
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state;
+    
+    if (state && state['categoryId']) {
+      this.categoryId = state['categoryId'];
+      this.loadCategory(this.categoryId);
+    } else {
+      // Fallback to route parameter
+      this.route.params.subscribe(params => {
+        const categoryId = params['categoryId'];
+        if (categoryId) {
+          this.categoryId = categoryId;
+          this.loadCategory(categoryId);
+        }
+      });
+    }
   }
 
   onCategorySelected(categoryId: string) {
@@ -51,7 +61,10 @@ export class ProductsComponent implements OnInit {
       next: (category: any) => {
         this.selectedCategory = category;
       },
-      error: (error) => console.error('Error fetching category:', error),
+      error: (error) => {
+        console.error('Error fetching category:', error);
+        // Optionally, handle error (e.g., redirect or show error message)
+      }
     });
   }
   private loadProducts(categoryId: string) {

@@ -34,12 +34,17 @@ li .nav-link{
     width: 100%;
 }
 /* Custom styling for active nav links */
+
 .nav-link.active {
+  color: #000000 !important;
   font-weight: 600;
-  color: #3d8d7ac6 !important;
-  text-decoration: underline #3D8D7A;
-  text-underline-offset: 4px;
+  background-color: transparent;
+  display: inline-block;
+  border-bottom: 3px solid #3d8d7ac6;
+  padding-bottom: 5px;
+  transition: all 0.2s ease;
 }
+
 
 @media (max-width: 991.98px) {
     .navbar-nav{

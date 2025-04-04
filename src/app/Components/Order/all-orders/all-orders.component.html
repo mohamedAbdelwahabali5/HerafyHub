@@ -20,81 +20,81 @@
   }
 
   @if (orders().length > 0) {
-    <div class="table-responsive">
-      <table class="orders-table">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (order of orders(); track order._id) {
-          <tr>
-            <td data-label="Order ID">{{ order._id }}</td>
-            <td data-label="Total">{{ order.totalPrice | currency }}</td>
-            <td data-label="Status">{{ order.status }}</td>
-            <td data-label="Date">{{ order.createdAt | date:'mediumDate' }}</td>
-            <td data-label="Actions" class="text-center">
-              <button (click)="viewOrderDetails(order)">
-                View Details
-              </button>
-              @if (order.status === 'In-Progress' && order._id) {
-              <button (click)="cancelOrder(order._id)" class="cancel">
-                Cancel Order
-              </button>
-              }
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+  <div class="table-responsive">
+    <table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (order of orders(); track order._id) {
+        <tr>
+          <td data-label="Order ID">{{ order._id }}</td>
+          <td data-label="Total">{{ order.totalPrice | currency }}</td>
+          <td data-label="Status">{{ order.status }}</td>
+          <td data-label="Date">{{ order.createdAt | date:'mediumDate' }}</td>
+          <td data-label="Actions" class="text-center">
+            <button (click)="viewOrderDetails(order)">
+              View Details
+            </button>
+            @if (order.status === 'In-Progress' && order._id) {
+            <button (click)="cancelOrder(order._id)" class="cancel">
+              Cancel Order
+            </button>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
   }
 
   @if (selectedOrderDetails) {
-    <div class="order-details-modal">
-      <div class="order-details-content">
-        <button class="close-btn" (click)="closeOrderDetails()"><i class="fa-solid fa-xmark"></i></button>
+  <div class="order-details-modal">
+    <div class="order-details-content">
+      <button class="close-btn" (click)="closeOrderDetails()"><i class="fa-solid fa-xmark"></i></button>
 
-        <div class="order-details-header">
-          <h3>Order Details</h3>
-        </div>
+      <div class="order-details-header">
+        <h3>Order Details</h3>
+      </div>
 
-        <div class="order-details-section">
-          <h4>Order Information</h4>
-          <ul class="order-info">
-            <li><strong>Order ID:</strong> {{ selectedOrderDetails._id }}</li>
-            <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency }}</li>
-            <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
-            <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
-          </ul>
-        </div>
+      <div class="order-details-section">
+        <h4>Order Information</h4>
+        <ul class="order-info">
+          <li><strong>Order ID:</strong> {{ selectedOrderDetails._id }}</li>
+          <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency }}</li>
+          <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
+          <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
+        </ul>
+      </div>
 
-        <div class="order-details-section">
-          <h4>Products</h4>
-          <table class="products-table">
-            <thead>
-              <tr>
-                <th>Product Name</th>
-                <th>Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (product of selectedOrderDetails.orderItems; track product.product) {
-              <tr>
-                <td>{{ product.product }}</td>
-                <td>{{ product.quantity }}</td>
-              </tr>
-              }
-            </tbody>
-          </table>
-        </div>
+      <div class="order-details-section">
+        <h4>Products</h4>
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of selectedOrderDetails.orderItems; track item.product) {
+            <tr>
+              <td>{{ item.product }}</td>
+              <td>{{ item.quantity }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
   }
 
 </div>

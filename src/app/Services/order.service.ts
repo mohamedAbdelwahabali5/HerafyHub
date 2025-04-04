@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.prod';
 import { Order, ShippingAddress } from '../Models/order.model';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class OrderService {
   private readonly apiUrlOrder = `${this.apiUrl}/order`;
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private usersService: UsersService
   ) { }
 

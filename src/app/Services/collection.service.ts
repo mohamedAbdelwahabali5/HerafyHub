@@ -59,7 +59,7 @@ export class ProductService {
   }
 
   // product.service.ts
-  getProductsByCategory(categoryId: string): Observable<any> {
-    return this.http.get(`${this.product_URL}/category/${categoryId}`);
+  getProductsByCategory(categoryId: string) {
+    return this.http.get(`${this.apiUrl}/products?category=${categoryId}`);
   }
 }

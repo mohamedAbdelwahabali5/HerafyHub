@@ -34,10 +34,18 @@
                 <div class="mb-3">
                   <label for="name">Full Name</label>
                   <input type="text" id="name" formControlName="name" class="form-control" required>
-                  <div *ngIf="checkoutForm.get('name')?.invalid && checkoutForm.get('name')?.touched"
-                    class="error-message">
-                    Please enter your name
-                  </div>
+
+                  @if(checkoutForm.controls['name'].invalid && checkoutForm.controls['name'].touched) {
+                  @if(checkoutForm.controls['name'].errors?.['required']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter your name
+                  </p>
+                  } @else if(checkoutForm.controls['name'].errors?.['pattern']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid name
+                  </p>
+                  }
+                  }
                 </div>
               </div>
 
@@ -45,10 +53,17 @@
                 <div class="mb-3">
                   <label for="phone">Phone Number</label>
                   <input type="tel" id="phone" formControlName="phone" class="form-control" required>
-                  <div *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
-                    class="error-message">
-                    Please enter a valid phone number
-                  </div>
+                  @if(checkoutForm.controls['phone'].invalid && checkoutForm.controls['phone'].touched) {
+                  @if(checkoutForm.controls['phone'].errors?.['required']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter your phone
+                  </p>
+                  } @else if(checkoutForm.controls['phone'].errors?.['pattern']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid phone
+                  </p>
+                  }
+                  }
                 </div>
               </div>
             </div>
@@ -56,10 +71,17 @@
             <div class="form-group">
               <label for="address">Address</label>
               <textarea id="address" formControlName="address" class="form-control" rows="3" required></textarea>
-              <div *ngIf="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched"
-                class="error-message">
-                Please enter your address
-              </div>
+              @if(checkoutForm.controls['address'].invalid && checkoutForm.controls['address'].touched) {
+              @if(checkoutForm.controls['address'].errors?.['required']) {
+              <p class="error text-danger small mb-2">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter your address
+              </p>
+              } @else if(checkoutForm.controls['address'].errors?.['pattern']) {
+              <p class="error text-danger small mb-2">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid address
+              </p>
+              }
+              }
             </div>
 
 

@@ -14,11 +14,9 @@ export class FavoriteService {
   private readonly apiUrl = environment.apiUrl;
   private readonly favorite_URL = `${this.apiUrl}/favorite/`;
   private readonly addToFavorite_URL = `${this.apiUrl}/favorite/add`;
-  constructor(private http: HttpClient, private userService: UsersService) { }
 
-  //   private readonly favorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/';
-  //   private readonly addToFavorite_URL = 'https://herafy-hub-api-wjex.vercel.app/favorite/add';
 
+  constructor(private http: HttpClient, private userService: UsersService) {}
 
   // Add product to favorites
   addProductToFavorite(productId: string): Observable<any> {

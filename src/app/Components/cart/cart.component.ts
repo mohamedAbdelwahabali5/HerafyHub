@@ -80,7 +80,7 @@ export class CartComponent {
         console.log(`Item ${cart.id}: ${price} × ${quantity} = ${itemTotal}`);
         this.TotalAmount += itemTotal;
       } else {
-        console.error('Invalid price or quantity:', cart);
+        console.log('Invalid price or quantity:', cart);
       }
     });
 
