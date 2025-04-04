@@ -8,11 +8,11 @@ import { CartService } from '../../Services/cart.service';
   styleUrl: './cart-item.component.css',
   standalone: true
 })
-export class CartItemComponent{
+export class CartItemComponent {
   @Input() cart: any;
   @Output() itemRemoved = new EventEmitter<string>();
-  @Output() quantityChanged = new EventEmitter<{id: string, quantity: number}>();
-  constructor(private cartService: CartService) {}
+  @Output() quantityChanged = new EventEmitter<{ id: string, quantity: number }>();
+  constructor(private cartService: CartService) { }
   get totalPrice(): number {
     return this.cart.price * this.cart.quantity;
   }
@@ -24,7 +24,7 @@ export class CartItemComponent{
   increase(): void {
     this.cart.quantity++;
   }
- 
+
   removeItem() {
     console.log(this.cart);
     if (this.cart && this.cart.id) {
@@ -54,10 +54,9 @@ export class CartItemComponent{
       }
     }
   }
- 
- 
- 
+
+
+
 }
- 
- 
- 
+
+

@@ -53,11 +53,13 @@ export const routes: Routes = [
   },
   { path: 'cart', component: CartComponent },
   { path: 'favorite', component: FavoriteComponent },
+  { path: 'order', component: OrderPageComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
     path: 'checkout', component: MainCheckoutComponent, canActivate: [AuthGuardService],
   },
+
 
   // error page
   { path: 'error', component: ErrorComponent },

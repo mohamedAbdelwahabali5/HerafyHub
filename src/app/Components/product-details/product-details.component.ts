@@ -1,11 +1,13 @@
+import { CartService } from './../../Services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {  ProductService } from '../../Services/collection.service';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-product-details',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   providers: [ProductService],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
@@ -13,13 +15,16 @@ import { CommonModule } from '@angular/common';
 export class ProductDetailsComponent implements OnInit {
   product: any;
   stars: number[] = [1, 2, 3, 4, 5]; // Array to iterate over stars
-
+  productsInCart: Set<string> = new Set();
+  quantity: number = 1;
   constructor(
     private route: ActivatedRoute,
+    private CartService: CartService,
     private  productService: ProductService
   ) {}
 
   ngOnInit() {
+    this.loadCartStateFromStorage();
     this.route.params.subscribe(params => {
       const id = params['id']; // Convert string to number using +
       this.productService.getProductById(id).subscribe({
@@ -48,4 +53,72 @@ export class ProductDetailsComponent implements OnInit {
       return 'bi-star';
     }
   }
+  isProductInCart(productId: string): boolean {
+    return this.productsInCart.has(productId);
+  }
+
+    addToCart(quantity: number = 1) {
+      const productData = {
+        productId: this.product._id,
+        quantity: quantity,
+      };
+
+      this.CartService.addProductToCart(productData).subscribe({
+        next: (response) => {
+          this.productsInCart.add(this.product._id);
+          this.updateCartInStorage(this.product._id, true);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Product added to cart',
+            timer: 1500,
+            showConfirmButton: false,
+          });
+        },
+        error: (err) => {
+          console.error('Detailed Error:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Connection Error',
+            text: 'Unable to connect to the server. Please check your connection or try again later.',
+          });
+        }
+      });
+    }
+    private loadCartStateFromStorage(): void {
+      const savedState = localStorage.getItem('productsInCart');
+      if (savedState) {
+        try {
+          const productIds = JSON.parse(savedState);
+          this.productsInCart = new Set(productIds);
+        } catch (e) {
+          console.error('Error loading cart state:', e);
+        }
+      }
+    }
+    private updateCartInStorage(productId: string, isAdding: boolean): void {
+      let products: string[] = [];
+      const savedState = localStorage.getItem('productsInCart');
+
+      if (savedState) {
+        try {
+          products = JSON.parse(savedState);
+        } catch (e) {
+          console.error('Error parsing cart state:', e);
+        }
+      }
+
+      if (isAdding) {
+        if (!products.includes(productId)) {
+          products.push(productId);
+        }
+      } else {
+        const index = products.indexOf(productId);
+        if (index > -1) {
+          products.splice(index, 1);
+        }
+      }
+      localStorage.setItem('productsInCart', JSON.stringify(products));
+    }
+
 }

@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './cart.component.css',
 })
 export class CartComponent {
+
   Carts: any[] = [];
   TotalAmount: number = 0;
 
