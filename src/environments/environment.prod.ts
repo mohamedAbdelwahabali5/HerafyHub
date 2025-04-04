@@ -3,6 +3,7 @@ export const environment = {
   // apiUrl: 'https://herafy-hub-api-wjex.vercel.app'
   // apiUrl: 'https://herafy-hub-api-cxo1.vercel.app'
   // apiUrl:'https://herafy-hub-api-wjex-27bu7mzmt.vercel.app'
-  apiUrl: 'https://herafy-hub-api-bdis.vercel.app'
 
+  apiUrl: 'https://herafy-hub-api-bdis.vercel.app',
+  paymobIframeId: "911500"
 };
