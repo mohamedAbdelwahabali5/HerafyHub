@@ -1,10 +1,62 @@
+/* Ensures hero section fits different screen sizes */
 .hero-img-container {
-  height: 60vh;
+  height: 70vh;
 }
 
-@media (min-width: 576px) {
+.container-fluid {
+  margin-top: 70px;
+}
+
+/* Ensure the button looks elegant */
+.btn {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 30px !important;
+  padding: 8px 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn:hover {
+  background-color: white;
+  color: black;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Reduce opacity for better readability */
+.card-img {
+  filter: opacity(0.65);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Responsive height adjustments */
+@media (max-width: 576px) {
+  .hero-img-container {
+    height: 50vh;
+  }
+}
+
+@media (min-width: 768px) {
   .hero-img-container {
     height: 70vh;
+  }
+
+  .display-md-4 {
+    font-size: 3.5rem;
+  }
+
+  .display-md-5 {
+    font-size: 3rem;
+  }
+
+  .fs-md-5 {
+    font-size: 1.25rem !important;
   }
 }
 
@@ -12,30 +64,11 @@
   .hero-img-container {
     height: 80vh;
   }
-}
 
-.card-img {
-  width: 100%;
-  height: 100%;
-}
-
-/* Bootstrap doesn't include display classes for different breakpoints by default */
-@media (min-width: 768px) {
-  .display-md-4 {
-    font-size: 3.5rem;
-  }
-  .display-md-5 {
-    font-size: 3rem;
-  }
-  .fs-md-5 {
-    font-size: 1.25rem !important;
-  }
-}
-
-@media (min-width: 992px) {
   .display-lg-3 {
     font-size: 4rem;
   }
+
   .display-lg-4 {
     font-size: 3.5rem;
   }

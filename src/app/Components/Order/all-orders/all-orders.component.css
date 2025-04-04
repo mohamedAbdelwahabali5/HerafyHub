@@ -1,0 +1,357 @@
+.all-orders-container {
+  background-color: #F0F4F2;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.all-orders-container h2 {
+  color: #2C6E63;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.all-orders-container .loading,
+.all-orders-container .no-orders,
+.all-orders-container .error {
+  text-align: center;
+  padding: 20px;
+
+  color: #4A9678;
+}
+
+.all-orders-container .error {
+  width: 50%;
+  margin: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table thead {
+  background-color: #4A9678;
+  color: white;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #B8E0D2;
+}
+
+.orders-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.orders-table tbody tr:hover {
+  background-color: #E6F3EF;
+}
+
+.orders-table button {
+  background-color: #2C6E63;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.cancel{
+  background-color:  #B22222!important;
+  margin-left: 10px;
+}
+.cancel:hover {
+  background-color: #D64545 !important;
+}
+
+/*disabled cancel button*/
+button.cancel[disabled] {
+  background-color: #D64545 !important;
+  cursor: not-allowed;
+ 
+}
+
+/* table scroll */
+.table-responsive {
+  max-height: 400px; 
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4A9678 #F0F4F2; 
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #F0F4F2;
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #4A9678;
+  border-radius: 10px;
+  border: 2px solid #F0F4F2;
+}
+
+
+/* end table scroll */
+
+.orders-table button:hover {
+  background-color: #4A9678;
+}
+/* Base responsive styles */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive .orders-table {
+  width: 100%;
+  min-width: 480px;
+}
+
+/* Smartphone (small mobile) - max-width: 480px */
+@media screen and (max-width: 480px) {
+  .table-responsive .orders-table {
+    min-width: 100%;
+  }
+ 
+  .table-responsive .orders-table thead {
+    display: none;
+  }
+
+  .table-responsive .orders-table tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #B8E0D2;
+    background-color: white;
+  }
+
+  .table-responsive .orders-table td {
+    display: block;
+    text-align: right;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .table-responsive .orders-table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #2C6E63;
+  }
+
+  .table-responsive .orders-table td:last-child {
+    border-bottom: none;
+  }
+
+  .table-responsive .orders-table button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .table-responsive .orders-table .cancel {
+    margin-top: 5px;
+  }
+  .cancel{
+    margin-top: 5px;
+    margin-left: 0px;
+  }
+}
+
+
+/* Tablet (medium mobile) - max-width: 768px */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .table-responsive .orders-table {
+    min-width: 100%;
+  }
+
+  .table-responsive .orders-table thead {
+    display: none;
+  }
+
+  .table-responsive .orders-table tr {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    border: 1px solid #B8E0D2;
+    background-color: white;
+    padding: 10px;
+  }
+
+  .table-responsive .orders-table td {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+  }
+
+  .table-responsive .orders-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #2C6E63;
+  }
+
+  /* Ensure ACTIONS comes after DATE */
+  .table-responsive .orders-table td:last-child {
+    order: 1; /* Moves ACTIONS below */
+    flex-direction: column;
+    align-items: center;
+    border-bottom: none;
+    padding-top: 10px;
+  }
+
+  .table-responsive .orders-table button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+  }
+}
+
+
+/* Tablet (large mobile/small desktop) - max-width: 992px */
+@media screen and (min-width: 769px) and (max-width: 992px) {
+  .table-responsive .orders-table {
+    min-width: 100%;
+  }
+
+  .table-responsive .orders-table td,
+  .table-responsive .orders-table th {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .table-responsive .orders-table button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+}
+
+/* Order Details Modal Styles */
+.order-details-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.order-details-content {
+  background: #fff;
+  padding: 25px;
+  width: 80%; /* Increased width */
+  max-width: 800px; /* Set a max width */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.order-details-header h3 {
+  text-align: center;
+  color: #2C6E63;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  color: #555;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  color: #D64545;
+}
+
+.order-details-section {
+  margin-bottom: 20px;
+}
+
+.order-info {
+  list-style: none;
+  padding: 0;
+}
+
+.order-info li {
+  background: #f8f9fa;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.status-label {
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: #2C6E63;
+  font-weight: bold;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.products-table th,
+.products-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.products-table th {
+  background: #2C6E63;
+  color: white;
+  font-size: 16px;
+}
+
+.products-table tr:nth-child(even) {
+  background: #f2f2f2;
+}
+.close-btn-full {
+  background: #D64545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.close-btn-full:hover {
+  background: #B22222;
+}
+
+@media (max-width: 768px) {
+  .order-details-content {
+    width: 90%;
+  }
+}

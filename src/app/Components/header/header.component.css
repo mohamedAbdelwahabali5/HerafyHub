@@ -32,13 +32,18 @@ li .nav-link{
 }
 
 /* Custom styling for active nav links */
-.nav-link.active {
-  /* color: #4238d1 !important; */
-  color: black !important;
-  font-weight: 500;
-  background-color: #3d8d7ac6;
 
+.nav-link.active {
+  color: #000000 !important;
+  font-weight: 600;
+  background-color: transparent;
+  display: inline-block;
+  border-bottom: 3px solid #3d8d7ac6;
+  padding-bottom: 5px;
+  transition: all 0.2s ease;
 }
+
+
 @media (max-width: 991.98px) {
     .navbar-nav{
         margin-left: 0%;

@@ -1,79 +1,78 @@
-<div class="payment-section">
-  <h2>Payment Method</h2>
-  <form action="">
-    <div class="payment-options d-flex flex-cloumn">
-      <label>
-        <input type="radio" formControlName="paymentType" value="paypal">
-        <img src="/images/paypal.png" alt="" width="160px" height="80px">
-      </label>
-      <label>
-        <input type="radio" formControlName="paymentType" value="card" checked>
-        Credit or Debit card
-      </label>
-      <div class="card-icons">
-        <img src="/images/mastercard.png" alt="Mastercard">
-        <img src="/images/visa.png" alt="Visa">
-      </div>
-    </div>
-    <div class="card-details" >
-      <div class="form-group">
-        <label for="cardholderName">Cardholder Name</label>
-        <input
-          type="text"
-          id="cardholderName"
-          formControlName="cardholderName"
-          placeholder="Name on Card"
-        >
-        <div  class="error">
-          Cardholder name is required
-        </div>
-      </div>
+<div class="container py-1">
+  <div class="row justify-content-center">
+    <div class="col-12">
 
-      <div class="form-group">
-        <label for="cardNumber">Card Number</label>
-        <input
-          type="text"
-          id="cardNumber"
-          formControlName="cardNumber"
-          placeholder="1234 5678 9012 3456"
-          maxlength="16"
-        >
-        <div class="error">
-          Valid card number is required
+      <div class="card shadow-sm">
+        <div class="card-header text-center text-black" style="background-color: #f8f9fa;">
+          <h2 class="mb-0">
+            <i class="fas fa-money-check-alt me-2 teal-green"></i> Payment Method
+          </h2>
         </div>
-      </div>
 
-      <div class="card-info-row">
-        <div class="form-group">
-          <label for="expirationDate">Expiration Date</label>
-          <input
-            type="text"
-            id="expirationDate"
-            formControlName="expirationDate"
-            placeholder="MM/YY"
-            maxlength="5"
-          >
-          <div  class="error">
-            Valid expiration date is required
+        <div class="card-body">
+          <p class="text-center text-muted mb-4">Select your preferred payment option</p>
+
+          <!-- Payment Methods Selection -->
+          <div class="row g-3 d-flex">
+            <div *ngFor="let method of paymentMethods" class="col-md-6">
+              <div class="card h-100 payment-option" [class.border-primary]="selectedMethod?.id === method.id"
+                [class.disabled]="isPaymentProcessing" (click)="!isPaymentProcessing && selectPaymentMethod(method)">
+                <div class="card-body text-center">
+                  <div class="mb-1">
+                    <i [class]="method.icon" class="fa-4x teal-green mb-1"></i>
+                  </div>
+                  <h5 class="card-title">{{ method.name }}</h5>
+                  <p class="card-text text-muted">{{ method.description }}</p>
+                  <div *ngIf="isPaymentProcessing && selectedMethod?.id === method.id"
+                    class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Method Indicator -->
+          <div *ngIf="selectedMethod" class="alert alert-info text-center mt-4">
+            Selected Method: <strong>{{ selectedMethod.name }}</strong>
+            <!-- <button *ngIf="iframeUrl && selectedMethod.id === 'card'" class="btn btn-sm btn-link float-end"
+              (click)="iframeUrl = ''; selectedMethod = null">
+              Change Method
+            </button> -->
+          </div>
+
+          <!-- Payment Processing Messages -->
+          <div *ngIf="isPaymentProcessing && selectedMethod?.id === 'card'" class="alert alert-warning mt-3">
+            <i class="fas fa-spinner fa-spin me-2"></i> Preparing payment gateway...
+          </div>
+
+          <!-- Paymob Iframe Container -->
+          <div *ngIf="selectedMethod?.id === 'card'" class="card-details mt-4">
+            <iframe [src]="safeIframeUrl" width="100%" height="400px" frameborder="0"
+              style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <!-- <div class="text-center my-2">
+              <button class="btn btn-outline-secondary" (click)="clearIframe()">
+                Clear Payment Iframe
+              </button>
+            </div> -->
+          </div>
+
+
+
+          <!-- Submit Button -->
+          <div class="card-footer">
+            <button type="button" class="btn bg-teal-green w-100 text-white" (click)="onSubmit()"
+              [disabled]="!selectedMethod || isPaymentProcessing || (selectedMethod.id === 'card' && !paymentKey)">
+              <span *ngIf="!isLoading; else loading">
+                {{ selectedMethod?.id === 'card' ? 'Complete Order' : 'Place Order' }}
+              </span>
+              <ng-template #loading>
+                <i class="fas fa-spinner fa-spin me-2"></i> Processing...
+              </ng-template>
+            </button>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="cvv">CVV</label>
-          <input
-            type="text"
-            id="cvv"
-            formControlName="cvv"
-            placeholder="123"
-            maxlength="3"
-          >
-          <div  class="error">
-            Valid CVV is required
-          </div>
-        </div>
       </div>
     </div>
-
-    <button type="submit" class="review-order-btn">Review Order</button>
-  </form>
-</div>
+  </div>

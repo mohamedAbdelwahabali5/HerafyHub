@@ -1,57 +1,91 @@
-<div class="container-fluid mt-2">
-  <div class="col-md-12 col-sm-12">
-    <h3 class="mb-3 mt-3">Shopping Bag</h3>
-  </div>
-  <div *ngIf="Carts.length > 0; else noProducts">
-  <div class="row justify-content-between">
-    <div class="col-md-7 col-sm-6 ">
-      <p>{{Carts.length}}items in your bag</p>
-    </div>
-  </div>
-  <!-- left card and right card-->
-  <div class="row justify-content-between mt-2 ">
-    <div class="col-md-8 col-sm-12 left p-4 ">
-      <button class="clear" (click)="clearCart()">Clear Cart</button>
-      @if(isArray(Carts) && Carts.length > 0) {
-        @for(cart of Carts; track cart.id ?? $index) {
-          <app-cart-item [cart]="cart" (itemRemoved)="handleItemRemoved($event)"></app-cart-item>
-        }
-      } @else {
-        <p>Your shopping bag is empty</p>
-      }
-    </div>
-    <!-- right card -->
-    <div class="col-md-3 col-sm-12 right">
-    <div class="card rounded-3  p-4">
-      <h5 class="mb-3">Cart Total</h5>
-      <div class="d-flex justify-content-between mb-2">
-        <span>Cart subtotal</span>
-        <span>{{ calculateTotalFromItems() | currency }}</span>
-      </div>
- 
-      <div class="d-flex justify-content-between mb-2">
-        <span>Discount</span>
-        <span>-$4.00</span>
-      </div>
- 
-      <div class="d-flex justify-content-between mb-3">
-        <span>Delivery Charge</span>
-        <span>Free</span>
-      </div>
-      <hr />
-      <div class="d-flex justify-content-between mt-3">
-        <strong>Total Amount</strong>
-        <strong>{{ calculateTotalFromItems()-4 | currency }}</strong>
+<div class="container-fluid">
+  @if (loading) {
+    <div class="row my-5">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-teal-green" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-3 text-muted">Loading your cart...</p>
       </div>
     </div>
- 
+  }
+  @else if (Carts.length === 0 || !Carts) {
+    <div class="row my-5 justify-content-center">
+      <div class="col-lg-5 col-md-7 col-sm-10 text-center py-5">
+        <div class="empty-cart-icon mb-4">
+          <i class="fa-solid fa-shopping-cart fa-4x"></i>
+        </div>
+        <h4 class="fw-bold">Your cart is empty</h4>
+        <p class="text-muted mb-4">Looks like you haven't added anything yet. Start shopping now!</p>
+        <a class="btn btn-primary btn-lg px-4" [routerLink]="['/products']">
+          Shop Now <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+      </div>
     </div>
-  </div>
-  </div>
+  }
+  @else {
+    <div class="container-fluid mt-2">
+      <div class="col-md-12 col-sm-12">
+        <h3 class=" mt-3">Shopping Bag</h3>
+      </div>
+      <div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="cart-summary d-flex justify-content-between align-items-center">
+              <p class="items-count">{{Carts.length}} items in your bag</p>
+              <button class="btn-clear" (click)="clearCart()">
+                <i class="fa-solid fa-trash-can me-2"></i>Clear Cart
+              </button>
+            </div>
+          </div>
+          </div>
+    <div class="row">
+      <!-- Cart Items Section -->
+      <div class="col-lg-8 col-md-7 mb-4">
+        <div class="cart-items-container">
+          @if(isArray(Carts) && Carts.length > 0) {
+            @for(cart of Carts; track cart.id ?? $index) {
+              <app-cart-item [cart]="cart" (itemRemoved)="handleItemRemoved($event)"></app-cart-item>
+            }
+          } @else {
+            <p class="empty-cart-msg">Your shopping bag is empty</p>
+          }
+        </div>
+      </div>
+      <!-- Cart Summary Section -->
+      <div class="col-lg-4 col-md-5">
+        <div class="cart-summary-card">
+          <h5 class="summary-title mb-4">Order Summary</h5>
+
+          <div class="summary-row">
+            <span>Cart subtotal</span>
+            <span>{{ calculateTotalFromItems() | currency }}</span>
+          </div>
+
+          <div class="summary-row">
+            <span>Discount</span>
+            <span class="discount">-$4.00</span>
+          </div>
+
+          <div class="summary-row mb-3">
+            <span>Delivery Charge</span>
+            <span class="free-delivery">Free</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <div class="summary-total">
+            <strong>Total Amount</strong>
+            <strong>{{ calculateTotalFromItems()-4 | currency }}</strong>
+          </div>
+
+          <button class="btn-checkout" [routerLink]="['/checkout']">
+            <i class="fa-solid fa-lock me-2"></i>Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
 </div>
-<!-- No favorites template -->
-<ng-template #noProducts>
-  <p>No products found.</p>
-</ng-template>
- 
- 
+</div>
+  }
+</div>

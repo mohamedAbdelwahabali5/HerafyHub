@@ -1,17 +1,58 @@
-.summary-section {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
+
+
+.cart-summary {
+  /* max-width: 500px; */
+  margin: auto;
+  /* padding: 20px; */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
 }
 
-.summary-details .summary-row {
+.cart-item {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.summary-row.total {
-  border-top: 1px solid #ddd;
-  padding-top: 10px;
+.product-image {
+  /* width: 70px;
+  height: 70px; */
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.product-details {
+  flex-grow: 1;
+}
+
+.total-price {
+  font-size: 18px;
   font-weight: bold;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.img-container {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 8rem;
+  border-radius: 10px;
+}
+
+.loading-circle {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.25rem solid #008327;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

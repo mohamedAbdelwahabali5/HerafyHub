@@ -1,0 +1,131 @@
+.checkout-container {
+
+  margin: 0 auto;
+}
+
+.shipping-card, .payment-card, .order-summary {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.user-data-view {
+  .data-row {
+    display: flex;
+    /* margin-bottom: 1rem; */
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f0f0f0;
+
+    .data-label {
+      font-weight: 600;
+      width: 120px;
+      color: #555;
+    }
+
+    .data-value {
+      flex: 1;
+    }
+  }
+}
+
+.edit-form {
+  .form-group {
+    margin-bottom: 0.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+}
+
+.place-order-btn {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 5px;
+  background-color: #28a745;
+  border-color: #28a745;
+
+  &:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: 1rem;
+  }
+
+  .row {
+    flex-direction: column-reverse;
+  }
+
+  .col-md-6 {
+    padding: 0;
+  }
+}
+
+
+/* Shapping title*/
+.shipping-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+@media (min-width: 576px) {
+  .shipping-title {
+    font-size: 1.25rem;  /* 20px */
+  }
+}
+
+@media (min-width: 768px) {
+  .shipping-title {
+    font-size: 1.5rem;  /* 24px */
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 992px) {
+  .shipping-title {
+    font-size: 2rem;  /* 28px */
+  }
+}

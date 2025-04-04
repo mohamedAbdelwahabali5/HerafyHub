@@ -1,17 +1,15 @@
 <!-- HTML Template (header.component.html) -->
-<nav class="navbar navbar-expand-lg navbar-light mt-2 mb-2">
-  <div class="container-fluid">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+  <div class="container-fluid px-5">
     <!-- Brand - always visible -->
     <div class="col-auto">
       <a class="navbar-brand" href="#">
-        <img src="/images/logo.PNG" alt="Logo" class="img-fluid" style="max-height: 40px;">
+        <img src="images/logo.PNG" alt="Logo" class="img-fluid" style="max-height: 40px;">
       </a>
     </div>
-
     <!-- Toggler for collapse - appears on mobile -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -19,13 +17,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page"
-             [routerLinkActiveOptions]="{ exact: true }"
-             routerLinkActive="active"
-             routerLink="/">Home</a>
+          <a class="nav-link" aria-current="page" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"
+            routerLink="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="order">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="contact-us">Contact Us</a>
@@ -38,39 +37,45 @@
       <!-- Icons and buttons -->
       <div class="d-flex align-items-center mt-3 mt-lg-0">
 
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="favorite" class="me-3 d-flex align-items-center text-decoration-none">
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="favorite"
+          class="me-3 d-flex align-items-center text-decoration-none">
           <svg width="24" height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M40 65.8333L35.1333 61.3833C18 45.9 7 36.0166 7 23.75C7 13.8666 14.85 6 24.6667 6C30.3 6 35.7 8.71666 40 13.05C44.3 8.71666 49.7 6 55.3333 6C65.15 6 73 13.8666 73 23.75C73 36.0166 62 45.9 44.8667 61.4L40 65.8333Z" stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M40 65.8333L35.1333 61.3833C18 45.9 7 36.0166 7 23.75C7 13.8666 14.85 6 24.6667 6C30.3 6 35.7 8.71666 40 13.05C44.3 8.71666 49.7 6 55.3333 6C65.15 6 73 13.8666 73 23.75C73 36.0166 62 45.9 44.8667 61.4L40 65.8333Z"
+              stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
         <!-- Cart icon -->
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="cart" class="me-3 d-flex align-items-center text-decoration-none">
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="cart"
+          class="me-3 d-flex align-items-center text-decoration-none">
           <svg width="24" height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3.33301 3.33337H16.6663L25.5997 47.9667C25.9045 49.5014 26.7394 50.8799 27.9582 51.861C29.1769 52.8422 30.702 53.3634 32.2663 53.3334H64.6663C66.2307 53.3634 67.7557 52.8422 68.9745 51.861C70.1933 50.8799 71.0282 49.5014 71.333 47.9667L76.6663 20H19.9997M33.333 70C33.333 71.841 31.8406 73.3334 29.9997 73.3334C28.1587 73.3334 26.6663 71.841 26.6663 70C26.6663 68.1591 28.1587 66.6667 29.9997 66.6667C31.8406 66.6667 33.333 68.1591 33.333 70ZM69.9997 70C69.9997 71.841 68.5073 73.3334 66.6663 73.3334C64.8254 73.3334 63.333 71.841 63.333 70C63.333 68.1591 64.8254 66.6667 66.6663 66.6667C68.5073 66.6667 69.9997 68.1591 69.9997 70Z" stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M3.33301 3.33337H16.6663L25.5997 47.9667C25.9045 49.5014 26.7394 50.8799 27.9582 51.861C29.1769 52.8422 30.702 53.3634 32.2663 53.3334H64.6663C66.2307 53.3634 67.7557 52.8422 68.9745 51.861C70.1933 50.8799 71.0282 49.5014 71.333 47.9667L76.6663 20H19.9997M33.333 70C33.333 71.841 31.8406 73.3334 29.9997 73.3334C28.1587 73.3334 26.6663 71.841 26.6663 70C26.6663 68.1591 28.1587 66.6667 29.9997 66.6667C31.8406 66.6667 33.333 68.1591 33.333 70ZM69.9997 70C69.9997 71.841 68.5073 73.3334 66.6663 73.3334C64.8254 73.3334 63.333 71.841 63.333 70C63.333 68.1591 64.8254 66.6667 66.6663 66.6667C68.5073 66.6667 69.9997 68.1591 69.9997 70Z"
+              stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
 
         <!-- User icon -->
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="profile" class="me-3 d-flex align-items-center text-decoration-none">
-          <img *ngIf="userProfileImage" [src]="userProfileImage" 
-               class="rounded-circle" width="24" height="24" 
-               alt="Profile Picture">
-          <svg *ngIf="!userProfileImage" width="24" height="24" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="60" cy="60" r="60" fill="#D9D9D9"/>
-            <path d="M60 57.6C64.2435 57.6 68.3131 56.125 71.3137 53.4995C74.3143 50.874 76 47.313 76 43.6C76 39.8869 74.3143 36.326 71.3137 33.7005C68.3131 31.075 64.2435 29.6 60 29.6C55.7565 29.6 51.6869 31.075 48.6863 33.7005C45.6857 36.326 44 39.8869 44 43.6C44 47.313 45.6857 50.874 48.6863 53.4995C51.6869 56.125 55.7565 57.6 60 57.6ZM54.2875 62.85C41.975 62.85 32 71.5781 32 82.3515C32 84.1453 33.6625 85.6 35.7125 85.6H84.2875C86.3375 85.6 88 84.1453 88 82.3515C88 71.5781 78.025 62.85 65.7125 62.85H54.2875Z" fill="#3D8D7A"/>
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="profile"
+          class="me-3 d-flex align-items-center text-decoration-none">
+          <img *ngIf="userProfileImage" [src]="userProfileImage" class="rounded-circle" width="24" height="24"
+            alt="Profile Picture">
+          <svg *ngIf="!userProfileImage" width="24" height="24" viewBox="0 0 120 120" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="60" fill="#D9D9D9" />
+            <path
+              d="M60 57.6C64.2435 57.6 68.3131 56.125 71.3137 53.4995C74.3143 50.874 76 47.313 76 43.6C76 39.8869 74.3143 36.326 71.3137 33.7005C68.3131 31.075 64.2435 29.6 60 29.6C55.7565 29.6 51.6869 31.075 48.6863 33.7005C45.6857 36.326 44 39.8869 44 43.6C44 47.313 45.6857 50.874 48.6863 53.4995C51.6869 56.125 55.7565 57.6 60 57.6ZM54.2875 62.85C41.975 62.85 32 71.5781 32 82.3515C32 84.1453 33.6625 85.6 35.7125 85.6H84.2875C86.3375 85.6 88 84.1453 88 82.3515C88 71.5781 78.025 62.85 65.7125 62.85H54.2875Z"
+              fill="#3D8D7A" />
           </svg>
         </a>
 
         <!-- Login/Logout buttons -->
-        <button *ngIf="!userServ.isLoggedIn()" type="button"
-                class="btn border-0 rounded-5 ps-3 pe-3 py-1"
-                routerLinkActive="active" routerLink="login">
+        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-1"
+          routerLinkActive="active" routerLink="login">
           Login
         </button>
-        <button *ngIf="userServ.isLoggedIn()" type="button"
-                class="btn border-0 rounded-5 ps-3 pe-3 py-1"
-                (click)="logout()"
-                >
+        <button *ngIf="userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-1"
+          (click)="logout()">
           Logout
         </button>
       </div>

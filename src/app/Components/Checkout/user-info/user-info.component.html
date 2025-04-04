@@ -1,0 +1,100 @@
+<div class="checkout-container container py-1">
+  <div class="row">
+    <!-- Shipping Information Section -->
+    <div class=" col-12">
+      <div class="card shipping-card">
+        <div class="card-header">
+          <h4 class="shipping-title">Shipping Information</h4>
+          <button *ngIf="!isEditing" class="btn bg-teal-green text-white" (click)="toggleEdit()">
+            Edit Info
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- Display User Information -->
+          <div *ngIf="!isEditing && userData" class="user-data-view">
+            <div class="data-row">
+              <span class="data-label">Name:</span>
+              <span class="data-value">{{ getFullName() }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Phone:</span>
+              <span class="data-value">{{ userData.phone }}</span>
+            </div>
+            <div class="data-row">
+              <span class="data-label">Address:</span>
+              <span class="data-value">{{ userData.address }}</span>
+            </div>
+          </div>
+
+          <!-- Edit Form -->
+          <form *ngIf="isEditing" [formGroup]="checkoutForm" class="edit-form">
+            <div class="row">
+              <div class="col-12 col-sm-6 col-md-12 col-lg-6">
+                <div class="mb-3">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" formControlName="name" class="form-control" required>
+
+                  @if(checkoutForm.controls['name'].invalid && checkoutForm.controls['name'].touched) {
+                  @if(checkoutForm.controls['name'].errors?.['required']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter your name
+                  </p>
+                  } @else if(checkoutForm.controls['name'].errors?.['pattern']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid name
+                  </p>
+                  }
+                  }
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-6 col-md-12 col-lg-6">
+                <div class="mb-3">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" formControlName="phone" class="form-control" required>
+                  @if(checkoutForm.controls['phone'].invalid && checkoutForm.controls['phone'].touched) {
+                  @if(checkoutForm.controls['phone'].errors?.['required']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter your phone
+                  </p>
+                  } @else if(checkoutForm.controls['phone'].errors?.['pattern']) {
+                  <p class="error text-danger small mb-2">
+                    <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid phone
+                  </p>
+                  }
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <textarea id="address" formControlName="address" class="form-control" rows="3" required></textarea>
+              @if(checkoutForm.controls['address'].invalid && checkoutForm.controls['address'].touched) {
+              @if(checkoutForm.controls['address'].errors?.['required']) {
+              <p class="error text-danger small mb-2">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter your address
+              </p>
+              } @else if(checkoutForm.controls['address'].errors?.['pattern']) {
+              <p class="error text-danger small mb-2">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid address
+              </p>
+              }
+              }
+            </div>
+
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" (click)="toggleEdit()">Cancel</button>
+              <button type="button" class="btn bg-teal-green text-white" (click)="saveChanges()"
+                [disabled]="!checkoutForm.valid">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+.order-page {
+  /* background-color: #B8E0D2; */
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.order-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.order-tabs button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  background-color: #4A9678;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.order-tabs button.active {
+  background-color: #2C6E63;
+  font-weight: bold;
+}
+
+.order-content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  margin-top: 70px;
+}

@@ -1,100 +1,178 @@
-* {
-  padding: 0;
-  margin: 0;
+.cart-item {
+  display: flex;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: var(--transition);
 }
-.img-container {
+
+.cart-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Item Image */
+.cart-item-image {
+  flex: 0 0 120px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 8rem;
-  border-radius: 10px;
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
-.row{
-  background-color: var(--light-gray);
-  border-radius: 10px;
+
+/* Item Details */
+.cart-item-details {
+  flex: 1;
+  padding: 0px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
 }
-.card-title{
-  color: black;
-  font-weight:400;
+
+/* Item Name & Remove Button */
+.cart-item-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0px;
 }
- 
-.title{
+
+.item-title {
   color: var(--teal-green);
+  font-weight: 600;
+  margin: 0;
 }
-.card-text{
+
+.btn-remove {
+  background: transparent;
+  border: none;
   color: var(--dark-gray);
-}
-.remove {
+  font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: transparent;
- 
+  padding: 4px;
+  transition: var(--transition);
 }
-.remove:hover {
-  color:rgb(187, 2, 2);
-  transform: scale(1.1);
+
+.btn-remove:hover {
+  color: var(--danger);
+  transform: scale(1.2);
 }
-.icon{
+
+.cart-item-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.info-block {
+  flex: 1;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.info-label {
   font-size: 14px;
-  padding: 7px;
-  border: 1px solid var(--teal-green);
-  color: var(--teal-green);
-  border-radius: 10px;
-  background-color: white;
+  color: var(--dark-gray);
+  margin-bottom: 8px;
 }
- 
- 
-@media (max-width: 768px){
-  .row{
-margin: 0 !important;
-padding: 0 !important;
-width: 100%;
-text-align: center;
-margin-bottom: 15px !important;
+
+.info-value {
+  font-weight: 500;
+}
+
+.total-price {
+  color: var(--teal-green);
+  font-weight: 600;
+}
+
+/* Quantity Controls */
+.quantity-block {
+  flex: 1.5;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-quantity {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--teal-green);
+  background-color: white;
+  color: var(--teal-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-quantity:hover:not([disabled]) {
+  background-color: var(--light-teal);
+}
+
+.btn-quantity[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-value {
+  font-weight: 500;
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cart-item {
+    flex-direction: column;
   }
-  .img-container {
-    height: 10rem;
-    margin: auto;
-    width: 90%;
-    margin-top: 10px;
+
+  .cart-item-image {
+    height: 160px;
+    flex-basis: auto;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
   }
-  .card-title{
-    color: black;
-    font-weight:bold;
-    font-size: 16px;
+
+  .cart-item-info {
+    margin-top: 12px;
   }
-  .title{
-    color: var(--teal-green);
+
+  .info-block {
+    text-align: center;
+    min-width: 70px;
   }
-  .card-body{
-  }
-  .card-text{
-    color: var(--dark-gray);
-    margin: 5px !important;
-  }
- 
-  .icon{
-    font-size: 14px;
-    padding: 7px;
-    border: 1px solid var(--teal-green);
-    color: var(--teal-green);
-    border-radius: 10px;
-    background-color: white;
-  }
-  .quantity{
+
+  .quantity-controls {
     justify-content: center;
-    margin-top: 10px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .cart-item-info {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-block {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .info-label {
+    margin-bottom: 0;
+  }
+
+  .quantity-controls {
+    margin-left: auto;
   }
  }
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
