@@ -1,7 +1,5 @@
 
 * {
-  padding: 0;
-  margin: 0;
   box-sizing: border-box;
 }
 .container-fluid{
@@ -228,4 +226,42 @@ h3{
   .summary-total {
     font-size: 16px;
   }
+}
+
+.modal.fade.show {
+  z-index: 1050;
+}
+
+.modal-backdrop.fade.show {
+  z-index: 1040;
+  opacity: 0.5;
+}
+.modal.fade.show {
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Secondary button styling */
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
 }

@@ -14,7 +14,7 @@ export class CartComponent {
   loading: boolean = true;
   TotalAmount: number = 0;
   Carts: any[] = [];
-
+  showConfirmDialog: boolean = false;
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -131,9 +131,6 @@ export class CartComponent {
     }
   }
   clearCart(): void {
-    const confirmClear = window.confirm('Are you sure you want to clear the entire cart?');
-    if (!confirmClear) return;
-
     this.cartService.clearCart().subscribe({
       next: (response) => {
         console.log('Cart cleared successfully:', response.message);
@@ -145,6 +142,16 @@ export class CartComponent {
         console.error('Error clearing cart:', err);
       },
     });
+  }
+  openConfirmDialog(): void {
+    this.showConfirmDialog = true;
+  }
+  closeConfirmDialog(): void {
+    this.showConfirmDialog = false;
+  }
+  confirmClearCart(): void {
+    this.clearCart();
+    this.closeConfirmDialog();
   }
 
 
