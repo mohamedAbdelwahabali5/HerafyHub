@@ -11,8 +11,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './cart.component.css',
 })
 export class CartComponent {
-  Carts: any[] = [];
+  loading: boolean = true;
   TotalAmount: number = 0;
+  Carts: any[] = [];
 
   constructor(private cartService: CartService) { }
 
@@ -30,6 +31,7 @@ export class CartComponent {
   }
 
   getAllProducts(): void {
+    this.loading = true;
     this.cartService.getAllProducts().subscribe({
       next: (data: any) => {
         console.log('Raw data:', data);
@@ -56,9 +58,11 @@ export class CartComponent {
         }
         console.log('Processed Carts:', this.Carts);
         this.calculateTotal();
+        this.loading = false;
       },
       error: (err) => {
-        console.error('Error fetching products:', err);
+        this.loading = false;
+        console.log('Error fetching products:', err);
         this.Carts = [];
       },
     });

@@ -1,35 +1,37 @@
-<div class="row p-2 m-3">
-  <div class="img-container col-md-2 col-sm-12" [ngStyle]="{'background-image': 'url(' + cart.image + ')'}">
-  </div>
-  <div class="card-body col-md-2 col-sm-12">
-    <h5 class="title">{{cart.Name}}</h5>
-  </div>
-  <div class="card-body col-md-2  col-sm-12">
-    <p class="card-title">Price</p>
-    <p class="card-text mt-5">${{cart.price}}</p>
-  </div>
-  <div class="card-body col-md-2 col-sm-12 ">
-    <p class="card-title">Quantity</p>
-    <div class="d-flex quantity mt-5">
-      <button (click)="decrease()" class="icon me-2">
-        <i class="fa-solid fa-minus d-flex align-items-center justify-content-center"></i>
-      </button>
-      <p class="card-text d-inline">{{cart.quantity}}</p>
-      <button (click)="increase()" class="icon ms-2">
-        <i class="fa-solid  fa-plus d-flex align-items-center justify-content-center"></i>
+<div class="cart-item">
+  <div class="cart-item-image" [ngStyle]="{'background-image': 'url(' + cart.image + ')'}"></div>
+
+  <div class="cart-item-details">
+    <div class="cart-item-name">
+      <h5 class="item-title">{{cart.Name}}</h5>
+      <button (click)="removeItem()" class="btn-remove" aria-label="Remove item">
+        <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-  </div>
-  <div class="card-body col-md-2  col-sm-12">
-    <p class="card-title">Total Price</p>
-    <p class="card-text mt-5 ">  {{ totalPrice | currency }}</p>
-  </div>
-  <div class="card-body col-md-2  col-sm-12">
-    <p class="card-title">Action</p>
-    <button (click)="removeItem()" class="cursor-pointer card-text remove border-0">
-      <i class=" mt-5 mb-3 fa-solid fa-trash fs-5 ms-3" ></i>
-    </button>
+
+    <div class="cart-item-info">
+      <div class="info-block">
+        <span class="info-label">Price</span>
+        <span class="info-value">${{cart.price}}</span>
+      </div>
+
+      <div class="info-block quantity-block">
+        <span class="info-label">Quantity</span>
+        <div class="quantity-controls">
+          <button (click)="decrease()" class="btn-quantity" [disabled]="cart.quantity <= 1">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          <span class="quantity-value">{{cart.quantity}}</span>
+          <button (click)="increase()" class="btn-quantity">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <span class="info-label">Total</span>
+        <span class="info-value total-price">{{ totalPrice | currency }}</span>
+      </div>
+    </div>
   </div>
 </div>
- 
- 

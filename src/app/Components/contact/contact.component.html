@@ -1,170 +1,231 @@
 <div class="contact-container">
-  <div class="container py-5">
-    <h1 class="text-center mb-4 teal-green">Contact our Team</h1>
-
+  <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-8 text-center">
-        <p class="lead mb-5">
-          At Herafy, we value every customer and appreciate your interest in our
-          handmade crafts. Whether you have a question, need assistance, or
-          simply want to share your thoughts, we're here to help!
-        </p>
+      <!-- Header Section -->
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8 text-center">
+          <h1 class="display-5 fw-bold text-teal-green mb-4">
+            Contact Our Team
+          </h1>
+          <p class="lead text-secondary mb-2 mb-lg-5">
+            We value every customer and appreciate your interest in our handmade
+            crafts. Whether you have questions, need assistance, or want to
+            share feedback - we're here to help!
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <form
-          [formGroup]="contactForm"
-          (ngSubmit)="onSubmit()"
-          class="contact-form"
-        >
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="firstName" class="form-label text-teal-green"
-                >First Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="firstName"
-                formControlName="firstName"
-                placeholder="First Name"
-              />
-              @if ((formControls.firstName.touched ||
-              formControls.firstName.dirty) && formControls.firstName.invalid) {
-              <small class="text-danger">{{
-                getErrorMessage("firstName")
-              }}</small>
-              }
-            </div>
-            <div class="col-md-6 mb-3 m-auto" id="contact">
-              <div class="form-label text-teal-green">
-                <i class="bi bi-envelope-fill mb-2"></i>
-                <label for="contact" class="px-2">Our Email </label>
+      <!-- Contact Form Section -->
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+          <form
+            [formGroup]="contactForm"
+            (ngSubmit)="onSubmit()"
+            class="bg-white p-3 p-md-4 rounded-3 shadow-sm"
+          >
+            <!-- Contact Info -->
+            <div class="col-12 mb-1">
+              <div class="row g-1">
+                <!-- Email Info -->
+                <div class="col-md-6">
+                  <div
+                    class="d-flex align-items-center bg-light-gray p-1 rounded-2"
+                  >
+                    <i class="bi bi-envelope-fill fs-4 text-teal-green"></i>
+                    <div class="ms-3">
+                      <p class="mb-0 small text-secondary">Our Email</p>
+                      <p class="mb-0 fw-medium">engmostafabr&#64;gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Phone Info -->
+                <div class="col-md-6">
+                  <div
+                    class="d-flex align-items-center bg-light-gray p-1 rounded-2"
+                  >
+                    <i class="bi bi-telephone-fill fs-4 text-teal-green"></i>
+                    <div class="ms-3">
+                      <p class="mb-0 small text-secondary">Call Us</p>
+                      <p class="mb-0 fw-medium">(010) 1604-7883</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Contact@gmail.com"
-                disabled
-              />
             </div>
-            <div class="col-md-6 mb-3">
-              <label for="lastName" class="form-label text-teal-green"
-                >Last Name</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="lastName"
-                formControlName="lastName"
-                placeholder="Last Name"
-              />
-              @if ((formControls.lastName.touched ||
-              formControls.lastName.dirty) && formControls.lastName.invalid) {
-              <small class="text-danger">{{
-                getErrorMessage("lastName")
-              }}</small>
-              }
-            </div>
-            <div class="col-md-6 mb-3 m-auto" id="contact">
-              <div class="form-label text-teal-green">
-                <i class="bi bi-telephone-fill mb-2"></i>
-                <label for="contact" class="px-2">Call us </label>
+
+            <div class="row g-1">
+              <!-- First Name -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="firstName"
+                    formControlName="firstName"
+                    placeholder="First Name"
+                    [ngClass]="{
+                      'is-invalid':
+                        formControls.firstName.invalid &&
+                        (formControls.firstName.touched || submitted)
+                    }"
+                  />
+                  <label for="firstName" class="text-teal-green"
+                    >First Name</label
+                  >
+                  @if (formControls.firstName.invalid &&
+                  (formControls.firstName.touched || submitted)) {
+                  <div class="invalid-feedback d-block">
+                    {{ getErrorMessage("firstName") }}
+                  </div>
+                  }
+                </div>
               </div>
 
-              <input
-                type="text"
-                class="form-control text-secondary"
-                placeholder="01016047883"
-                disabled
-              />
+              <!-- Last Name -->
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lastName"
+                    formControlName="lastName"
+                    placeholder="Last Name"
+                    [ngClass]="{
+                      'is-invalid':
+                        formControls.lastName.invalid &&
+                        (formControls.lastName.touched || submitted)
+                    }"
+                  />
+                  <label for="lastName" class="text-teal-green"
+                    >Last Name</label
+                  >
+                  @if (formControls.lastName.invalid &&
+                  (formControls.lastName.touched || submitted)) {
+                  <div class="invalid-feedback d-block">
+                    {{ getErrorMessage("lastName") }}
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-12">
+                <div class="form-floating">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    formControlName="email"
+                    placeholder="name@example.com"
+                    [ngClass]="{
+                      'is-invalid':
+                        formControls.email.invalid &&
+                        (formControls.email.touched || submitted)
+                    }"
+                  />
+                  <label for="email" class="text-teal-green"
+                    >Email Address</label
+                  >
+                  @if (formControls.email.invalid && (formControls.email.touched
+                  || submitted)) {
+                  <div class="invalid-feedback d-block">
+                    {{ getErrorMessage("email") }}
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Subject -->
+              <div class="col-12">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="subject"
+                    formControlName="subject"
+                    placeholder="Subject"
+                    [ngClass]="{
+                      'is-invalid':
+                        formControls.subject.invalid &&
+                        (formControls.subject.touched || submitted)
+                    }"
+                  />
+                  <label for="subject" class="text-teal-green">Subject</label>
+                  @if (formControls.subject.invalid &&
+                  (formControls.subject.touched || submitted)) {
+                  <div class="invalid-feedback d-block">
+                    {{ getErrorMessage("subject") }}
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Message -->
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    formControlName="message"
+                    placeholder="Message"
+                    rows="4"
+                    style="height: 150px"
+                    [ngClass]="{
+                      'is-invalid':
+                        formControls.message.invalid &&
+                        (formControls.message.touched || submitted)
+                    }"
+                  ></textarea>
+                  <label for="message" class="text-teal-green"
+                    >Your Message</label
+                  >
+                  @if (formControls.message.invalid &&
+                  (formControls.message.touched || submitted)) {
+                  <div class="invalid-feedback d-block">
+                    {{ getErrorMessage("message") }}
+                  </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="col-12 text-center pt-1">
+                <button
+                  type="submit"
+                  class="btn btn-teal-green px-5"
+                  [disabled]="contactForm.invalid || loading"
+                >
+                  @if (loading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Sending... } @else { Send Message
+                  <i class="bi bi-send-arrow-up ms-2"></i>
+                  }
+                </button>
+              </div>
             </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="email" class="form-label text-teal-green">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              formControlName="email"
-              placeholder="example@gmail.com"
-            />
-            @if ((formControls.email.touched || formControls.email.dirty) &&
-            formControls.email.invalid) {
-            <small class="text-danger">{{ getErrorMessage("email") }}</small>
-            }
-          </div>
-
-          <div class="mb-3">
-            <label for="subject" class="form-label text-teal-green"
-              >Subject</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="subject"
-              formControlName="subject"
-              placeholder="subject"
-            />
-            @if ((formControls.subject.touched || formControls.subject.dirty) &&
-            formControls.subject.invalid) {
-            <small class="text-danger">{{ getErrorMessage("subject") }}</small>
-            }
-          </div>
-
-          <div class="mb-4">
-            <label for="message" class="form-label text-teal-green"
-              >Message</label
-            >
-            <textarea
-              class="form-control"
-              id="message"
-              rows="6"
-              formControlName="message"
-              placeholder="message"
-            ></textarea>
-            @if ((formControls.message.touched || formControls.message.dirty) &&
-            formControls.message.invalid) {
-            <small class="text-danger">{{ getErrorMessage("message") }}</small>
-            }
-          </div>
-
-          <div class="text-center">
-            <button
-              type="submit"
-              class="btn bg-teal-green text-white send-message-btn"
-            >
-              <!-- [disabled]="loading" -->
-              <!-- <span
-                *ngIf="loading"
-                class="spinner-border spinner-border-sm me-2"
-              ></span>
-              {{ loading ? "Sending..." : "Send Message" }} -->
-              Submit
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-success modal-content">
-      <div class="modal-body text-center py-4">
-        <i class="bi bi-check-circle-fill success-icon mb-3"></i>
-        <h3>Thank you!</h3>
-        <p>
-          Your message has been sent successfully. We'll get back to you soon!
-        </p>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-          Close
-        </button>
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0">
+        <div class="modal-body text-center p-5">
+          <div class="icon-success bg-teal-soft mb-4 mx-auto rounded-circle">
+            <i class="bi bi-check2-circle text-teal-green fs-1"></i>
+          </div>
+          <h3 class="text-teal-green mb-3">Message Sent!</h3>
+          <p class="text-secondary mb-4">
+            Thank you for contacting us. We'll respond within 24 hours.
+          </p>
+          <button type="button" class="btn btn-teal-green px-4">
+            Continue Browsing
+          </button>
+        </div>
       </div>
     </div>
   </div>

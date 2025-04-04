@@ -1,53 +1,72 @@
+<!-- about-us.component.html -->
 <div class="container-fluid px-0">
-    <!-- Image Section -->
-    <div class="card text-bg-dark w-100 border-0 rounded-0">
-        <img src="images/about-us.png" class="card-img img-fluid object-fit-cover" alt="About Us">
-        <div class="card-img-overlay d-flex align-items-end justify-content-center pb-3 pb-md-4 pb-lg-5">
-            <h1 class="text-white fw-bold mb-3">About Us</h1>
+  <!-- Hero Section -->
+  <section class="hero-section position-relative overflow-hidden">
+    <div class="gradient-overlay"></div>
+    <img
+      src="images/about-us.png"
+      alt="Artisans working on handmade products"
+      class="hero-image img-fluid"
+      loading="lazy"
+      (load)="imageLoaded = true"
+      (error)="imageError = true"
+      [class.loaded]="imageLoaded"
+    />
+    <div class="hero-content position-absolute text-center text-white">
+      <h1 class="display-3 display-md-2 fw-bold mb-4">About Us</h1>
+      <div class="divider mx-auto"></div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container py-5">
+    <!-- Introduction -->
+    <section
+      class="intro-section text-center mb-6 animate__animated animate__fadeIn"
+    >
+      <h2 class="section-title teal-green mb-4 display-5">
+        The Art of Handmade Excellence
+      </h2>
+      <p class="lead-text text-muted mx-auto fs-5">
+        At Herafy, we believe every piece tells a story. Our mission is to
+        preserve<br class="d-none d-md-block" />
+        traditional craftsmanship while creating modern, sustainable designs.
+      </p>
+    </section>
+
+    <!-- Key Features -->
+    <section class="features-section mt-6">
+      <div class="row g-5 align-items-center">
+        <div class="col-md-6" *ngFor="let feature of keyFeatures">
+          <div class="feature-card p-4 p-lg-5 shadow-sm">
+            <div class="feature-icon teal-green mb-4">
+              <i class="{{ feature.icon }} fa-2x"></i>
+            </div>
+            <h3 class="teal-green mb-3">{{ feature.title }}</h3>
+            <p class="text-muted mb-0">{{ feature.description }}</p>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    </section>
 
+    <!-- Values Section -->
+    <section class="values-section mt-6">
+      <div class="text-center mb-6">
+        <h2 class="teal-green display-5 mb-4">Our Guiding Principles</h2>
+        <div class="divider mx-auto"></div>
+      </div>
 
-<div class="container mt-4 mt-md-5 px-3 px-lg-5">
-    <!-- About Content -->
-    <div class="text-center">
-        <h2 class="fw-bold teal-green mb-3">About Herafy – The Art of Handmade Excellence</h2>
-        <p class="fs-6 fs-md-5 text-muted px-0 px-md-4 px-lg-5 mx-auto" style="max-width: 900px;">
-            At Herafy, we believe that every piece tells a story, every stitch holds passion, and every craft embodies creativity. 
-            Our brand is dedicated to preserving the beauty of handmade artistry by offering unique, handcrafted products that blend 
-            tradition with modern elegance.
-        </p>
-    </div>
-
-    <!-- Why Choose Us -->
-    <div class="mt-4 mt-md-5">
-        <h3 class="fw-bold text-center teal-green mb-3 mb-md-4">Why Choose Herafy?</h3>
-        <ul class="fs-6 fs-md-5 list-unstyled mt-3 px-0 px-md-4 px-lg-5 mx-auto" style="max-width: 900px;">
-            <li class="d-flex align-items-start mb-3">
-                <span class="me-2 teal-green fs-5">●</span> 
-                <div>
-                    <strong class="teal-green me-2">Authenticity:</strong> Each piece is crafted by skilled artisans using traditional techniques.
-                </div>
-            </li>
-            <li class="d-flex align-items-start mb-3">
-                <span class="me-2 teal-green fs-5">●</span> 
-                <div>
-                    <strong class="teal-green me-2">Uniqueness:</strong> No two items are exactly the same—each holds its own charm.
-                </div>
-            </li>
-            <li class="d-flex align-items-start mb-3">
-                <span class="me-2 teal-green fs-5">●</span> 
-                <div>
-                    <strong class="teal-green me-2">Sustainability:</strong> We support eco-friendly practices, ensuring our materials and processes are kind to the planet.
-                </div>
-            </li>
-            <li class="d-flex align-items-start mb-3">
-                <span class="me-2 teal-green fs-5">●</span> 
-                <div>
-                    <strong class="teal-green me-2">Passion & Dedication:</strong> Handmade with love, every product is a true work of art.
-                </div>
-            </li>
-        </ul>
-    </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4" *ngFor="let value of coreValues">
+          <div class="value-item p-4">
+            <i class="{{ value.icon }} fa-lg teal-green me-3"></i>
+            <div>
+              <h4 class="teal-green mb-2">{{ value.title }}</h4>
+              <p class="text-muted mb-0 small">{{ value.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
