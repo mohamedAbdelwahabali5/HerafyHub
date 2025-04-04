@@ -44,6 +44,8 @@ export class AllOrdersComponent implements OnInit {
 
   viewOrderDetails(order: Order) {
     this.selectedOrderDetails = order;
+    // console.log('Order Details:', order);
+    // console.log('Order Items:', order.orderItems);
   }
 
   closeOrderDetails() {

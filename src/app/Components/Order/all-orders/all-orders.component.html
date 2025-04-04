@@ -34,7 +34,7 @@
       <tbody>
         @for (order of orders(); track order._id) {
         <tr>
-          <td data-label="Order ID">{{ order._id }}</td>
+          <td  data-label="Order ID">{{ order._id }}</td>
           <td data-label="Total">{{ order.totalPrice | currency }}</td>
           <td data-label="Status">{{ order.status }}</td>
           <td data-label="Date">{{ order.createdAt | date:'mediumDate' }}</td>
@@ -42,10 +42,14 @@
             <button (click)="viewOrderDetails(order)">
               View Details
             </button>
-            @if (order.status === 'In-Progress' && order._id) {
-            <button (click)="cancelOrder(order._id)" class="cancel">
-              Cancel Order
-            </button>
+           
+            @if (order._id) {
+              <button 
+                (click)="cancelOrder(order._id)" 
+                class="cancel" 
+                [attr.disabled]="order.status !== 'In-Progress' ? true : null">
+                Cancel Order
+              </button>
             }
           </td>
         </tr>
@@ -86,7 +90,7 @@
           <tbody>
             @for (item of selectedOrderDetails.orderItems; track item.product) {
             <tr>
-              <td>{{ item.product }}</td>
+              <td>{{ item.product.title}}</td>
               <td>{{ item.quantity }}</td>
             </tr>
             }

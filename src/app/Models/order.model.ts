@@ -29,7 +29,7 @@ export interface Order {
 export interface OrderItem {
   _id?: string;
   order?: string;
-  product: string;
+  product: { _id: string; title: string };
   quantity: number;
   price: number;
 }
