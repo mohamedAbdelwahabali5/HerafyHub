@@ -1,13 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Component, ElementRef, Input, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
+// Services
 import { OrderService } from '../../../Services/order.service';
 import { CartService } from '../../../Services/cart.service';
-import { Router } from '@angular/router';
+import { PaymobService } from '../../../Services/paymob.service';
+import { UsersService } from '../../../Services/users.service';
+
+// Models
 import { ShippingAddress } from '../../../Models/order.model';
-import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 interface PaymentMethod {
   id: string;
@@ -16,20 +22,43 @@ interface PaymentMethod {
   description: string;
 }
 
+interface PaymobAuthResponse {
+  token: string;
+}
+
+interface PaymobOrderResponse {
+  id: number;
+}
+
+interface PaymobPaymentKeyResponse {
+  token: string;
+}
+
 @Component({
   selector: 'app-payment-form',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './payment-form.component.html',
-  styleUrl: './payment-form.component.css'
+  styleUrls: ['./payment-form.component.css']
 })
 export class PaymentFormComponent implements OnInit {
   @Input() shippingAddress!: ShippingAddress;
   @Input() userData: any;
   @Input() isShippingAddressEdited: boolean = false;
+  @ViewChild('paymentIframe') paymentIframe!: ElementRef;
+
   cartItems: any[] = [];
-  paymentForm!: FormGroup;
   selectedMethod: PaymentMethod | null = null;
+  userInfo: any;
+  totalPrice = 0;
+  isLoading = false;
+  safeIframeUrl!: SafeResourceUrl;
+  // Paymob properties
+  authToken: string = '';
+  orderId: number = 0;
+  paymentKey: string = '';
+  iframeUrl: string = '';
+  isPaymentProcessing: boolean = false;
 
   paymentMethods: PaymentMethod[] = [
     {
@@ -47,228 +76,269 @@ export class PaymentFormComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
+    private sanitizer: DomSanitizer,
     private orderService: OrderService,
     private cartService: CartService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private paymobService: PaymobService,
+    private userService: UsersService
   ) { }
 
-  ngOnInit() {
-    this.initForm();
-    this.loadCartItems();
 
-    // Debug logging
-    console.log('User Data:', this.userData);
-    console.log('Shipping Address:', this.shippingAddress);
-    console.log('Is Shipping Address Edited:', this.isShippingAddressEdited);
+  ngOnInit() {
+    this.loadCartItems();
+    this.gettingAllUserInfo();
   }
 
+  private loadPaymentIframe(url: string) {
+    // Bypass security trust for this specific URL
+    const trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+    // Use Angular's safe value in the template
+    this.safeIframeUrl = trustedUrl;
+
+    console.log('Payment iframe URL set:', url);
+  }
   loadCartItems() {
     this.cartService.getAllProducts().subscribe({
       next: (response: any) => {
         this.cartItems = response.cartItems;
+        this.calculateTotalPrice();
       },
       error: (error) => {
         console.error('Error loading cart items:', error);
+        this.toastr.error('Failed to load cart items', 'Error');
       }
     });
+  }
+
+  calculateTotalPrice(): void {
+    this.totalPrice = this.cartItems.reduce(
+      (sum, item) => sum + (item.total || 0),
+      0
+    );
+    this.totalPrice = Math.round(this.totalPrice * 100); // Convert to cents
   }
 
   onSubmit() {
-    if (this.selectedMethod && (this.selectedMethod.id === "cod" || this.paymentForm.valid)) {
-      // Validate cart items
-      if (!this.cartItems || !Array.isArray(this.cartItems) || this.cartItems.length === 0) {
-        this.toastr.error('No products in cart', 'Cart Error');
-        return;
-      }
+    if (!this.selectedMethod) {
+      this.toastr.error('Please select a payment method', 'Error');
+      return;
+    }
 
-      // Robust product mapping with fallback
-      const orderProducts = this.cartItems.map(item => {
-        const productId =
-          item.id ||           // Use 'id' field first
-          item._id ||          // Then try '_id'
-          item.product?._id || // Then nested product ID
-          item.productId;      // Last resort
-
-        if (!productId) {
-          console.warn('Could not find product ID for item:', item);
-          return null;
-        }
-
-        return {
-          productId: productId,
-          quantity: Number(item.quantity || 1)
-        };
-      }).filter(product => product !== null);
-
-      // Validate order products
-      if (orderProducts.length === 0) {
-        this.toastr.error('No valid products found in cart', 'Cart Error');
-        return;
-      }
-
-      // Use the dynamic shipping address method
-      const shippingAddress = this.getShippingAddress();
-
-      const orderData = {
-        shippingAddress,
-        paymentMethod: this.selectedMethod.id === 'cod'
-          ? 'Cash on Delivery' as const
-          : 'Credit Card' as const,
-        products: orderProducts
-      };
-
-      // Validation checks similar to backend
-      if (!this.validateShippingAddress(shippingAddress)) {
-        return;
-      }
-
-      this.orderService.createOrder(orderData).subscribe({
-        next: (response: any) => {
-          // Success toast
-          this.toastr.success('Order placed successfully!', 'Success', {
-            timeOut: 3000,
-            closeButton: true
-          });
-
-          this.cartService.clearCart().subscribe({
-            next: () => {
-              this.router.navigate(['/order'], {
-                queryParams: {
-                  orderId: response.order?._id || response._id
-                }
-              });
-              this.cartService.clearCartItems();
-            },
-            error: (clearError) => {
-              console.error('Cart clearing failed:', clearError);
-              // Still navigate even if cart clearing fails
-              this.router.navigate(['/'], {
-                queryParams: {
-                  orderId: response.order?._id || response._id
-                }
-              });
-            }
-          });
-        },
-        error: (error) => {
-          // Error toast
-          this.toastr.error(
-            error.error?.message || 'Failed to create order',
-            'Order Error',
-            {
-              timeOut: 5000,
-              closeButton: true
-            }
-          );
-
-          // More detailed error logging
-          if (error.error?.message) {
-            console.error('Server Error Message:', error.error.message);
-          }
-          if (error.error?.errors) {
-            console.error('Validation Errors:', error.error.errors);
-          }
-        }
-      });
-    } else {
-      // Mark form fields as touched to show validation errors
-      Object.keys(this.paymentForm.controls).forEach(field => {
-        const control = this.paymentForm.get(field);
-        control?.markAsTouched({ onlySelf: true });
-      });
+    if (this.selectedMethod.id === 'cod') {
+      this.processCashOnDelivery();
+    } else if (this.selectedMethod.id === 'card' && this.paymentKey) {
+      // For card payments, the order is created after successful payment in the iframe
+      // You might need to handle this differently based on your backend implementation
+      this.toastr.info('Please complete the payment process', 'Info');
     }
   }
 
+  private processCashOnDelivery() {
+    if (!this.validateCartItems()) return;
 
-  initForm() {
-    this.paymentForm = this.fb.group({
-      cardholderName: ['', [Validators.required, Validators.minLength(2)]],
-      cardNumber: ['', [
-        Validators.required,
-        Validators.pattern(/^\d{16}$/),
-        Validators.minLength(16),
-        Validators.maxLength(16)
-      ]],
-      expirationDate: ['', [
-        Validators.required,
-        Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)
-      ]],
-      cvv: ['', [
-        Validators.required,
-        Validators.pattern(/^\d{3}$/),
-        Validators.minLength(3),
-        Validators.maxLength(3)
-      ]]
+    const orderProducts = this.mapCartItemsToOrderProducts();
+    if (!orderProducts.length) return;
+
+    const shippingAddress = this.getShippingAddress();
+    if (!this.validateShippingAddress(shippingAddress)) return;
+
+    const orderData = {
+      shippingAddress,
+      paymentMethod: 'Cash on Delivery' as const,
+      products: orderProducts.map(p => ({
+        productId: String(p?.productId),
+        quantity: Number(p?.quantity || 1)
+      }))
+    };
+
+    this.isLoading = true;
+    this.orderService.createOrder(orderData).subscribe({
+      next: (response: any) => {
+        this.handleOrderSuccess(response);
+      },
+      error: (error) => {
+        this.handleOrderError(error);
+      }
     });
+  }
+
+  private validateCartItems(): boolean {
+    if (!this.cartItems || !Array.isArray(this.cartItems) || this.cartItems.length === 0) {
+      this.toastr.error('No products in cart', 'Cart Error');
+      return false;
+    }
+    return true;
+  }
+
+  private mapCartItemsToOrderProducts() {
+    return this.cartItems.map(item => {
+      const productId = item.id || item._id || item.product?._id || item.productId;
+      if (!productId) {
+        console.warn('Could not find product ID for item:', item);
+        return null;
+      }
+      return {
+        productId: productId,
+        quantity: Number(item.quantity || 1)
+      };
+    }).filter(product => product !== null);
+  }
+
+  private handleOrderSuccess(response: any) {
+    this.isLoading = false;
+    this.toastr.success('Order placed successfully!', 'Success', {
+      timeOut: 3000,
+      closeButton: true
+    });
+
+    this.cartService.clearCart().subscribe({
+      next: () => {
+        this.router.navigate(['/order'], {
+          queryParams: { orderId: response.order?._id || response._id }
+        });
+        this.cartService.clearCartItems();
+      },
+      error: (clearError) => {
+        console.error('Cart clearing failed:', clearError);
+        this.router.navigate(['/'], {
+          queryParams: { orderId: response.order?._id || response._id }
+        });
+      }
+    });
+  }
+
+  private handleOrderError(error: any) {
+    this.isLoading = false;
+    this.toastr.error(
+      error.error?.message || 'Failed to create order',
+      'Order Error',
+      { timeOut: 5000, closeButton: true }
+    );
+
+    if (error.error?.message) {
+      console.error('Server Error Message:', error.error.message);
+    }
+    if (error.error?.errors) {
+      console.error('Validation Errors:', error.error.errors);
+    }
   }
 
   selectPaymentMethod(method: PaymentMethod) {
     this.selectedMethod = method;
-
-    if (method.id !== 'card') {
-      this.paymentForm.reset();
+    if (method.id === 'card') {
+      this.initiateCardPayment();
     }
   }
 
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.paymentForm.get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched));
-  }
+  initiateCardPayment() {
+    if (this.isPaymentProcessing) return;
 
-  isFormValid(): boolean {
-    // console.log(this.selectedMethod?.id);
-    if (!this.selectedMethod) return false;
-    if (this.selectedMethod.id === 'card') {
-      return this.paymentForm.valid;
+    this.isPaymentProcessing = true;
+    this.calculateTotalPrice();
+
+    if (this.totalPrice <= 0) {
+      this.toastr.error('Invalid payment amount', 'Error');
+      this.isPaymentProcessing = false;
+      return;
     }
-    return true; // For non-card methods (like cash)
+
+    this.paymobService.getAuthToken().subscribe({
+      next: (res: PaymobAuthResponse) => {
+        this.authToken = res.token;
+        this.createPaymobOrder();
+      },
+      error: (err) => {
+        this.handlePaymentError('Failed to get authentication token', err);
+      }
+    });
   }
 
-  // Helper method to get full name
+  private createPaymobOrder() {
+    this.paymobService.createOrder(this.authToken, this.totalPrice).subscribe({
+      next: (orderRes: PaymobOrderResponse) => {
+        this.orderId = orderRes.id;
+        this.getPaymentKey();
+      },
+      error: (err) => {
+        this.handlePaymentError('Failed to create payment order', err);
+      }
+    });
+  }
+
+  private getPaymentKey() {
+    if (!this.userInfo) {
+      this.handlePaymentError('User information not available');
+      return;
+    }
+
+    const billingData = {
+      first_name: this.userInfo.firstName || 'Customer',
+      last_name: this.userInfo.lastName || '',
+      phone_number: this.userInfo.phone || '01000000000', // Paymob requires phone
+      email: this.userInfo.email || 'customer@example.com',
+      apartment: "NA",
+      floor: "NA",
+      street: (this.userInfo.address || '').split(",")[0] || 'Unknown',
+      building: "NA",
+      city: this.userInfo.city || 'Cairo',
+      country: "EG",
+      postal_code: this.userInfo.zipCode || '12345'
+    };
+
+    this.paymobService.getPaymentKey(
+      this.authToken,
+      this.orderId,
+      this.totalPrice,
+      billingData
+    ).subscribe({
+      next: (keyRes: PaymobPaymentKeyResponse) => {
+        this.paymentKey = keyRes.token;
+        // Use your actual Paymob iframe ID (replace 911500)
+        this.iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/911500?payment_token=${this.paymentKey}`;
+
+        // Load iframe after slight delay to ensure DOM is ready
+        setTimeout(() => {
+          this.loadPaymentIframe(this.iframeUrl);
+          this.isPaymentProcessing = false;
+        }, 100);
+      },
+      error: (err) => {
+        this.handlePaymentError('Failed to get payment key', err);
+      }
+    });
+  }
+
+  private handlePaymentError(message: string, error?: any) {
+    this.isPaymentProcessing = false;
+    console.error(message, error);
+    this.toastr.error(message, 'Payment Error');
+  }
+
+  // Helper methods remain the same
   getUserFullName(): string {
-    // Add more robust logging
-    console.log('Full Name Debug:');
-    console.log('First Name:', this.userData?.firstName);
-    console.log('Last Name:', this.userData?.lastName);
-
-    if (!this.userData) {
-      console.warn('No user data available');
-      return '';
-    }
-
-    // Handle cases where firstName or lastName might be undefined
+    if (!this.userData) return '';
     const firstName = this.userData.firstName || '';
     const lastName = this.userData.lastName || '';
-
-    const fullName = `${firstName} ${lastName}`.trim();
-
-    console.log('Constructed Full Name:', fullName);
-    return fullName || '';
+    return `${firstName} ${lastName}`.trim();
   }
 
-  // Helper method to get full address
   getUserFullAddress(): string {
     if (!this.userData) return '';
-
     const addressParts = [
       this.userData.address,
       this.userData.city,
       this.userData.state
     ].filter(part => part && part.trim() !== '');
-
     return addressParts.join(' - ');
   }
 
-  // Helper method to get shipping address
   getShippingAddress(): ShippingAddress {
-    // If shipping address was explicitly edited in user-info, use that
     if (this.isShippingAddressEdited && this.shippingAddress) {
       return this.shippingAddress;
     }
-
-    // Always return a valid ShippingAddress
     return {
       name: this.getUserFullName(),
       address: this.getUserFullAddress(),
@@ -276,9 +346,7 @@ export class PaymentFormComponent implements OnInit {
     };
   }
 
-  // Validation method mimicking backend validation
   validateShippingAddress(address: ShippingAddress): boolean {
-    // Name validation
     if (!address.name || address.name.trim().length < 3) {
       this.toastr.error('Name must be at least 3 characters long', 'Validation Error');
       return false;
@@ -288,7 +356,6 @@ export class PaymentFormComponent implements OnInit {
       return false;
     }
 
-    // Address validation
     if (!address.address || address.address.trim().length < 3) {
       this.toastr.error('Address must be at least 3 characters long', 'Validation Error');
       return false;
@@ -298,7 +365,6 @@ export class PaymentFormComponent implements OnInit {
       return false;
     }
 
-    // Phone validation
     const phoneRegex = /^[0-9]{10,15}$/;
     if (!address.phone || !phoneRegex.test(address.phone)) {
       this.toastr.error('Invalid phone number', 'Validation Error');
@@ -307,5 +373,24 @@ export class PaymentFormComponent implements OnInit {
 
     return true;
   }
+
+  gettingAllUserInfo() {
+    this.userService.getUserProfile().subscribe({
+      next: (response) => {
+        this.userInfo = response;
+      },
+      error: (error) => {
+        console.error('Error loading user info:', error);
+        this.toastr.error('Failed to load user information', 'Error');
+      }
+    });
+  }
+
+  clearIframe() {
+    if (this.paymentIframe) {
+      this.paymentIframe.nativeElement.src = '';
+    }
+  }
 }
+
 

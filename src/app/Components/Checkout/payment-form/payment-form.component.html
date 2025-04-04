@@ -1,86 +1,78 @@
 <div class="container py-1">
   <div class="row justify-content-center">
-    <div class="col-12 ">
-      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
-        <div class="card shadow-sm">
-          <div class="card-header text-center text-black" style="background-color: #f8f9fa;">
-            <h2 class="mb-0">
-              <i class="fas fa-money-check-alt me-2 teal-green"></i> Payment Method
-            </h2>
-          </div>
+    <div class="col-12">
 
-          <div class="card-body">
-            <p class="text-center text-muted mb-4">Select your preferred payment option</p>
+      <div class="card shadow-sm">
+        <div class="card-header text-center text-black" style="background-color: #f8f9fa;">
+          <h2 class="mb-0">
+            <i class="fas fa-money-check-alt me-2 teal-green"></i> Payment Method
+          </h2>
+        </div>
 
-            <div class="row g-3 d-flex ">
-              <div *ngFor="let method of paymentMethods" class="col-6">
-                <div class="card h-100 payment-option " [class.border-primary]="selectedMethod === method"
-                  (click)="selectPaymentMethod(method)">
-                  <div class="card-body text-center">
-                    <div class="mb-1">
-                      <i [class]="method.icon" class="fa-4x teal-green mb-1"></i>
-                    </div>
-                    <h5 class="card-title">{{ method.name }}</h5>
-                    <p class="card-text text-muted">{{ method.description }}</p>
+        <div class="card-body">
+          <p class="text-center text-muted mb-4">Select your preferred payment option</p>
+
+          <!-- Payment Methods Selection -->
+          <div class="row g-3 d-flex">
+            <div *ngFor="let method of paymentMethods" class="col-md-6">
+              <div class="card h-100 payment-option" [class.border-primary]="selectedMethod?.id === method.id"
+                [class.disabled]="isPaymentProcessing" (click)="!isPaymentProcessing && selectPaymentMethod(method)">
+                <div class="card-body text-center">
+                  <div class="mb-1">
+                    <i [class]="method.icon" class="fa-4x teal-green mb-1"></i>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="selectedMethod" class="alert alert-info text-center mt-4">
-              Selected Method: <strong>{{ selectedMethod.name }}</strong>
-            </div>
-
-            <!-- Credit Card Form -->
-            <div *ngIf="selectedMethod?.id === 'card'" class="card-details mt-4">
-              <div class="row gy-2">
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="cardholderName" class="form-label">Cardholder Name</label>
-                  <input type="text" class="form-control" id="cardholderName" formControlName="cardholderName"
-                    placeholder="Name on Card" [class.is-invalid]="isFieldInvalid('cardholderName')">
-                  <div *ngIf="isFieldInvalid('cardholderName')" class="invalid-feedback">
-                    Cardholder name is required
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mb-3">
-                  <label for="cardNumber" class="form-label">Card Number</label>
-                  <input type="text" class="form-control" id="cardNumber" formControlName="cardNumber"
-                    placeholder="1234 5678 9012 3456" maxlength="16" [class.is-invalid]="isFieldInvalid('cardNumber')">
-                  <div *ngIf="isFieldInvalid('cardNumber')" class="invalid-feedback">
-                    Valid card number is required
-                  </div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                  <label for="expirationDate" class="form-label">Expiration Date</label>
-                  <input type="text" class="form-control" id="expirationDate" formControlName="expirationDate"
-                    placeholder="MM/YY" maxlength="5" [class.is-invalid]="isFieldInvalid('expirationDate')">
-                  <div *ngIf="isFieldInvalid('expirationDate')" class="invalid-feedback">
-                    Valid expiration date is required
-                  </div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                  <label for="cvv" class="form-label">CVV</label>
-                  <input type="text" class="form-control" id="cvv" formControlName="cvv" placeholder="123" maxlength="3"
-                    [class.is-invalid]="isFieldInvalid('cvv')">
-                  <div *ngIf="isFieldInvalid('cvv')" class="invalid-feedback">
-                    Valid CVV is required
+                  <h5 class="card-title">{{ method.name }}</h5>
+                  <p class="card-text text-muted">{{ method.description }}</p>
+                  <div *ngIf="isPaymentProcessing && selectedMethod?.id === method.id"
+                    class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Selected Method Indicator -->
+          <div *ngIf="selectedMethod" class="alert alert-info text-center mt-4">
+            Selected Method: <strong>{{ selectedMethod.name }}</strong>
+            <!-- <button *ngIf="iframeUrl && selectedMethod.id === 'card'" class="btn btn-sm btn-link float-end"
+              (click)="iframeUrl = ''; selectedMethod = null">
+              Change Method
+            </button> -->
+          </div>
+
+          <!-- Payment Processing Messages -->
+          <div *ngIf="isPaymentProcessing && selectedMethod?.id === 'card'" class="alert alert-warning mt-3">
+            <i class="fas fa-spinner fa-spin me-2"></i> Preparing payment gateway...
+          </div>
+
+          <!-- Paymob Iframe Container -->
+          <div *ngIf="selectedMethod?.id === 'card'" class="card-details mt-4">
+            <iframe [src]="safeIframeUrl" width="100%" height="400px" frameborder="0"
+              style="border: 1px solid #ddd; border-radius: 4px;"></iframe>
+            <!-- <div class="text-center my-2">
+              <button class="btn btn-outline-secondary" (click)="clearIframe()">
+                Clear Payment Iframe
+              </button>
+            </div> -->
+          </div>
+
+
+
+          <!-- Submit Button -->
           <div class="card-footer">
-            <button type="submit" class="btn bg-teal-green w-100 text-white" [disabled]="!isFormValid()"
-              (click)="onSubmit()">
-              Place Order
+            <button type="button" class="btn bg-teal-green w-100 text-white" (click)="onSubmit()"
+              [disabled]="!selectedMethod || isPaymentProcessing || (selectedMethod.id === 'card' && !paymentKey)">
+              <span *ngIf="!isLoading; else loading">
+                {{ selectedMethod?.id === 'card' ? 'Complete Order' : 'Place Order' }}
+              </span>
+              <ng-template #loading>
+                <i class="fas fa-spinner fa-spin me-2"></i> Processing...
+              </ng-template>
             </button>
           </div>
         </div>
-      </form>
+
+      </div>
     </div>
   </div>
-</div>
