@@ -57,7 +57,9 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
-    path: 'checkout', component: MainCheckoutComponent, canActivate: [AuthGuardService],
+    path: 'checkout', 
+    component: MainCheckoutComponent,
+    canActivate: [AuthGuardService]
   },
 
   // error page
