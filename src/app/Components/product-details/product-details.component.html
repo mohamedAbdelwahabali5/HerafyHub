@@ -3,7 +3,7 @@
     <div class="row g-2 align-items-stretch">
       <!-- Product Image -->
       <div class="col-md-6">
-        <div class="p-2 rounded">
+        <div class="p-2 rounded shadow-sm bg-light">
           <div class="image-container">
             <img
               [src]="product.image"
@@ -20,9 +20,8 @@
         <div class="p-2 p-md-3 flex-fill d-flex flex-column justify-content-evenly">
           <div>
             <small class="text-muted">{{ product.category }}</small>
-            <h2 class="product-title my-2">{{ product.title }}</h2> 
+            <h2 class="product-title my-2">{{ product.title }}</h2>
             <!-- Rating -->
-            <!-- Replace the rating section -->
             <div class="mb-2 fs-5 text-warning">
               @for (star of stars; track star) {
                 <i [class]="'bi ' + getStarType(star - 1)"></i>
@@ -32,22 +31,22 @@
               </span>
             </div>
             <!-- Price -->
-            <div class="d-flex align-items-center gap-2 mb-4 mb-md-2"> 
+            <div class="d-flex align-items-center gap-2 mb-4 mb-md-2">
               <span class="original-price fs-5 fs-md-6">$27.23</span>
               <span class="current-price fs-3 fs-md-4">${{ product.currentprice }}</span>
             </div>
             <!-- Description -->
-            <p class="mb-3 text-dark fs-5 fs-md-7 lh-sm w-100"> 
+            <p class="mb-3 text-dark fs-5 fs-md-7 lh-sm w-100">
               {{ product.description }}
             </p>
           </div>
           <!-- Buttons -->
-          <div class="d-flex flex-column gap-3 w-100"> 
-            <button class="btn btn-checkout w-100 py-3 fw-medium rounded-4">
+          <div class="d-flex flex-column gap-3 w-100">
+            <!-- <button class="btn btn-checkout w-100 py-3 fw-medium rounded-4">
               Checkout Now
-            </button>
-            <button class="btn btn-dark w-100 py-3 fw-medium rounded-4">
-              Add to Cart
+            </button> -->
+            <button   [disabled]="isProductInCart(product._id)" (click)="addToCart()" class="btn btn-dark w-100 py-3 fw-medium rounded-4">
+              {{ isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart' }}
             </button>
           </div>
         </div>

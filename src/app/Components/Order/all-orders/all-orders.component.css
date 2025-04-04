@@ -67,6 +67,42 @@
   background-color: #D64545 !important;
 }
 
+/*disabled cancel button*/
+button.cancel[disabled] {
+  background-color: #D64545 !important;
+  cursor: not-allowed;
+ 
+}
+
+/* table scroll */
+.table-responsive {
+  max-height: 400px; 
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #4A9678 #F0F4F2; 
+}
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #F0F4F2;
+  border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #4A9678;
+  border-radius: 10px;
+  border: 2px solid #F0F4F2;
+}
+
+
+/* end table scroll */
+
 .orders-table button:hover {
   background-color: #4A9678;
 }
@@ -87,7 +123,7 @@
   .table-responsive .orders-table {
     min-width: 100%;
   }
-
+ 
   .table-responsive .orders-table thead {
     display: none;
   }
@@ -132,6 +168,7 @@
   }
 }
 
+
 /* Tablet (medium mobile) - max-width: 768px */
 @media screen and (min-width: 481px) and (max-width: 768px) {
   .table-responsive .orders-table {
@@ -152,36 +189,38 @@
   }
 
   .table-responsive .orders-table td {
-    width: 50%;
-    padding: 8px;
-    text-align: right;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
     border-bottom: 1px solid #eee;
+    font-size: 15px;
   }
 
   .table-responsive .orders-table td::before {
     content: attr(data-label);
-    float: left;
     font-weight: bold;
     text-transform: uppercase;
     color: #2C6E63;
   }
 
+  /* Ensure ACTIONS comes after DATE */
   .table-responsive .orders-table td:last-child {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+    order: 1; /* Moves ACTIONS below */
+    flex-direction: column;
+    align-items: center;
     border-bottom: none;
+    padding-top: 10px;
   }
 
   .table-responsive .orders-table button {
-    flex-grow: 1;
-    margin: 0 5px;
-  }
-  .cancel{
-    margin-top: 5px;
-    margin-left: 0px;
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
   }
 }
+
 
 /* Tablet (large mobile/small desktop) - max-width: 992px */
 @media screen and (min-width: 769px) and (max-width: 992px) {
