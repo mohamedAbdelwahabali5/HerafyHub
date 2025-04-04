@@ -54,10 +54,9 @@ export class CartItemComponent{
       }
     }
   }
- 
- 
- 
+
+
+
 }
- 
- 
- 
+
+
