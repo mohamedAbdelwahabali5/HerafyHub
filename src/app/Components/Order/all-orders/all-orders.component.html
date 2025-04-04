@@ -74,6 +74,14 @@
           <li><strong>Order ID:</strong> {{ selectedOrderDetails._id }}</li>
           <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency }}</li>
           <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
+          <li>
+            <strong>Shipping details:</strong>
+            <div class="shipping-details">
+              <p>Name: {{ selectedOrderDetails.shippingAddress.name }}</p>
+              <p>Address: {{ selectedOrderDetails.shippingAddress.address }}</p>
+              <p>Phone: {{ selectedOrderDetails.shippingAddress.phone }}</p>
+            </div>
+          </li>
           <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
         </ul>
       </div>

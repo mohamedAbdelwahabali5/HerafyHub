@@ -27,7 +27,11 @@ export class AllOrdersComponent implements OnInit {
     this.orderService.getUserOrders().subscribe({
       next: (response: any) => {
         if (response?.success && Array.isArray(response.orders)) {
-          this.orders.set(response.orders);
+          // Sort orders by date (newest first)
+          const sortedOrders = response.orders.sort((a: Order, b: Order) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+          this.orders.set(sortedOrders);
         } else {
           this.orders.set([]);
         }

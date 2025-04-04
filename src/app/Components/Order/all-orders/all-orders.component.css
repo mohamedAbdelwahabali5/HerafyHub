@@ -355,3 +355,12 @@ button.cancel[disabled] {
     width: 90%;
   }
 }
+
+.shipping-details {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.shipping-details p {
+  margin: 2px 0;
+}
