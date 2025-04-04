@@ -16,7 +16,8 @@ export class AllOrdersComponent implements OnInit {
   error = signal(false);
   selectedOrderDetails: Order | null = null;
 
-  constructor(private orderService: OrderService) { }
+
+  constructor(private orderService: OrderService) {}
 
   ngOnInit() {
     this.loadOrders();
@@ -33,6 +34,7 @@ export class AllOrdersComponent implements OnInit {
         }
         this.loading.set(false);
         console.log('Orders loaded:', this.orders());
+
       },
       error: (err) => {
         this.error.set(true);
