@@ -35,4 +35,8 @@ export class PaymobService {
       headers: { 'Content-Type': 'application/json' }
     });
   }
+
+  checkPaymentStatus(orderId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/paymob/check-status/${orderId}`);
+  }
 }
