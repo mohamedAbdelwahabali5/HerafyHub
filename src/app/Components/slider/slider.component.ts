@@ -14,31 +14,49 @@ import { Router } from '@angular/router';
 export class SliderComponent implements OnInit {
   categories: any[] = [];
   currentIndex = 0;
+  loading = true;
+  error: string | null = null;
 
   constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit() {
+    this.fetchCategories();
+  }
+
+  fetchCategories() {
+    this.loading = true;
+    this.error = null;
     this.productService.getAllCategories().subscribe({
       next: (data: any) => {
         this.categories = data;
+        this.loading = false;
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
+        this.error = 'Failed to load categories';
+        this.loading = false;
       }
     });
   }
 
   navigateToProducts(categoryId: string) {
-    this.router.navigate(['/products'], {
-      state: { categoryId: categoryId }
-    });
+    if (!this.loading) {
+      this.router.navigate(['/products'], { 
+        state: { categoryId: categoryId }
+      });
+    }
   }
+
   nextSlide() {
-    this.currentIndex = (this.currentIndex + 1) % this.categories.length;
+    if (this.categories.length > 0) {
+      this.currentIndex = (this.currentIndex + 1) % this.categories.length;
+    }
   }
 
   prevSlide() {
-    this.currentIndex = (this.currentIndex - 1 + this.categories.length) % this.categories.length;
+    if (this.categories.length > 0) {
+      this.currentIndex = (this.currentIndex - 1 + this.categories.length) % this.categories.length;
+    }
   }
 
   get visibleCategories() {
@@ -53,5 +71,9 @@ export class SliderComponent implements OnInit {
       result.push(this.categories[index]);
     }
     return result;
+  }
+
+  retryFetch() {
+    this.fetchCategories();
   }
 }
