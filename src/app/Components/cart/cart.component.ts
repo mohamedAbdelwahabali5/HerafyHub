@@ -19,7 +19,6 @@ export class CartComponent {
 
   ngOnInit(): void {
     this.getAllProducts();
-    this.loadCartFromLocalStorage();
   }
 
   isArray(obj: any): boolean {
@@ -57,6 +56,10 @@ export class CartComponent {
           this.Carts = [];
         }
         console.log('Processed Carts:', this.Carts);
+
+        // Apply saved quantities after loading carts
+        this.applySavedQuantities();
+
         this.calculateTotal();
         this.loading = false;
       },
@@ -66,6 +69,22 @@ export class CartComponent {
         this.Carts = [];
       },
     });
+  }
+  applySavedQuantities(): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        const cartQuantities: { [key: string]: number } = JSON.parse(storedQuantities);
+        this.Carts.forEach(item => {
+          if (cartQuantities[item.id]) {
+            console.log(`Applying saved quantity for item ${item.id}: ${cartQuantities[item.id]}`);
+            item.quantity = cartQuantities[item.id];
+          }
+        });
+      } catch (e) {
+        console.log('Error parsing cart quantities:', e);
+      }
+    }
   }
 
   calculateTotal(): void {
@@ -94,14 +113,16 @@ export class CartComponent {
     this.Carts = this.Carts.filter((item) => item.id !== productId);
     this.calculateTotal();
   }
-  updateItemQuantity(itemId: string, newQuantity: number): void {
-    const index = this.Carts.findIndex(item => item.id === itemId);
+
+  updateItemQuantity(event: {id: string, quantity: number}): void {
+    const index = this.Carts.findIndex(item => item.id === event.id);
     if (index !== -1) {
-      this.Carts[index].quantity = newQuantity;
-      console.log(`Updated quantity for item ${itemId} to ${newQuantity}`);
+      this.Carts[index].quantity = event.quantity;
+      console.log(`Updated quantity for item ${event.id} to ${event.quantity}`);
       this.calculateTotal();
     }
   }
+
   getItemTotalPrice(item: any): number {
     const price = Number(item.price);
     const quantity = Number(item.quantity);
@@ -115,21 +136,23 @@ export class CartComponent {
       return total + this.getItemTotalPrice(item);
     }, 0);
   }
-  private loadCartFromLocalStorage(): void {
-    const storedProductsString = localStorage.getItem('productsInCart');
-    if (storedProductsString) {
-      try {
-        const storedProducts = JSON.parse(storedProductsString);
-        if (Array.isArray(storedProducts)) {
-          this.Carts = storedProducts;
-          this.calculateTotal();
-          console.log('Loaded cart items from localStorage:', this.Carts);
-        }
-      } catch (e) {
-        console.error('Error loading cart items from localStorage:', e);
-      }
-    }
-  }
+
+  // private loadCartFromLocalStorage(): void {
+  //   const storedProductsString = localStorage.getItem('productsInCart');
+  //   if (storedProductsString) {
+  //     try {
+  //       const storedProducts = JSON.parse(storedProductsString);
+  //       if (Array.isArray(storedProducts)) {
+  //         this.Carts = storedProducts;
+  //         this.calculateTotal();
+  //         console.log('Loaded cart items from localStorage:', this.Carts);
+  //       }
+  //     } catch (e) {
+  //       console.error('Error loading cart items from localStorage:', e);
+  //     }
+  //   }
+  // }
+
   clearCart(): void {
     this.cartService.clearCart().subscribe({
       next: (response) => {
@@ -137,23 +160,24 @@ export class CartComponent {
         this.Carts = [];
         this.TotalAmount = 0;
         localStorage.removeItem('productsInCart');
+        localStorage.removeItem('cartQuantities');
       },
       error: (err) => {
         console.error('Error clearing cart:', err);
       },
     });
   }
+
   openConfirmDialog(): void {
     this.showConfirmDialog = true;
   }
+
   closeConfirmDialog(): void {
     this.showConfirmDialog = false;
   }
+
   confirmClearCart(): void {
     this.clearCart();
     this.closeConfirmDialog();
   }
-
-
 }
-

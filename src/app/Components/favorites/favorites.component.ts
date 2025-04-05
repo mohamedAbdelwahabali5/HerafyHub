@@ -2,100 +2,72 @@ import { Component, OnInit } from '@angular/core';
 import { FavoriteService } from '../../Services/favorites.service';
 import { CommonModule } from '@angular/common';
 import { FavoriteItemComponent } from '../favorites-item/favorites-item.component';
+import { RouterModule } from '@angular/router';
 
 
- 
+
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, FavoriteItemComponent],
+  imports: [CommonModule, FavoriteItemComponent, RouterModule],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css',
 })
 export class FavoriteComponent implements OnInit {
   favorites: any[] = [];
- 
+  showConfirmDialog: boolean = false;
+  loading: boolean = true;
   constructor(private favoriteService: FavoriteService) {}
- 
+
   ngOnInit(): void {
     this.getFavorites();
   }
 // In favorites.component.ts
 getFavorites(): void {
-  // Check localStorage first
-  const savedFavorites = localStorage.getItem('productsInFavorite');
-  if (savedFavorites && JSON.parse(savedFavorites).length === 0) {
-    // If localStorage shows no favorites, skip the API call
-    this.favorites = [];
-    return;
-  }
- 
-  // Otherwise, proceed with the API call
+  this.loading = true;
   this.favoriteService.getAllFavorites().subscribe({
-    next: (response) => {
-      console.log('API Response:', response);
-      this.favorites = response.favoriteProducts;
+    next: (data: any) => {
+      console.log('Raw data:', data);
+      if (data === null || data === undefined) {
+        this.favorites = [];
+      } else if (Array.isArray(data)) {
+        this.favorites = data;
+      } else if (typeof data === 'object') {
+        if (data.cartItems && Array.isArray(data.cartItems)) {
+          this.favorites = data.cartItems;
+        } else {
+          const arrayProperty = Object.keys(data).find((key) =>
+            Array.isArray(data[key])
+          );
+          if (arrayProperty) {
+            this.favorites = data[arrayProperty];
+          } else {
+            const values = Object.values(data);
+            this.favorites = values;
+          }
+        }
+      } else {
+        this.favorites = [];
+      }
+      console.log('Processed Carts:', this.favorites);
+      this.loading = false;
     },
-    error: (error) => {
-      console.error('Error fetching favorites', error);
-      // Fallback to empty array on error
+    error: (err) => {
+      this.loading = false;
+      console.log('Error fetching products:', err);
       this.favorites = [];
-    },
-    complete: () => {
-      console.log('Favorites fetched successfully');
     },
   });
 }
-  removeFromFavorite(productId: string): void {
-    console.log('Parent: About to remove product with ID:', productId);
-    this.favoriteService.removeFromFavorite(productId).subscribe({
-      next: (response) => {
-        console.log('Removal response:', response);
-        this.updateFavoritesInStorage(productId, false);
-        setTimeout(() => {
-          this.getFavorites();
-        }, 300);
-      },
-      error: (error) => {
-        console.error('Error removing from favorites', error);
-      }
-    });
-  }
-  private updateFavoritesInStorage(productId: string, isAdding: boolean): void {
-    let favorites: string[] = [];
-    const savedState = localStorage.getItem('productsInFavorite');
- 
-    if (savedState) {
-      try {
-        favorites = JSON.parse(savedState);
-      } catch (e) {
-        console.error('Error parsing favorites state:', e);
-      }
-    }
- 
-    if (isAdding) {
-      if (!favorites.includes(productId)) {
-        favorites.push(productId);
-      }
-    } else {
-      const index = favorites.indexOf(productId);
-      if (index > -1) {
-        favorites.splice(index, 1);
-      }
-    }
- 
-    localStorage.setItem('productsInFavorite', JSON.stringify(favorites));
-    console.log('Current favorites in localStorage:', favorites);
-  }
+handleItemRemoved(productId: string): void {
+  this.favorites = this.favorites.filter((item) => item._id !== productId);
+}
+
   clearFavorites(): void {
-    const confirmClear = window.confirm('Are you sure you want to clear the favorites?');
-    if (!confirmClear) return;
     this.favoriteService.clearFavorites().subscribe(
       (response) => {
         console.log(response.message);
         this.favorites = [];
- 
-        // Clear localStorage favorites - ADD THIS CODE
         localStorage.setItem('productsInFavorite', JSON.stringify([]));
       },
       (error) => {
@@ -103,6 +75,21 @@ getFavorites(): void {
       }
     );
   }
+
+  isArray(obj: any): boolean {
+    return Array.isArray(obj);
+  }
+  openConfirmDialog(): void {
+    this.showConfirmDialog = true;
+  }
+
+  closeConfirmDialog(): void {
+    this.showConfirmDialog = false;
+  }
+
+  confirmClearFavorites(): void {
+    this.clearFavorites();
+    this.closeConfirmDialog();
+  }
 }
- 
- 
+

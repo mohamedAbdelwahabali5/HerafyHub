@@ -43,6 +43,7 @@ export class OrderSummaryComponent implements OnInit {
         if (response?.cartItems && Array.isArray(response.cartItems)) {
           this.cartItems = response.cartItems;
           // console.log(this.cartItems);
+          this.applySavedQuantities();
           this.calculateTotalPrice();
         } else {
           throw new Error('Invalid cart items format');
@@ -64,5 +65,22 @@ export class OrderSummaryComponent implements OnInit {
       (sum, item) => sum + item.total,
       0
     );
+  }
+  applySavedQuantities(): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        const cartQuantities: { [key: string]: number } = JSON.parse(storedQuantities);
+        this.cartItems.forEach(item => {
+          if (cartQuantities[item.id]) {
+            console.log(`Applying saved quantity for item ${item.id}: ${cartQuantities[item.id]}`);
+            item.quantity = cartQuantities[item.id];
+            item.total = item.price * item.quantity;
+          }
+        });
+      } catch (e) {
+        console.log('Error parsing cart quantities:', e);
+      }
+    }
   }
 }
