@@ -25,7 +25,7 @@ export class FavoriteItemComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private FavoriteService: FavoriteService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.product && this.product.categoryId) {
@@ -38,7 +38,7 @@ export class FavoriteItemComponent implements OnInit {
     this.productService.getCategoryById(this.product.categoryId).subscribe({
       next: (categoryData) => {
         this.category = categoryData;
-        console.log('Category data:', this.category);
+        // console.log('Category data:', this.category);
       },
       error: (error) => {
         console.error('Error fetching category:', error);
@@ -57,18 +57,18 @@ export class FavoriteItemComponent implements OnInit {
           'productsInFavorite',
           JSON.stringify(updatedProducts)
         );
-        console.log('Product removed from localStorage:', productId);
+        // console.log('Product removed from localStorage:', productId);
       } catch (e) {
         console.log('Error parsing localStorage data:', e);
       }
     }
   }
   removeItem() {
-    console.log(this.product._id);
+    // console.log(this.product._id);
     if (this.product && this.product._id) {
       this.FavoriteService.removeFromFavorite(this.product._id).subscribe({
         next: (response) => {
-          console.log('Item removed successfully', response);
+          // console.log('Item removed successfully', response);
           this.removeProductFromLocalStorage(this.product._id);
           this.itemRemoved.emit(this.product._id);
         },
@@ -99,7 +99,7 @@ export class FavoriteItemComponent implements OnInit {
       next: (response) => {
         this.productsInCart.add(this.product._id); // Add to Set
         this.updateCartInStorage(this.product._id, true); // Update localStorage
-        console.log('Product added to cart successfully:', response);
+        // console.log('Product added to cart successfully:', response);
         Swal.fire({
           icon: 'success',
           title: 'Success!',

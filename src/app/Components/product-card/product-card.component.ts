@@ -24,7 +24,7 @@ export class ProductCardComponent {
   constructor(
     private CartService: CartService,
     private favoriteService: FavoriteService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadCartStateFromStorage();
@@ -46,7 +46,7 @@ export class ProductCardComponent {
           this.productsInFavorite.delete(this.product._id);
           this.updateFavoritesInStorage(this.product._id, false);
 
-          console.log('Product removed from favorites:', this.product._id);
+          // console.log('Product removed from favorites:', this.product._id);
         },
         error: (error) => {
           console.error('Error removing from favorites:', error);
@@ -58,7 +58,7 @@ export class ProductCardComponent {
           this.productsInFavorite.add(this.product._id);
           this.updateFavoritesInStorage(this.product._id, true);
 
-          console.log('Product added to favorites:', this.product._id);
+          // console.log('Product added to favorites:', this.product._id);
         },
         error: (error) => {
           console.error('Error adding to favorites:', error);
@@ -76,9 +76,9 @@ export class ProductCardComponent {
       return;
     }
     this.isLoading = true;
-    console.log('Product object:', this.product);
-    console.log('Product ID being sent:', this.product._id);
-    console.log('Quantity being sent:', quantity);
+    // console.log('Product object:', this.product);
+    // console.log('Product ID being sent:', this.product._id);
+    // console.log('Quantity being sent:', quantity);
 
     const productData = {
       productId: this.product._id,
@@ -89,7 +89,7 @@ export class ProductCardComponent {
       next: (response) => {
         this.productsInCart.add(this.product._id); // Add to Set
         this.updateCartInStorage(this.product._id, true); // Update localStorage
-        console.log('Product added to cart successfully:', response);
+        // console.log('Product added to cart successfully:', response);
         Swal.fire({
           icon: 'success',
           title: 'Success!',
@@ -182,7 +182,7 @@ export class ProductCardComponent {
       }
     }
     localStorage.setItem('productsInFavorite', JSON.stringify(favorites));
-    console.log('Current favorites in localStorage:', favorites);
+    // console.log('Current favorites in localStorage:', favorites);
   }
 }
 

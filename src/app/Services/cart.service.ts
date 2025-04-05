@@ -23,18 +23,12 @@ interface CartResponse {
 export class CartService {
 
 
-  // private readonly cart_URL = 'http://localhost:5555/cart/';
-  // private readonly addToCart_URL = 'http://localhost:5555/cart/add';
   private readonly apiUrl = environment.apiUrl;
   private readonly cart_URL = `${this.apiUrl}/cart/`;
   private readonly addToCart_URL = `${this.apiUrl}/cart/add`;
   private readonly cartKey = 'productsInCart';
   constructor(private http: HttpClient, private userService: UsersService) { }
 
-
-
-  //private readonly cart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/';
-  //private readonly addToCart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/add';
 
   addProductToCart(newCart: any): Observable<any> {
     const token = this.userService.getToken();
