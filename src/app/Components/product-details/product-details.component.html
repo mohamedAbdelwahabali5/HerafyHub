@@ -1,7 +1,6 @@
 <div class="container py-4">
   @if (product) {
     <div class="row g-2 align-items-stretch">
-      <!-- Product Image -->
       <div class="col-md-6">
         <div class="p-2 rounded shadow-sm bg-light">
           <div class="image-container">
@@ -17,7 +16,7 @@
 
       <!-- Product Info (Compact) -->
       <div class="col-md-6 d-flex justify-content-center">
-        <div class="p-2 p-md-3 flex-fill d-flex flex-column justify-content-evenly">
+        <div class="p-2 p-md-3 flex-fill d-flex flex-column justify-content-evenly gap-4">
           <div>
             <small class="text-muted">{{ product.category }}</small>
             <h2 class="product-title my-2">{{ product.title }}</h2>
@@ -41,13 +40,15 @@
             </p>
           </div>
           <!-- Buttons -->
-          <div class="d-flex flex-column gap-3 w-100">
+          <div class="d-flex flex-column gap-1 w-100">
             <!-- <button class="btn btn-checkout w-100 py-3 fw-medium rounded-4">
               Checkout Now
             </button> -->
-            <button   [disabled]="isProductInCart(product._id)" (click)="addToCart()" class="btn btn-dark w-100 py-3 fw-medium rounded-4">
-              {{ isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart' }}
-            </button>
+            <button type="submit" (click)="addToCart()" class="btn btn-dark w-100 py-3 fw-medium rounded-4 "
+            [disabled]="isProductInCart(product._id) || isLoading">
+            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+            {{ isLoading ? 'Adding...' : (isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart') }}
+          </button>
           </div>
         </div>
       </div>

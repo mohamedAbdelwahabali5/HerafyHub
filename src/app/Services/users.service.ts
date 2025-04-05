@@ -5,7 +5,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { handleError } from '../Utils/handleError';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { HttpHeaders } from '@angular/common/http';
 
 interface UpdateProfileResponse {
@@ -250,6 +250,29 @@ export class UsersService {
               new Error(
                 error.error?.message || 'Failed to send password reset link'
               )
+          );
+        })
+      );
+  }
+
+  // delete profile image
+  deleteProfileImage(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .delete<any>(`${this.apiUrlAuth}/profile-image`, { headers })
+      .pipe(
+        tap((response) => {
+          // Update the profile image subject with default image
+          this.profileImageSubject.next(this.defaultProfileImage);
+        }),
+        catchError((error) => {
+          console.error('Delete profile image error:', error);
+          return throwError(
+            () => new Error(error.error?.message || 'Failed to delete profile image')
           );
         })
       );

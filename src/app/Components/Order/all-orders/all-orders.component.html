@@ -24,7 +24,7 @@
     <table class="orders-table">
       <thead>
         <tr>
-          <th>Order ID</th>
+          <th>Invoice Number</th>
           <th>Total</th>
           <th>Status</th>
           <th>Date</th>
@@ -34,22 +34,23 @@
       <tbody>
         @for (order of orders(); track order._id) {
         <tr>
-          <td  data-label="Order ID">{{ order._id }}</td>
-          <td data-label="Total">{{ order.totalPrice | currency }}</td>
+          <td data-label="Invoice Number">{{ order.invoiceNumber || order._id }}</td>
+          <td data-label="Total">{{ order.totalPrice | currency:'EGP ' }}</td>
+
           <td data-label="Status">{{ order.status }}</td>
-          <td data-label="Date">{{ order.createdAt | date:'mediumDate' }}</td>
+          <td data-label="Date">{{ order.createdAt | date:'medium' }}</td>
           <td data-label="Actions" class="text-center">
             <button (click)="viewOrderDetails(order)">
               View Details
             </button>
-           
+
             @if (order._id) {
-              <button 
-                (click)="cancelOrder(order._id)" 
-                class="cancel" 
-                [attr.disabled]="order.status !== 'In-Progress' ? true : null">
-                Cancel Order
-              </button>
+            <button (click)="cancelOrder(order._id)"
+              [ngClass]="order.status !== 'In-Progress' ? 'disabledCancel' : 'cancel'"
+              [attr.disabled]="order.status !== 'In-Progress' ? true : null">
+              Cancel Order
+            </button>
+
             }
           </td>
         </tr>
@@ -58,12 +59,10 @@
     </table>
   </div>
   }
-
   @if (selectedOrderDetails) {
-  <div class="order-details-modal">
-    <div class="order-details-content">
+  <div class="order-details-modal ">
+    <div class="order-details-content ">
       <button class="close-btn" (click)="closeOrderDetails()"><i class="fa-solid fa-xmark"></i></button>
-
       <div class="order-details-header">
         <h3>Order Details</h3>
       </div>
@@ -71,9 +70,18 @@
       <div class="order-details-section">
         <h4>Order Information</h4>
         <ul class="order-info">
-          <li><strong>Order ID:</strong> {{ selectedOrderDetails._id }}</li>
-          <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency }}</li>
+          <li><strong>Invoice Number:</strong> {{ selectedOrderDetails.invoiceNumber || selectedOrderDetails._id }}</li>
+          <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency:'EGP ' }}</li>
+
           <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
+          <li>
+            <strong>Shipping details:</strong>
+            <div class="shipping-details">
+              <p>Name: {{ selectedOrderDetails.shippingAddress.name }}</p>
+              <p>Address: {{ selectedOrderDetails.shippingAddress.address }}</p>
+              <p>Phone: {{ selectedOrderDetails.shippingAddress.phone }}</p>
+            </div>
+          </li>
           <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
         </ul>
       </div>
