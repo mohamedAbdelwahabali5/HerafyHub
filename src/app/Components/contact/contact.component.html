@@ -1,4 +1,4 @@
-<div class="contact-container">
+<div class="contact-container mt-5 pt-3">
   <div class="container">
     <div class="row justify-content-center">
       <!-- Header Section -->
@@ -18,19 +18,13 @@
       <!-- Contact Form Section -->
       <div class="row justify-content-center">
         <div class="col-lg-10 col-xl-8">
-          <form
-            [formGroup]="contactForm"
-            (ngSubmit)="onSubmit()"
-            class="bg-white p-3 p-md-4 rounded-3 shadow-sm"
-          >
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="bg-white p-3 p-md-4 rounded-3 shadow-sm">
             <!-- Contact Info -->
             <div class="col-12 mb-1">
               <div class="row g-1">
                 <!-- Email Info -->
                 <div class="col-md-6">
-                  <div
-                    class="d-flex align-items-center bg-light-gray p-1 rounded-2"
-                  >
+                  <div class="d-flex align-items-center bg-light-gray p-1 rounded-2">
                     <i class="bi bi-envelope-fill fs-4 text-teal-green"></i>
                     <div class="ms-3">
                       <p class="mb-0 small text-secondary">Our Email</p>
@@ -41,9 +35,7 @@
 
                 <!-- Phone Info -->
                 <div class="col-md-6">
-                  <div
-                    class="d-flex align-items-center bg-light-gray p-1 rounded-2"
-                  >
+                  <div class="d-flex align-items-center bg-light-gray p-1 rounded-2">
                     <i class="bi bi-telephone-fill fs-4 text-teal-green"></i>
                     <div class="ms-3">
                       <p class="mb-0 small text-secondary">Call Us</p>
@@ -58,21 +50,13 @@
               <!-- First Name -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="firstName"
-                    formControlName="firstName"
-                    placeholder="First Name"
-                    [ngClass]="{
+                  <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                    placeholder="First Name" [ngClass]="{
                       'is-invalid':
                         formControls.firstName.invalid &&
                         (formControls.firstName.touched || submitted)
-                    }"
-                  />
-                  <label for="firstName" class="text-teal-green"
-                    >First Name</label
-                  >
+                    }" />
+                  <label for="firstName" class="text-teal-green">First Name</label>
                   @if (formControls.firstName.invalid &&
                   (formControls.firstName.touched || submitted)) {
                   <div class="invalid-feedback d-block">
@@ -85,21 +69,13 @@
               <!-- Last Name -->
               <div class="col-md-6">
                 <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lastName"
-                    formControlName="lastName"
-                    placeholder="Last Name"
-                    [ngClass]="{
+                  <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                    placeholder="Last Name" [ngClass]="{
                       'is-invalid':
                         formControls.lastName.invalid &&
                         (formControls.lastName.touched || submitted)
-                    }"
-                  />
-                  <label for="lastName" class="text-teal-green"
-                    >Last Name</label
-                  >
+                    }" />
+                  <label for="lastName" class="text-teal-green">Last Name</label>
                   @if (formControls.lastName.invalid &&
                   (formControls.lastName.touched || submitted)) {
                   <div class="invalid-feedback d-block">
@@ -112,21 +88,13 @@
               <!-- Email -->
               <div class="col-12">
                 <div class="form-floating">
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    formControlName="email"
-                    placeholder="name@example.com"
-                    [ngClass]="{
+                  <input type="email" class="form-control" id="email" formControlName="email"
+                    placeholder="name@example.com" [ngClass]="{
                       'is-invalid':
                         formControls.email.invalid &&
                         (formControls.email.touched || submitted)
-                    }"
-                  />
-                  <label for="email" class="text-teal-green"
-                    >Email Address</label
-                  >
+                    }" />
+                  <label for="email" class="text-teal-green">Email Address</label>
                   @if (formControls.email.invalid && (formControls.email.touched
                   || submitted)) {
                   <div class="invalid-feedback d-block">
@@ -139,18 +107,12 @@
               <!-- Subject -->
               <div class="col-12">
                 <div class="form-floating">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="subject"
-                    formControlName="subject"
-                    placeholder="Subject"
+                  <input type="text" class="form-control" id="subject" formControlName="subject" placeholder="Subject"
                     [ngClass]="{
                       'is-invalid':
                         formControls.subject.invalid &&
                         (formControls.subject.touched || submitted)
-                    }"
-                  />
+                    }" />
                   <label for="subject" class="text-teal-green">Subject</label>
                   @if (formControls.subject.invalid &&
                   (formControls.subject.touched || submitted)) {
@@ -164,22 +126,13 @@
               <!-- Message -->
               <div class="col-12">
                 <div class="form-floating">
-                  <textarea
-                    class="form-control"
-                    id="message"
-                    formControlName="message"
-                    placeholder="Message"
-                    rows="4"
-                    style="height: 150px"
-                    [ngClass]="{
+                  <textarea class="form-control" id="message" formControlName="message" placeholder="Message" rows="4"
+                    style="height: 150px" [ngClass]="{
                       'is-invalid':
                         formControls.message.invalid &&
                         (formControls.message.touched || submitted)
-                    }"
-                  ></textarea>
-                  <label for="message" class="text-teal-green"
-                    >Your Message</label
-                  >
+                    }"></textarea>
+                  <label for="message" class="text-teal-green">Your Message</label>
                   @if (formControls.message.invalid &&
                   (formControls.message.touched || submitted)) {
                   <div class="invalid-feedback d-block">
@@ -191,11 +144,7 @@
 
               <!-- Submit Button -->
               <div class="col-12 text-center pt-1">
-                <button
-                  type="submit"
-                  class="btn btn-teal-green px-5"
-                  [disabled]="contactForm.invalid || loading"
-                >
+                <button type="submit" class="btn btn-teal-green px-5" [disabled]="contactForm.invalid || loading">
                   @if (loading) {
                   <span class="spinner-border spinner-border-sm me-2"></span>
                   Sending... } @else { Send Message

@@ -29,7 +29,7 @@ export class FooterComponent implements OnInit {
     private footerService: FooterService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadCategories();
