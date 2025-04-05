@@ -24,6 +24,12 @@
   width: 50%;
   margin: auto;
 }
+.orders-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #4A9678;
+  z-index: 1;
+}
 
 .orders-table {
   width: 100%;
@@ -66,21 +72,27 @@
 .cancel:hover {
   background-color: #D64545 !important;
 }
+.disabledCancel {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  margin-left: 10px;
+}
 
 /*disabled cancel button*/
 button.cancel[disabled] {
   background-color: #D64545 !important;
   cursor: not-allowed;
- 
+
 }
 
 /* table scroll */
 .table-responsive {
-  max-height: 400px; 
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: #4A9678 #F0F4F2; 
+  scrollbar-color: #4A9678 #F0F4F2;
 }
 
 /* For WebKit browsers (Chrome, Edge, Safari) */
@@ -123,7 +135,7 @@ button.cancel[disabled] {
   .table-responsive .orders-table {
     min-width: 100%;
   }
- 
+
   .table-responsive .orders-table thead {
     display: none;
   }
@@ -253,14 +265,14 @@ button.cancel[disabled] {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 20px;
+  padding: 70px 20px 20px 20px;
 }
 
 .order-details-content {
   background: #fff;
   padding: 25px;
-  width: 80%; /* Increased width */
-  max-width: 800px; /* Set a max width */
+  width: 80%;
+  max-width: 800px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -292,6 +304,7 @@ button.cancel[disabled] {
 
 .order-details-section {
   margin-bottom: 20px;
+
 }
 
 .order-info {
@@ -319,7 +332,18 @@ button.cancel[disabled] {
   border-collapse: collapse;
   text-align: left;
 }
-
+.products-table tbody{
+  width: 100%;
+  display: block;
+  max-height: 150px; /* Adjust this height to fit ~3 rows */
+  overflow-y: auto;
+}
+.products-table thead th {
+  position: sticky;
+  top: 0;
+  background-color:  #2C6E63;
+  z-index: 1;
+}
 .products-table th,
 .products-table td {
   padding: 12px;
@@ -334,6 +358,12 @@ button.cancel[disabled] {
 
 .products-table tr:nth-child(even) {
   background: #f2f2f2;
+}
+.products-table thead,
+.products-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 .close-btn-full {
   background: #D64545;
