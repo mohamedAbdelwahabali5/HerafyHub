@@ -1,7 +1,17 @@
-nav{
+nav {
     background-color: white;
     border-bottom: 1px solid rgba(128, 128, 128, 0.189);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
+
+/* Add this to create space for the fixed navbar */
+/* :host {
+    display: block;
+    padding-top: 80px
+} */
 .img-fluid{
     width:135px;
 }

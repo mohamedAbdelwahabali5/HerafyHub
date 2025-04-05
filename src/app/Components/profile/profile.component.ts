@@ -12,6 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import { OrderService } from '../../Services/order.service';
+import { OrderStatistics, RecentActivity } from '../../Models/order.model';
 
 @Component({
   selector: 'app-profile',
@@ -33,6 +35,10 @@ export class ProfileComponent implements OnInit {
   isLoading = false;
   errorMessage: string | null = null;
   isPasswordResetLoading = false;
+
+  orderStats: OrderStatistics | null = null;
+  recentActivity: RecentActivity[] = [];
+  isLoadingActivity = false;
 
   profileForm = new FormGroup({
     firstName: new FormControl('', [
@@ -65,7 +71,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private orderService: OrderService,
   ) {}
 
   ngOnInit() {
@@ -74,6 +81,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
     this.loadUserProfile();
+    this.loadOrderActivity();
     this.disableForm();
   }
 
@@ -100,6 +108,26 @@ export class ProfileComponent implements OnInit {
         if (err.status === 401) {
           this.router.navigate(['/login']);
         }
+      }
+    });
+  }
+
+  loadOrderActivity() {
+    this.isLoadingActivity = true;
+    this.orderService.getUserOrders().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.orderStats = response.statistics;
+          // Sort activities by date in descending order (newest first)
+          this.recentActivity = response.recentActivity.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          });
+        }
+        this.isLoadingActivity = false;
+      },
+      error: (err) => {
+        console.error('Error loading order activity:', err);
+        this.isLoadingActivity = false;
       }
     });
   }
@@ -181,6 +209,8 @@ export class ProfileComponent implements OnInit {
 
         this.patchFormWithUserData(response.user);
         this.isLoading = false;
+        this.isEditMode = false; // Disable edit mode after successful save
+        this.disableForm(); // Disable the form
       },
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
@@ -226,8 +256,19 @@ export class ProfileComponent implements OnInit {
   }
 
   onDeletePicture() {
-    this.selectedFile = null;
-    this.imagePreview = null;
+    this.usersService.deleteProfileImage().subscribe({
+      next: (response) => {
+        this.selectedFile = null;
+        this.imagePreview = 'images/img-preview.png';
+        if (this.userData) {
+          this.userData.profileImage = '';
+        }
+        this.toastr.success('Profile picture deleted successfully');
+      },
+      error: (error) => {
+        this.toastr.error(error.message || 'Failed to delete profile picture');
+      }
+    });
   }
 
   get formControls() {
@@ -314,4 +355,14 @@ export class ProfileComponent implements OnInit {
         }
       });
   }
+  getTimeAgo(date: Date): string {
+    const now = new Date();
+    const activityDate = new Date(date);
+    const diffInHours = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    return `${Math.floor(diffInHours / 24)}d ago`;
+  }
 }
+

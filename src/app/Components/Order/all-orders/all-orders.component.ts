@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../Services/order.service';
-import { Order } from '../../../Models/order.model';
+import { Order, OrderResponse } from '../../../Models/order.model';
 
 @Component({
   selector: 'app-all-orders',
@@ -25,14 +25,16 @@ export class AllOrdersComponent implements OnInit {
   loadOrders() {
     this.loading.set(true);
     this.orderService.getUserOrders().subscribe({
-      next: (response: any) => {
+      next: (response: OrderResponse) => {
         if (response?.success && Array.isArray(response.orders)) {
-          this.orders.set(response.orders);
+          const sortedOrders = response.orders.sort((a: Order, b: Order) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+          this.orders.set(sortedOrders);
         } else {
           this.orders.set([]);
         }
         this.loading.set(false);
-        console.log('Orders loaded:', this.orders());
       },
       error: (err) => {
         this.error.set(true);
