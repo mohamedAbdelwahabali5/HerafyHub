@@ -209,6 +209,8 @@ export class ProfileComponent implements OnInit {
         
         this.patchFormWithUserData(response.user);
         this.isLoading = false;
+        this.isEditMode = false; // Disable edit mode after successful save
+        this.disableForm(); // Disable the form
       },
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
@@ -254,8 +256,19 @@ export class ProfileComponent implements OnInit {
   }
 
   onDeletePicture() {
-    this.selectedFile = null;
-    this.imagePreview = null;
+    this.usersService.deleteProfileImage().subscribe({
+      next: (response) => {
+        this.selectedFile = null;
+        this.imagePreview = 'images/img-preview.png';
+        if (this.userData) {
+          this.userData.profileImage = '';
+        }
+        this.toastr.success('Profile picture deleted successfully');
+      },
+      error: (error) => {
+        this.toastr.error(error.message || 'Failed to delete profile picture');
+      }
+    });
   }
 
   get formControls() {
