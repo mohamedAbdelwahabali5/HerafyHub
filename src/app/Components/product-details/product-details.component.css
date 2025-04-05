@@ -1,36 +1,39 @@
 /* Default styles (for larger screens) */
 .product-title {
   color: var(--teal-green);
-  font-size: 1.8rem; 
+  font-size: 1.8rem;
 }
 
 .original-price {
   color: var(--line-text-color);
   text-decoration: line-through;
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
 }
 
 .current-price {
   color: var(--teal-green);
   font-weight: bold;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
 }
 
 .btn-checkout {
   background-color: var(--teal-green);
   color: white;
-  font-size: 1rem; 
+  font-size: 1rem;
 }
 
 .btn-checkout:hover {
   background-color: var(--teal-green-hover);
 }
+.container{
+  margin-top: 40px;
+}
 
 .image-container {
   position: relative;
   width: 100%;
-  height: 0;
-  padding-bottom: 100%; /* Square aspect ratio */
+  height: 0vh;
+  padding-bottom: 90%;
   overflow: hidden;
   border-radius: 10px; /* Rounded corners */
   background-color: var(--light-background); /* Light background color */
@@ -60,32 +63,32 @@
   }
 
   .original-price {
-    font-size: 0.7rem; 
+    font-size: 0.7rem;
   }
 
   .current-price {
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
   }
 
   .btn-checkout {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
   }
 
   .col-md-6 .p-5 {
-    padding: 0.5rem !important; 
+    padding: 0.5rem !important;
   }
 
   .row.g-2 {
-    gap: 0 !important; 
+    gap: 0 !important;
   }
 
   .image-container {
-    padding-bottom: 80%; 
-    max-height: 300px; 
+    padding-bottom: 80%;
+    max-height: 300px;
   }
 
   /* Compact description on mobile */
   .fs-7 {
-    font-size: 0.8rem; 
+    font-size: 0.8rem;
   }
 }
