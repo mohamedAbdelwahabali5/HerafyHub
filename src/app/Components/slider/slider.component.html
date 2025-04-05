@@ -1,46 +1,81 @@
-<div class="container py-5">
-  <h1 class=" text-center mb-4 teal-green">FEATURED CATEGORIES</h1>
-  <div id="categorySlider" class="carousel slide position-relative" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <div class="row g-3">
-          @for (category of visibleCategories; track $index) {
-          <div class="category-column">
-            <div class="card border-0 rounded-4 overflow-hidden category-card">
-              <img
-                [src]="category.image"
-                class="card-img object-fit-cover slider-image"
-                [alt]="category.title"
-                loading="lazy"
-              />
-              <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-black bg-opacity-50">
-                <h2 class="card-tite text-white mb-3">
-                  {{ category.title }}
-                </h2>
-                <button (click)="navigateToProducts(category._id)" class="btn btn-light rounded-4 py-2 category-btn">
-                  See Details
-                </button>
-              </div>
-            </div>
-          </div>
-          }
-        </div>
+<div class="container py-5 mt-5">
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+      <div class="spinner-border text-teal-green" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+  }
+  
+  <!-- Error State -->
+  @else if (error) {
+    <div class="d-flex flex-column justify-content-center align-items-center" style="height: 400px;">
+      <div class="alert alert-danger text-center" role="alert">
+        {{ error }}
+      </div>
+      <button (click)="retryFetch()" class="btn btn-outline-primary mt-3">
+        Retry Loading
+      </button>
+    </div>
+  }
+  
+  <!-- Categories Slider -->
+  @else if (categories.length > 0) {
+    <div id="categorySlider" class="carousel slide position-relative" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row g-3">
+            @for (category of visibleCategories; track $index) {
+            <div class="category-column">
+              <div class="card border-0 rounded-4 overflow-hidden category-card">
+                <img
+                  [src]="category.image"
+                  class="card-img object-fit-cover slider-image"
+                  [alt]="category.title"
+                  loading="lazy"
+                />
+                <div class="card-img-overlay d-flex flex-column justify-content-end p-4 bg-black bg-opacity-50">
+                  <h2 class="card-title text-white mb-3">
+                    {{ category.title }}
+                  </h2>
+                  <button 
+                    (click)="navigateToProducts(category._id)" 
+                    class="btn btn-light rounded-4 py-2 category-btn"
+                  >
+                    See Details
+                  </button>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
 
-    <button
-      class="carousel-control-prev rounded-circle bg-black bg-opacity-50 carousel-control m-3"
-      type="button"
-      (click)="prevSlide()">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button
-      class="carousel-control-next rounded-circle bg-black bg-opacity-50 carousel-control m-3"
-      type="button"
-      (click)="nextSlide()">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
+      <button 
+        class="carousel-control-prev rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
+        type="button" 
+        (click)="prevSlide()"
+        [disabled]="loading">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button 
+        class="carousel-control-next rounded-circle bg-black bg-opacity-50 carousel-control m-3" 
+        type="button" 
+        (click)="nextSlide()"
+        [disabled]="loading">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  }
+  
+  <!-- No Categories State -->
+  @else {
+    <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+      <p class="text-muted">No categories available</p>
+    </div>
+  }
 </div>
