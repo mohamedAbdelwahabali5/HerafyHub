@@ -12,7 +12,7 @@ import { ProductService } from '../../Services/collection.service';
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  categoryId: string = '';
+  categoryId: string = 'allProducts'; // Default to all products
   selectedCategory: any = null;
 
   constructor(
@@ -25,6 +25,7 @@ export class ProductsComponent implements OnInit {
     const state = navigation?.extras?.state as
       | { categoryId: string }
       | undefined;
+    
     if (state?.categoryId) {
       this.categoryId = state.categoryId;
       this.loadCategory(this.categoryId);
@@ -32,13 +33,14 @@ export class ProductsComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Check route params as a fallback
     this.route.paramMap.subscribe((params) => {
-      this.categoryId = params.get('categoryId') || '';
+      const routeCategoryId = params.get('categoryId');
+      if (routeCategoryId) {
+        this.categoryId = routeCategoryId;
+        this.loadCategory(this.categoryId);
+      }
     });
-    // Handle case when page is refreshed or accessed directly
-    if (this.categoryId && !this.selectedCategory) {
-      this.loadCategory(this.categoryId);
-    }
   }
 
   onCategorySelected(categoryId: string) {
@@ -51,7 +53,12 @@ export class ProductsComponent implements OnInit {
       next: (category: any) => {
         this.selectedCategory = category;
       },
-      error: (error) => console.error('Error fetching category:', error),
+      error: (error) => {
+        console.error('Error fetching category:', error);
+        // Fallback to all products if category fetch fails
+        this.categoryId = 'allProducts';
+        this.selectedCategory = null;
+      },
     });
   }
 }

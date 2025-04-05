@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { Product, ProductApiResponse } from '../Utils/interface';
+import { Product, ProductApiResponse } from '../Utils/interface'
 import { environment } from '../../environments/environment.prod';
 import { UsersService } from './users.service';
 
@@ -14,13 +14,11 @@ export class ProductService {
   private readonly products_URL = `${this.ApiUrl}/product`;
   private readonly all_Products_URL = `${this.ApiUrl}/product/all`;
   private readonly searchProduct_URL = `${this.ApiUrl}/search`;
-  private readonly Categories_URL = `${this.ApiUrl}/category`;
-
+  private readonly Categories_URL = `${this.ApiUrl}/category`;  
   constructor(
     private http: HttpClient,
     private usersService: UsersService
-  ) { }
-
+  ) {}
   private getHeaders() {
     const token = this.usersService.getToken();
     return new HttpHeaders({
@@ -28,7 +26,6 @@ export class ProductService {
       'Content-Type': 'application/json'
     });
   }
-
   getAllProducts() {
     return this.http.get(this.all_Products_URL, { headers: this.getHeaders() });
   }
@@ -40,7 +37,6 @@ export class ProductService {
     }
     return this.http.get(url, { headers: this.getHeaders() });
   }
-
   searchByTitleInCategory(title: string, categoryId: string) {
     console.log('Searching for:', title, 'in category:', categoryId);
     if (categoryId == 'allProducts') {
@@ -51,7 +47,6 @@ export class ProductService {
       );
     }
   }
-
   getAllCategories() {
     return this.http.get(this.Categories_URL, { headers: this.getHeaders() });
   }
