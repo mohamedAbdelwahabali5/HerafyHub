@@ -25,6 +25,7 @@ export class ProductsListComponent {
   pageSize: number = 12;
   loading: boolean = true;
   err: any = null;
+
   constructor(private productService: ProductService) {}
   ngOnInit() {
     this.loadProducts();

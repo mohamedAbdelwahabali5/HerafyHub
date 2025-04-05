@@ -19,12 +19,35 @@ export class CartItemComponent{
   decrease(): void {
     if (this.cart.quantity > 1) {
       this.cart.quantity--;
+      this.saveQuantityToLocalStorage();
+      this.quantityChanged.emit({
+        id: this.cart.id,
+        quantity: this.cart.quantity
+      });
     }
   }
   increase(): void {
     this.cart.quantity++;
+    this.saveQuantityToLocalStorage();
+    this.quantityChanged.emit({
+      id: this.cart.id,
+      quantity: this.cart.quantity
+    });
   }
- 
+  saveQuantityToLocalStorage(): void {
+    let cartQuantities: { [key: string]: number } = {};
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        cartQuantities = JSON.parse(storedQuantities);
+      } catch (e) {
+        console.log('Error parsing cart quantities:', e);
+      }
+    }
+    cartQuantities[this.cart.id] = this.cart.quantity;
+    localStorage.setItem('cartQuantities', JSON.stringify(cartQuantities));
+    console.log('Quantity saved for item:', this.cart.id, this.cart.quantity);
+  }
   removeItem() {
     console.log(this.cart);
     if (this.cart && this.cart.id) {
@@ -32,14 +55,17 @@ export class CartItemComponent{
         next: (response) => {
           console.log('Item removed successfully', response);
           this.removeProductFromLocalStorage(this.cart.id);
+          this.removeQuantityFromLocalStorage(this.cart.id);
           this.itemRemoved.emit(this.cart.id);
         },
         error: (error) => {
-          console.error('Error removing item from cart', error);
+          console.log('Error removing item from cart', error);
+          this.itemRemoved.emit(this.cart.id);
         }
       });
+    } else {
+      this.itemRemoved.emit(this.cart.id);
     }
-    this.itemRemoved.emit(this.cart.id);
   }
   removeProductFromLocalStorage(productId: string): void {
     const storedProductsString = localStorage.getItem('productsInCart');
@@ -50,13 +76,23 @@ export class CartItemComponent{
         localStorage.setItem('productsInCart', JSON.stringify(updatedProducts));
         console.log('Product removed from localStorage:', productId);
       } catch (e) {
-        console.error('Error parsing localStorage data:', e);
+        console.log('Error parsing localStorage data:', e);
       }
     }
   }
-
-
-
+  removeQuantityFromLocalStorage(productId: string): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        const cartQuantities: { [key: string]: number } = JSON.parse(storedQuantities);
+        delete cartQuantities[productId];
+        localStorage.setItem('cartQuantities', JSON.stringify(cartQuantities));
+        console.log('Quantity removed for item:', productId);
+      } catch (e) {
+        console.log('Error parsing cart quantities:', e);
+      }
+    }
+  }
 }
 
 
