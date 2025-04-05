@@ -20,7 +20,7 @@ export class CollectionCardComponent {
   productsInFavorite: Set<string> = new Set();
   quantity: number = 1;
   toggle: boolean = true;
-
+  isLoading: boolean = false;
 
   constructor(
     private CartService: CartService,
@@ -28,6 +28,9 @@ export class CollectionCardComponent {
     public userServ: UsersService
   ) {}
     isProductInFavorites(): boolean {
+      if (!this.userServ.isLoggedIn()) {
+        return false;
+      }
       return this.productsInFavorite.has(this.product._id);
     }
     ngOnInit() {
@@ -67,10 +70,18 @@ export class CollectionCardComponent {
     }
 
     isProductInCart(productId: string): boolean {
+      if (!this.userServ.isLoggedIn()) {
+        return false;
+      }
       return this.productsInCart.has(productId);
     }
 
     addToCart(quantity: number = 1) {
+       if (this.isLoading || this.isProductInCart(this.product._id) || !this.userServ.isLoggedIn()) {
+        return;
+      }
+
+      this.isLoading = true;
       const productData = {
         productId: this.product._id,
         quantity: quantity,
@@ -87,6 +98,7 @@ export class CollectionCardComponent {
             timer: 1500,
             showConfirmButton: false,
           });
+          this.isLoading = false;
         },
         error: (err) => {
           console.log('Detailed Error:', err);
@@ -95,6 +107,7 @@ export class CollectionCardComponent {
             title: 'Connection Error',
             text: 'Unable to connect to the server. Please check your connection or try again later.',
           });
+          this.isLoading = false;
         }
       });
     }

@@ -58,6 +58,12 @@
   border-color:var(--teal-green) !important;
   color: white !important;
 }
+.filled{
+  font-size: 18px;
+  background-color: var(--teal-green) ;
+  border-color:var(--teal-green) ;
+  color: white ;
+}
 @media (max-width: 992px) {
   .product-image-container {
     height: 220px;

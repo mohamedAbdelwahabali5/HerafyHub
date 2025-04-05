@@ -26,7 +26,8 @@
   <div class="mb-1 w-100">
     <button type="submit" (click)="addToCart()" class="btn w-100 bg-teal-green text-white px-2 rounded-5"
       [disabled]="isProductInCart(product._id)">
-      {{ isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart' }}
+      <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+      {{ isLoading ? 'Adding...' : (isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart') }}
     </button>
-  </div>
+    </div>
 </div>

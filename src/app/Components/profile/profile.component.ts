@@ -26,7 +26,7 @@ import { OrderStatistics, RecentActivity } from '../../Models/order.model';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  
+
   submitted = false;
   isEditMode = false;
   selectedFile: File | null = null;
@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private usersService: UsersService, 
+    private usersService: UsersService,
     private router: Router,
     private toastr: ToastrService,
     private orderService: OrderService,
@@ -88,7 +88,7 @@ export class ProfileComponent implements OnInit {
   loadUserProfile() {
     this.isLoading = true;
     this.errorMessage = null;
-    
+
     if (!this.usersService.isLoggedIn()) {
       this.router.navigate(['/login']);
       return;
@@ -104,7 +104,7 @@ export class ProfileComponent implements OnInit {
         console.error('Error loading profile:', err);
         this.errorMessage = err.error?.message || 'Failed to load profile';
         this.isLoading = false;
-        
+
         if (err.status === 401) {
           this.router.navigate(['/login']);
         }
@@ -143,7 +143,7 @@ export class ProfileComponent implements OnInit {
       phone: user.phone,
       email: user.email
     });
-    
+
     // Set the image preview from user data
     this.imagePreview = user.profileImage || 'images/img-preview.png';
   }
@@ -172,16 +172,16 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.errorMessage = null;
-  
+
     if (!this.profileForm.valid) {
       return;
     }
-  
+
     if (!this.userData) {
       this.errorMessage = 'No user data available';
       return;
     }
-  
+
     const formValue = this.profileForm.getRawValue();
     const updatedUser: User = {
       ...this.userData,
@@ -194,19 +194,19 @@ export class ProfileComponent implements OnInit {
       phone: formValue.phone!,
       email: formValue.email!
     };
-  
+
     this.isLoading = true;
-    
+
     this.usersService.updateUserProfile(updatedUser, this.selectedFile || undefined).subscribe({
       next: (response) => {
         this.toastr.success('Profile updated successfully');
         this.userData = response.user;
-        
+
         // If a new profile image was uploaded
         if (response.user.profileImage) {
           this.imagePreview = response.user.profileImage;
         }
-        
+
         this.patchFormWithUserData(response.user);
         this.isLoading = false;
         this.isEditMode = false; // Disable edit mode after successful save
@@ -215,7 +215,7 @@ export class ProfileComponent implements OnInit {
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
         this.isLoading = false;
-        
+
         if (err.status === 401) {
           this.errorMessage = 'Session expired. Please login again.';
           this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
@@ -312,21 +312,21 @@ export class ProfileComponent implements OnInit {
 
     return labels[controlName] || controlName;
   }
-  
+
   // Add this new method
   cancelEdit() {
     this.isEditMode = false;
     this.errorMessage = null;
-    
+
     // Reset the form to original values
     if (this.userData) {
       this.patchFormWithUserData(this.userData);
     }
-    
+
     // Reset any image changes
     this.selectedFile = null;
     this.imagePreview = this.userData?.profileImage || null;
-    
+
     this.disableForm();
   }
 
@@ -342,14 +342,14 @@ export class ProfileComponent implements OnInit {
         next: (response) => {
           this.isPasswordResetLoading = false;
           this.toastr.success(
-            'Password reset link sent to your email', 
+            'Password reset link sent to your email',
             'Success'
           );
         },
         error: (error) => {
           this.isPasswordResetLoading = false;
           this.toastr.error(
-            error.message || 'Failed to send reset link', 
+            error.message || 'Failed to send reset link',
             'Error'
           );
         }
@@ -365,3 +365,4 @@ export class ProfileComponent implements OnInit {
     return `${Math.floor(diffInHours / 24)}d ago`;
   }
 }
+

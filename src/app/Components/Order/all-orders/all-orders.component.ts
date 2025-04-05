@@ -46,8 +46,7 @@ export class AllOrdersComponent implements OnInit {
 
   viewOrderDetails(order: Order) {
     this.selectedOrderDetails = order;
-    // console.log('Order Details:', order);
-    // console.log('Order Items:', order.orderItems);
+    this.applySavedQuantities();
   }
 
   closeOrderDetails() {
@@ -67,4 +66,27 @@ export class AllOrdersComponent implements OnInit {
       },
     });
   }
+  applySavedQuantities(): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+
+    if (storedQuantities && this.selectedOrderDetails?.orderItems) {
+      try {
+        const cartQuantities: { [key: string]: number } = JSON.parse(storedQuantities);
+
+        this.selectedOrderDetails.orderItems.forEach(item => {
+          const productId = item.product?._id;
+
+          if (productId && cartQuantities[productId]) {
+            console.log(`Applying saved quantity for product ${productId}: ${cartQuantities[productId]}`);
+            item.quantity = cartQuantities[productId];
+          }
+        });
+      } catch (e) {
+        console.error('Error parsing cart quantities:', e);
+      }
+    }
+  }
+
+
+
 }
