@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
 import { environment } from '../../environments/environment.prod';
-import { Order, ShippingAddress , OrderResponse} from '../Models/order.model';
+import { Order, ShippingAddress, OrderResponse } from '../Models/order.model';
 
 @Injectable({
   providedIn: 'root'
