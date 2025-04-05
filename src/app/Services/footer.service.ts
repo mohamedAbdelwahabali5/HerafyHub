@@ -26,7 +26,14 @@ export class FooterService {
       .get(`${this.apiUrl}/product`, { params })
       .pipe(catchError(handleError));
   }
-
+  getTopProducts(): Observable<any> {
+    const params = new HttpParams()
+      .set('sort', '-ratingsAverage')
+      .set('limit', '5');
+    return this.http
+      .get(`${this.apiUrl}/product`, { params })
+      .pipe(catchError(handleError));
+  }
   getProductsByCategory(categoryId: string): Observable<any> {
     return this.http
       .get(`${this.apiUrl}/product/category/${categoryId}`) // Use path parameter

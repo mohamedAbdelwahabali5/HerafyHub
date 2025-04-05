@@ -23,6 +23,7 @@ export class FooterComponent implements OnInit {
   products: any[] = [];
   isLoggedIn: boolean = false;
   currentCategoryId: string | null = null;
+  topProducts: any[] = [];
 
   constructor(
     private userService: UsersService,
@@ -35,6 +36,8 @@ export class FooterComponent implements OnInit {
     this.loadCategories();
     this.checkAuthStatus();
     this.setupRouteListener();
+    this.loadTopProducts();
+    this.isLoggedIn = this.userService.isLoggedIn();
   }
 
   private checkAuthStatus() {
@@ -84,5 +87,19 @@ export class FooterComponent implements OnInit {
       next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
       error: (error) => console.error('Category products error:', error),
     });
+  }
+
+  loadTopProducts() {
+    this.footerService.getTopProducts().subscribe({
+      next: (data: any) => (this.topProducts = data.products || []),
+      error: (error) => console.error('Products error:', error),
+    });
+  }
+
+  handleClick(event: Event) {
+    if (!this.isLoggedIn) {
+      event.preventDefault();
+      this.router.navigate(['/login']);
+    }
   }
 }
