@@ -27,10 +27,32 @@ export interface OrderItem {
   quantity: number;
   price: number;
 }
+export interface OrderStatistics {
+  totalOrders: number;
+  totalSpent: number;
+  ordersByStatus: {
+    inProgress: number;
+    confirmed: number;
+    processing: number;
+    shipping: number;
+    delivered: number;
+    cancelled: number;
+  };
+}
+
+export interface RecentActivity {
+  orderNumber?: string;
+  status: string;
+  totalPrice: number;
+  date: Date;
+  items: number;
+  action: string;
+}
 
 export interface Order {
   _id?: string;
   user?: string;
+  invoiceNumber:string;
   shippingAddress: ShippingAddress;
   totalPrice: number;
   status: OrderStatus;
@@ -39,4 +61,13 @@ export interface Order {
   createdAt: Date;
   updatedAt: Date;
   orderItems: OrderItem[];
+}
+
+
+export interface OrderResponse {
+  success: boolean;
+  message: string;
+  statistics: OrderStatistics;
+  recentActivity: RecentActivity[];
+  orders: Order[];
 }
