@@ -73,7 +73,7 @@ export class OrderSummaryComponent implements OnInit {
         const cartQuantities: { [key: string]: number } = JSON.parse(storedQuantities);
         this.cartItems.forEach(item => {
           if (cartQuantities[item.id]) {
-            console.log(`Applying saved quantity for item ${item.id}: ${cartQuantities[item.id]}`);
+            // console.log(`Applying saved quantity for item ${item.id}: ${cartQuantities[item.id]}`);
             item.quantity = cartQuantities[item.id];
             item.total = item.price * item.quantity;
           }

@@ -77,7 +77,7 @@ export class AllOrdersComponent implements OnInit {
           const productId = item.product?._id;
 
           if (productId && cartQuantities[productId]) {
-            console.log(`Applying saved quantity for product ${productId}: ${cartQuantities[productId]}`);
+            // console.log(`Applying saved quantity for product ${productId}: ${cartQuantities[productId]}`);
             item.quantity = cartQuantities[productId];
           }
         });
