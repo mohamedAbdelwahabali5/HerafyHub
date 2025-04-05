@@ -59,7 +59,7 @@ export class LoginComponent {
         }
       });
     } else {
-      console.log('Form validation failed');
+      // console.log('Form validation failed');
       this.loginForm.markAllAsTouched(); // Mark all fields as touched to trigger validation errors
     }
   }

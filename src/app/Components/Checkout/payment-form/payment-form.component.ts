@@ -105,7 +105,7 @@ export class PaymentFormComponent implements OnInit {
     // Use Angular's safe value in the template
     this.safeIframeUrl = trustedUrl;
 
-    console.log('Payment iframe URL set:', url);
+    // console.log('Payment iframe URL set:', url);
   }
   loadCartItems() {
     this.cartService.getAllProducts().subscribe({
@@ -148,7 +148,6 @@ export class PaymentFormComponent implements OnInit {
 
     this.isVerifyingPayment = true;
 
-    // التحقق من حالة الدفع كل 3 ثواني
     this.paymentStatusSub = interval(3000).pipe(
       switchMap(() => this.paymobService.checkPaymentStatus(this.orderId.toString())),
       takeWhile(response => response.status !== 'paid', true)

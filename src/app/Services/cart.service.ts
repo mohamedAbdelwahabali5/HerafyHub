@@ -23,8 +23,6 @@ interface CartResponse {
 export class CartService {
 
 
-  // private readonly cart_URL = 'http://localhost:5555/cart/';
-  // private readonly addToCart_URL = 'http://localhost:5555/cart/add';
   private readonly apiUrl = environment.apiUrl;
   private readonly cart_URL = `${this.apiUrl}/cart/`;
   private readonly addToCart_URL = `${this.apiUrl}/cart/add`;
