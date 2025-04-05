@@ -27,6 +27,10 @@ export class UsersService {
   // Observable that components can subscribe to
   profileImage$ = this.profileImageSubject.asObservable();
 
+  // Create a BehaviorSubject to track login state
+  private _isLoggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
+  isLoggedIn$ = this._isLoggedIn.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {
     if (typeof window !== 'undefined') {
       this.storageType = sessionStorage;
@@ -49,6 +53,7 @@ export class UsersService {
           // Store the token in sessionStorage for authentication
           if (response && response.token) {
             this.setToken(response.token, false);
+            this._isLoggedIn.next(true);
           }
         }),
 
@@ -227,6 +232,7 @@ export class UsersService {
   logout() {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('authToken');
+    this._isLoggedIn.next(false);
     this.router.navigate(['/login']);
   }
 
@@ -276,5 +282,10 @@ export class UsersService {
           );
         })
       );
+  }
+
+  // Method to check and update login state
+  checkLoginState() {
+    this._isLoggedIn.next(this.isLoggedIn());
   }
 }

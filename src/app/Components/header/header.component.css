@@ -74,3 +74,9 @@ li .nav-link{
   li .nav-link:hover{
 
 } */
+
+.badge {
+  font-size: 0.6rem;
+  padding: 0.2em 0.4em;
+  transform: translate(-50%, -50%);
+}
