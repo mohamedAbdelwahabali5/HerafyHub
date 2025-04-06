@@ -17,6 +17,7 @@ export class ProductDetailsComponent implements OnInit {
   stars: number[] = [1, 2, 3, 4, 5]; // Array to iterate over stars
   productsInCart: Set<string> = new Set();
   quantity: number = 1;
+    isLoading: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private CartService: CartService,
@@ -58,6 +59,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
     addToCart(quantity: number = 1) {
+      this.isLoading = true;
       const productData = {
         productId: this.product._id,
         quantity: quantity,
@@ -74,6 +76,7 @@ export class ProductDetailsComponent implements OnInit {
             timer: 1500,
             showConfirmButton: false,
           });
+          this.isLoading = false;
         },
         error: (err) => {
           console.error('Detailed Error:', err);
@@ -82,6 +85,7 @@ export class ProductDetailsComponent implements OnInit {
             title: 'Connection Error',
             text: 'Unable to connect to the server. Please check your connection or try again later.',
           });
+          this.isLoading = false;
         }
       });
     }

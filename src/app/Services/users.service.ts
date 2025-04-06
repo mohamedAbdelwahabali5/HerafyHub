@@ -27,6 +27,10 @@ export class UsersService {
   // Observable that components can subscribe to
   profileImage$ = this.profileImageSubject.asObservable();
 
+  // Create a BehaviorSubject to track login state
+  private _isLoggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
+  isLoggedIn$ = this._isLoggedIn.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {
     if (typeof window !== 'undefined') {
       this.storageType = sessionStorage;
@@ -49,6 +53,7 @@ export class UsersService {
           // Store the token in sessionStorage for authentication
           if (response && response.token) {
             this.setToken(response.token, false);
+            this._isLoggedIn.next(true);
           }
         }),
 
@@ -227,6 +232,7 @@ export class UsersService {
   logout() {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('authToken');
+    this._isLoggedIn.next(false);
     this.router.navigate(['/login']);
   }
 
@@ -253,5 +259,33 @@ export class UsersService {
           );
         })
       );
+  }
+
+  // delete profile image
+  deleteProfileImage(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .delete<any>(`${this.apiUrlAuth}/profile-image`, { headers })
+      .pipe(
+        tap((response) => {
+          // Update the profile image subject with default image
+          this.profileImageSubject.next(this.defaultProfileImage);
+        }),
+        catchError((error) => {
+          console.error('Delete profile image error:', error);
+          return throwError(
+            () => new Error(error.error?.message || 'Failed to delete profile image')
+          );
+        })
+      );
+  }
+
+  // Method to check and update login state
+  checkLoginState() {
+    this._isLoggedIn.next(this.isLoggedIn());
   }
 }

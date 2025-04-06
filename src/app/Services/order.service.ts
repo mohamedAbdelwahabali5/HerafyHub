@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
 import { environment } from '../../environments/environment.prod';
-import { Order, ShippingAddress } from '../Models/order.model';
+import { Order, ShippingAddress, OrderResponse } from '../Models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +19,12 @@ export class OrderService {
   ) { }
 
   // Get all orders for the current user
-  getUserOrders(): Observable<Order[]> {
+  getUserOrders(): Observable<OrderResponse> {
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get<Order[]>(`${this.apiUrlOrder}/user`, { headers });
+    return this.http.get<OrderResponse>(`${this.apiUrlOrder}/user`, { headers });
   }
 
   // Create a new order

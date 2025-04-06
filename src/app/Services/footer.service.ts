@@ -12,7 +12,7 @@ import { handleError } from '../Utils/handleError';
 export class FooterService {
   private readonly apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCategories(): Observable<any[]> {
     return this.http
@@ -23,7 +23,7 @@ export class FooterService {
   getProducts(): Observable<any> {
     const params = new HttpParams().set('page', '1').set('limit', '5');
     return this.http
-      .get(`${this.apiUrl}/product`, { params })
+      .get(`${this.apiUrl}/product, { params }`)
       .pipe(catchError(handleError));
   }
 

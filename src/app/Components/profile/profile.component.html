@@ -1,6 +1,6 @@
 <!-- profile.component.html -->
 <main>
-  <div class="container">
+  <div class="container ">
     <div class="row g-4">
       <!-- Left Column (60%) -->
       <div class="col-lg-8 col-md-12">
@@ -25,21 +25,7 @@
                 Delete Picture
               </button>
             </div>
-            <!-- Update the buttons section at the bottom of the form -->
-            <!-- <div class="d-flex justify-content-center gap-2">
-              @if (isEditMode) {
-                <button type="submit" class="btn btn-custom" [disabled]="isLoading">
-                  {{ isLoading ? 'Saving...' : 'Save Changes' }}
-                </button>
-                <button type="button" class="btn btn-danger" (click)="cancelEdit()">
-                  Cancel
-                </button>
-              } @else {
-                <button type="button" class="btn btn-custom" (click)="toggleEditMode()">
-                  Update
-                </button>
-              }
-            </div> -->
+
             <input
               #fileInput
               type="file"
@@ -192,7 +178,7 @@
          
 
    
-            <!-- Update the submit button to show loading state -->
+           
             <div class="d-flex justify-content-center">
               @if (isEditMode) {
                 <button type="submit" class="btn btn-custom w-75 m-2" [disabled]="isLoading">
@@ -223,77 +209,66 @@
       <!-- Right Column (40%) -->
       <div class="col-lg-4 col-md-12">
         <div class="active-details-container">
-          <h2 class="text-center mb-4">Activity Overview</h2>
-
-          <div class="detail-card">
-            <div class="detail-header">
-              <i class="bi bi-cart3"></i>
-              <h3>Orders</h3>
-            </div>
-            <div class="detail-content">
-              <div class="detail-item">
-                <span>Total Orders</span>
-                <strong>152</strong>
-              </div>
-              <div class="detail-item">
-                <span>Pending</span>
-                <strong class="text-warning">5</strong>
-              </div>
-              <div class="detail-item">
-                <span>Completed</span>
-                <strong class="text-success">147</strong>
+          <h2 class="text-center mb-2">Activity Overview</h2>
+      
+          @if (isLoadingActivity) {
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
             </div>
-          </div>
-
-          <div class="detail-card">
-            <div class="detail-header">
-              <i class="bi bi-clock-history"></i>
-              <h3>Recent Activity</h3>
-            </div>
-            <div class="detail-content">
-              <ul class="activity-list">
-                <li>
-                  <i class="bi bi-check-circle"></i>
-                  Order #1254 completed
-                  <span class="text-muted">2h ago</span>
-                </li>
-                <li>
-                  <i class="bi bi-truck"></i>
-                  Order #1253 shipped
-                  <span class="text-muted">5h ago</span>
-                </li>
-                <li>
-                  <i class="bi bi-cart-plus"></i>
-                  New order placed
-                  <span class="text-muted">1d ago</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- <div class="detail-card">
-            <div class="detail-header">
-              <i class="bi bi-graph-up"></i>
-              <h3>Monthly Stats</h3>
-            </div>
-            <div class="detail-content">
-              <div class="stats-grid">
-                <div class="stat-item">
-                  <span>Revenue</span>
-                  <strong>$2,450</strong>
+          } @else {
+            <div class="detail-card">
+              <div class="detail-header">
+                <i class="bi bi-cart3"></i>
+                <h3>Orders</h3>
+              </div>
+              <div class="detail-content">
+                <div class="detail-item">
+                  <span>Total Orders</span>
+                  <strong>{{ orderStats?.totalOrders || 0 }}</strong>
                 </div>
-                <div class="stat-item">
-                  <span>Items Sold</span>
-                  <strong>89</strong>
+                <div class="detail-item">
+                  <span>In-Progress</span>
+                  <strong class="text-warning">{{ orderStats?.ordersByStatus?.inProgress || 0 }}</strong>
                 </div>
-                <div class="stat-item">
-                  <span>Avg. Rating</span>
-                  <strong>4.8</strong>
+                <div class="detail-item">
+                  <span>Delivered</span>
+                  <strong class="text-success">{{ orderStats?.ordersByStatus?.delivered || 0 }}</strong>
+                </div>
+                <div class="detail-item">
+                  <span>Total Spent</span>
+                  <strong class="text-primary">{{ orderStats?.totalSpent | currency:'EGP ' }}</strong>
                 </div>
               </div>
             </div>
-          </div> -->
+      
+            <div class="detail-card">
+              <div class="detail-header">
+                <i class="bi bi-clock-history"></i>
+                <h3>Recent Activity</h3>
+              </div>
+              <div class="detail-content ">
+                <ul class="activity-list">
+                  @if (recentActivity.length === 0) {
+                    <li class="text-center text-muted">No recent activity</li>
+                  }
+                  @for (activity of recentActivity; track activity.orderNumber) {
+                    <li>
+                      <i [class]="
+                        activity.status === 'Delivered' ? 'bi bi-check-circle' :
+                        activity.status === 'Shipping' ? 'bi bi-truck' :
+                        activity.status === 'Cancelled' ? 'bi bi-x-circle' :
+                        'bi bi-cart-plus'
+                      "></i>
+                      Order {{ activity.orderNumber }} {{ activity.action }}
+                      <span class="text-muted px-1"> {{ getTimeAgo(activity.date) }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+          }
         </div>
       </div>
     </div>

@@ -28,7 +28,7 @@ export class MainCheckoutComponent implements OnInit {
     this.usersService.getUserProfile().subscribe(
       (data) => {
         this.userData = data;
-        console.log('Loaded User Data:', data);
+        // console.log('Loaded User Data:', data);
       },
       (error) => {
         console.error('Error loading user data:', error);
@@ -39,6 +39,6 @@ export class MainCheckoutComponent implements OnInit {
   onShippingAddressChange(address: ShippingAddress) {
     this.shippingAddress = address;
     this.isShippingAddressEdited = true;
-    console.log('Shipping Address Changed:', address);
+    // console.log('Shipping Address Changed:', address);
   }
 }

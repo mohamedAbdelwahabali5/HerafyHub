@@ -36,7 +36,7 @@ export class ForgotPasswordComponent {
       });
     } else {
       this.markFormGroupTouched(this.resetPasswordForm);
-      console.log('Form is not valid');
+      // console.log('Form is not valid');
     }
   }
 
