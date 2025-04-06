@@ -27,7 +27,7 @@ export class CartService {
   private readonly cart_URL = `${this.apiUrl}/cart/`;
   private readonly addToCart_URL = `${this.apiUrl}/cart/add`;
   private readonly cartKey = 'productsInCart';
-  
+
   // Create a BehaviorSubject to track cart count
   private _cartCount = new BehaviorSubject<number>(0);
   cartCount$ = this._cartCount.asObservable();
@@ -48,8 +48,8 @@ export class CartService {
     if (this.userService.isLoggedIn()) {
       this.getAllProducts().subscribe({
         next: (response: any) => {
-          const count = response.cartItems 
-            ? response.cartItems.length 
+          const count = response.cartItems
+            ? response.cartItems.length
             : (Array.isArray(response) ? response.length : 0);
           this._cartCount.next(count);
         },
@@ -100,7 +100,7 @@ export class CartService {
       'Authorization': `Bearer ${token}`
     });
     const removeUrl = `${this.cart_URL}remove/${productId}`;
-    
+
     return this.http.delete(removeUrl, { headers }).pipe(
       tap(() => {
         // Update cart count immediately after removing product
@@ -115,7 +115,7 @@ export class CartService {
       'Authorization': `Bearer ${token}`
     });
     const clearUrl = `${this.cart_URL}clear`;
-    
+
     return this.http.delete(clearUrl, { headers }).pipe(
       tap(() => {
         // Reset cart count to 0 after clearing
@@ -184,4 +184,3 @@ export class CartService {
   }
 
 }
-
