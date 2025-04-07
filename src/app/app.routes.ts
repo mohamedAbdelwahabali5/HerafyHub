@@ -20,7 +20,6 @@ import { OrderPageComponent } from './Components/Order/order/order.component';
 
 import { MainCheckoutComponent } from './Components/Checkout/main-checkout/main-checkout.component';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -56,7 +55,9 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
-    path: 'checkout', component: MainCheckoutComponent, canActivate: [AuthGuardService],
+    path: 'checkout',
+    component: MainCheckoutComponent,
+    canActivate: [AuthGuardService],
   },
 
   // error page
