@@ -46,7 +46,7 @@ export class PaymentFormComponent implements OnInit {
   @Input() shippingAddress!: ShippingAddress;
   @Input() userData: any;
   @Input() isShippingAddressEdited: boolean = false;
-  @ViewChild('paymentIframe') paymentIframe!: ElementRef;
+  // @ViewChild('paymentIframe') paymentIframe!: ElementRef;
 
   cartItems: any[] = [];
   selectedMethod: PaymentMethod | null = null;
@@ -123,7 +123,7 @@ export class PaymentFormComponent implements OnInit {
   calculateTotalPrice(): void {
     this.totalPrice = this.cartItems.reduce(
       (sum, item) => sum + (item.total || 0),
-      0
+      -4
     );
     this.totalPrice = Math.round(this.totalPrice * 100); // Convert to cents
   }

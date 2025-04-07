@@ -20,7 +20,6 @@ interface UpdateProfileResponse {
 export class UsersService {
   private readonly apiUrl = environment.apiUrl;
   private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
 
@@ -152,8 +151,8 @@ export class UsersService {
   // Update getUserProfile method to include default image
   getUserProfile(): Observable<User> {
     const token = this.getToken();
-    console.log('Current environment:', environment);
-    console.log('API URL:', this.apiUrlAuth);
+    // console.log('Current environment:', environment);
+    // console.log('API URL:', this.apiUrlAuth);
     if (!token) {
       return throwError(() => new Error('No token found'));
     }
@@ -178,7 +177,7 @@ export class UsersService {
           profileImage: response.user.profileImage || this.defaultProfileImage,
         })),
         tap((user) => {
-          console.log('User profile loaded:', user);
+          // console.log('User profile loaded:', user);
         }),
         catchError((error: HttpErrorResponse) => {
           console.error('Error fetching profile:', error);
@@ -247,7 +246,7 @@ export class UsersService {
       .post<any>(`${this.apiUrlAuth}/forgot-password`, { email })
       .pipe(
         tap((response) => {
-          console.log('Password reset link sent:', response);
+          // console.log('Password reset link sent:', response);
         }),
         catchError((error) => {
           console.error('Password reset link error:', error);

@@ -63,7 +63,7 @@ export class OrderSummaryComponent implements OnInit {
   calculateTotalPrice(): void {
     this.totalPrice = this.cartItems.reduce(
       (sum, item) => sum + item.total,
-      0
+      -4
     );
   }
   applySavedQuantities(): void {
