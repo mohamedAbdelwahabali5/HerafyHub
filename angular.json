@@ -20,34 +20,27 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
-                "glob": "*/",
+                "glob": "**/*",
                 "input": "public"
               }
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/ngx-toastr/toastr.css",
+               "node_modules/ngx-toastr/toastr.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
-
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -71,8 +64,37 @@
           },
           "defaultConfiguration": "production"
         },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "src/server.ts",
+            "tsConfig": "tsconfig.server.json"
+          }
+        },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": [
+              "/product-details/67c8df8cf9506d6f73d60ca8",
+              "/product-details/67c8df8cf9506d6f73d60ca9",
+              "/product-details/67c8df8cf9506d6f73d60caa",
+              "products/67c11684e8a1c3314b82b37c",
+              "products/67c11684e8a1c3314b82b37d",
+              "products/67c11684e8a1c3314b82b37f",
+              "products/67c11684e8a1c3314b82b37b",
+              "products/67c11684e8a1c3314b82b37e",
+              "reset-password/:token"
+            ]
+          }
+        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "disableHostCheck": true,
+            "port": 4200
+          },
           "configurations": {
             "production": {
               "buildTarget": "HerafyHub:build:production"
@@ -93,7 +115,7 @@
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
-                "glob": "*/",
+                "glob": "**/*",
                 "input": "public"
               }
             ],
@@ -101,7 +123,6 @@
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
-
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

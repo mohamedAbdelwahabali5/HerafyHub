@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../Services/users.service';
+import { CartService } from '../../Services/cart.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,15 +13,28 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userProfileImage: string | null = null;
+  cartItemCount: number = 0;
   private profileSubscription: Subscription | null = null;
+  private cartSubscription: Subscription | null = null;
 
-  constructor(public userServ: UsersService, public router: Router) {}
+  constructor(
+    public userServ: UsersService, 
+    public router: Router,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     // Subscribe to profile image changes
     this.profileSubscription = this.userServ.profileImage$.subscribe(
       image => {
         this.userProfileImage = image || this.userProfileImage;
+      }
+    );
+
+    // Subscribe to cart count changes
+    this.cartSubscription = this.cartService.cartCount$.subscribe(
+      count => {
+        this.cartItemCount = count;
       }
     );
 
@@ -36,6 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // Unsubscribe to prevent memory leaks
     if (this.profileSubscription) {
       this.profileSubscription.unsubscribe();
+    }
+    if (this.cartSubscription) {
+      this.cartSubscription.unsubscribe();
     }
   }
 

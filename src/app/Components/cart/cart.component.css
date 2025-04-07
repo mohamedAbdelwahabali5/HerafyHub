@@ -1,21 +1,13 @@
-
 * {
-  padding: 0;
-  margin: 0;
   box-sizing: border-box;
 }
-.container-fluid{
+
+.container-fluid {
   margin-top: 80px;
 }
 
-/* Cart Header */
-.cart-title {
-  color: var(--teal-green);
-  font-weight: 600;
-  position: relative;
-  margin-bottom: 1.5rem;
-}
-h3{
+
+h3 {
   color: var(--teal-green);
 }
 
@@ -31,6 +23,7 @@ h3{
 
 .cart-summary {
   border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
 .items-count {
@@ -38,15 +31,16 @@ h3{
   color: var(--dark-gray);
 }
 
+
 .btn-clear {
   padding: 8px 16px;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius, 8px);
   border: 1px solid #ddd;
   background-color: transparent;
   color: var(--dark-gray);
   font-size: 14px;
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition, all 0.3s ease);
   display: flex;
   align-items: center;
 }
@@ -149,10 +143,12 @@ h3{
   border-radius: 30px;
   transition: 0.3s ease-in-out;
 }
+
 .btn-primary:hover {
   background-color: #2C6D5A;
   transform: scale(1.05);
 }
+
 .btn-checkout:hover {
   background-color: #2a7363;
   transform: translateY(-2px);
@@ -228,4 +224,48 @@ h3{
   .summary-total {
     font-size: 16px;
   }
+}
+
+.modal.fade.show {
+  z-index: 1050;
+}
+
+.modal-backdrop.fade.show {
+  z-index: 1040;
+  opacity: 0.5;
+}
+
+.modal.fade.show {
+  animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+/* Secondary button styling */
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
 }

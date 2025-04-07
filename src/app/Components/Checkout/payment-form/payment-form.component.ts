@@ -14,6 +14,7 @@ import { UsersService } from '../../../Services/users.service';
 // Models
 import { ShippingAddress } from '../../../Models/order.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { interval, Subscription, switchMap, takeWhile } from 'rxjs';
 
 interface PaymentMethod {
   id: string;
@@ -45,7 +46,7 @@ export class PaymentFormComponent implements OnInit {
   @Input() shippingAddress!: ShippingAddress;
   @Input() userData: any;
   @Input() isShippingAddressEdited: boolean = false;
-  @ViewChild('paymentIframe') paymentIframe!: ElementRef;
+  // @ViewChild('paymentIframe') paymentIframe!: ElementRef;
 
   cartItems: any[] = [];
   selectedMethod: PaymentMethod | null = null;
@@ -59,7 +60,8 @@ export class PaymentFormComponent implements OnInit {
   paymentKey: string = '';
   iframeUrl: string = '';
   isPaymentProcessing: boolean = false;
-
+  isVerifyingPayment = false;
+  private paymentStatusSub!: Subscription;
   paymentMethods: PaymentMethod[] = [
     {
       id: 'cod',
@@ -91,6 +93,11 @@ export class PaymentFormComponent implements OnInit {
     this.gettingAllUserInfo();
   }
 
+  ngOnDestroy() {
+    if (this.paymentStatusSub) {
+      this.paymentStatusSub.unsubscribe();
+    }
+  }
   private loadPaymentIframe(url: string) {
     // Bypass security trust for this specific URL
     const trustedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
@@ -98,7 +105,7 @@ export class PaymentFormComponent implements OnInit {
     // Use Angular's safe value in the template
     this.safeIframeUrl = trustedUrl;
 
-    console.log('Payment iframe URL set:', url);
+    // console.log('Payment iframe URL set:', url);
   }
   loadCartItems() {
     this.cartService.getAllProducts().subscribe({
@@ -116,7 +123,7 @@ export class PaymentFormComponent implements OnInit {
   calculateTotalPrice(): void {
     this.totalPrice = this.cartItems.reduce(
       (sum, item) => sum + (item.total || 0),
-      0
+      -4
     );
     this.totalPrice = Math.round(this.totalPrice * 100); // Convert to cents
   }
@@ -130,10 +137,39 @@ export class PaymentFormComponent implements OnInit {
     if (this.selectedMethod.id === 'cod') {
       this.processCashOnDelivery();
     } else if (this.selectedMethod.id === 'card' && this.paymentKey) {
-      // For card payments, the order is created after successful payment in the iframe
-      // You might need to handle this differently based on your backend implementation
+
       this.toastr.info('Please complete the payment process', 'Info');
     }
+  }
+
+
+  private startPaymentVerification() {
+    if (!this.orderId) return;
+
+    this.isVerifyingPayment = true;
+
+    this.paymentStatusSub = interval(3000).pipe(
+      switchMap(() => this.paymobService.checkPaymentStatus(this.orderId.toString())),
+      takeWhile(response => response.status !== 'paid', true)
+    ).subscribe({
+      next: (response) => {
+        if (response.status === 'paid') {
+          this.handleSuccessfulPayment();
+        }
+      },
+      error: (err) => {
+        this.toastr.error('Error verifying payment', 'Error');
+        this.isVerifyingPayment = false;
+      }
+    });
+  }
+
+  private handleSuccessfulPayment() {
+    this.isVerifyingPayment = false;
+    this.toastr.success('Payment completed successfully!', 'Success');
+    this.router.navigate(['/order-success'], {
+      queryParams: { orderId: this.orderId }
+    });
   }
 
   private processCashOnDelivery() {
@@ -302,6 +338,7 @@ export class PaymentFormComponent implements OnInit {
         // Load iframe after slight delay to ensure DOM is ready
         setTimeout(() => {
           this.loadPaymentIframe(this.iframeUrl);
+          this.startPaymentVerification();
           this.isPaymentProcessing = false;
         }, 100);
       },
@@ -386,11 +423,6 @@ export class PaymentFormComponent implements OnInit {
     });
   }
 
-  clearIframe() {
-    if (this.paymentIframe) {
-      this.paymentIframe.nativeElement.src = '';
-    }
-  }
 }
 
 

@@ -36,7 +36,7 @@ export class ForgotPasswordComponent {
       });
     } else {
       this.markFormGroupTouched(this.resetPasswordForm);
-      console.log('Form is not valid');
+      // console.log('Form is not valid');
     }
   }
 
@@ -54,8 +54,8 @@ export class ForgotPasswordComponent {
       title: title,
       text: message,
       icon: icon,
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3D8D7A'
+      showConfirmButton: false,
+      timer: 3000
     });
   }
 }

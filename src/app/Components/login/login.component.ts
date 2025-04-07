@@ -42,10 +42,10 @@ export class LoginComponent {
       this.userServ.loginUser(email, password).subscribe({
         next: (response) => {
           // console.log('Login successful', response);
-          console.log(response.success);
+          // console.log(response.success);
           if (response.success) {
             this.userServ.setToken(response.token, rememberMe);
-            console.log("rememberMe", rememberMe);
+            // console.log("rememberMe", rememberMe);
 
             this.router.navigate(['/home']);
           } else {
@@ -54,12 +54,12 @@ export class LoginComponent {
           }
         },
         error: (error: any) => {
-          console.log('Login failed', error.message);
+          // console.log('Login failed', error.message);
           this.showLoginError('Login Error', error.message || 'Unable to connect to the server... Please try again later');
         }
       });
     } else {
-      console.log('Form validation failed');
+      // console.log('Form validation failed');
       this.loginForm.markAllAsTouched(); // Mark all fields as touched to trigger validation errors
     }
   }
@@ -69,8 +69,8 @@ export class LoginComponent {
       title: title,
       text: message,
       icon: 'error',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3D8D7A'
+      showConfirmButton: false,
+      timer: 3000
     });
   }
 }

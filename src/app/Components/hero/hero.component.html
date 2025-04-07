@@ -1,7 +1,8 @@
 <div class="container-fluid px-3 px-md-5 mb-5">
   <div class="card text-bg-dark w-100 overflow-hidden">
     <div class="hero-img-container">
-      <img src="images/hero.png" class="card-img object-fit-cover rounded-3" alt="Spring Collection" />
+      <img src="https://res.cloudinary.com/dojq1nxqw/image/upload/v1743812653/hero_ye4ch2.jpg"
+        class="card-img object-fit-cover rounded-3" alt="Spring Collection" />
     </div>
     <div class="card-img-overlay d-flex flex-column justify-content-end p-3 p-md-4 p-lg-5 bg-dark bg-opacity-50">
       <div class="content-wrapper text-center text-md-start">
@@ -11,7 +12,8 @@
           Find out the best collection offering our best quality production in a tolus spring collection.
         </p>
         <div class="text-center text-md-start">
-          <a href="#" class="btn btn-light fs-6">Explore</a>
+          <a *ngIf="userServ.isLoggedIn()" routerLink="/products" class="btn btn-light fs-6">Explore</a>
+          <a *ngIf="!userServ.isLoggedIn()" routerLink="/login" class="btn btn-light fs-6">Explore</a>
         </div>
       </div>
     </div>

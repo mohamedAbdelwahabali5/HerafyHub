@@ -8,11 +8,11 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ContactService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   private readonly apiUrl = environment.apiUrl;
   private readonly apiUrlAuth = `${this.apiUrl}/auth`;
   sendContactMessage(contactData: any): Observable<any> {
-    console.log('Sending to:', `${this.apiUrl}/contact`);
+    // console.log('Sending to:', `${this.apiUrl}/contact`);
     return this.http.post<any>(`${this.apiUrl}/contact`, contactData).pipe(
       catchError((error) => {
         console.error('Contact error:', error);

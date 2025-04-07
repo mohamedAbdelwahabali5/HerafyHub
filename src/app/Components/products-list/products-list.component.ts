@@ -25,13 +25,16 @@ export class ProductsListComponent {
   pageSize: number = 12;
   loading: boolean = true;
   err: any = null;
-  constructor(private productService: ProductService) {}
+
+  constructor(private productService: ProductService) { }
   ngOnInit() {
     this.loadProducts();
   }
 
   // Add this new method to detect category changes
   ngOnChanges(changes: any) {
+    // console.log("category changed to:", this.categoryId);
+    // console.log("current search term is:", this.searchTerm);
     if (changes.categoryId) {
       this.currentPage = 1; // Reset to first page when category changes
       this.loadProducts();
@@ -39,7 +42,7 @@ export class ProductsListComponent {
   }
   loadProducts() {
     this.loading = true;
-    console.log('Category ID in ProductsListComponent:', this.categoryId);
+    // console.log('Category ID in ProductsListComponent:', this.categoryId);
     if (this.categoryId != 'allProducts') {
       this.productService
         .getProductsCategory(this.currentPage, this.pageSize, this.categoryId)
@@ -50,6 +53,9 @@ export class ProductsListComponent {
             this.totalPages = response.totalPages;
             this.totalProducts = response.totalProducts;
             this.loading = false;
+            if (this.searchTerm.trim()) {
+              this.searchProduct();
+            }
           },
           error: (err) => {
             console.error(err);
@@ -74,6 +80,9 @@ export class ProductsListComponent {
           // console.log('this.currentPage:', this.currentPage);
           // console.log('Page products:', this.pageProducts);
           this.loading = false;
+          if (this.searchTerm.trim()) {
+            this.searchProduct();
+          }
         },
         error: (err) => {
           console.error(err);
@@ -87,16 +96,27 @@ export class ProductsListComponent {
 
   searchProduct() {
     const searchText = this.searchTerm.trim();
-
+    // console.log(`Searching item: ${searchText}`);
+    // console.log(`this.categoryId: ${this.categoryId}`);
     if (searchText) {
       this.productService
         .searchByTitleInCategory(searchText, this.categoryId)
         .subscribe(
           (response: any) => {
-            this.searchedProducts = response.data;
-            this.pageProducts = this.searchedProducts;
+            // console.log('response:', response);
 
-            //note: remember to update the pagination when sorting or filtering results
+            if (this.categoryId === 'allProducts') {
+              const allProducts = response.products;
+              this.searchedProducts = allProducts.filter(
+                (product: { title: string; }) => product.title.toLowerCase().includes(searchText.toLowerCase())
+              );
+            } else {
+              this.searchedProducts = response.data;
+            }
+            this.pageProducts = this.searchedProducts;
+            // console.log(`page Products: `, this.pageProducts);
+            // console.log(`page searchedProducts: `, this.searchedProducts);
+            // console.log(`page products length: `, this.pageProducts.length);
             this.calculateSearchPagination();
           },
           (error) => {
@@ -111,16 +131,23 @@ export class ProductsListComponent {
   }
 
   sort(event: any) {
-    // console.log('event.target', event.target.innerText);
-    // console.log('event', event);
+    console.log('event.target', event.target.innerText);
+    console.log('event', event);
     // console.log('Sorted prices:', this.pageProducts.map(product => product.currentprice));
 
     if (event.target.innerText === 'Low to High') {
-      this.products.sort((a, b) => a.currentprice - b.currentprice);
-    } else if (event.target.innerText === 'High to Low') {
-      this.products.sort((a, b) => b.currentprice - a.currentprice);
-    }
+      if (!this.searchedProducts.length) {
+        this.products.sort((a, b) => a.currentprice - b.currentprice);
+      }
+      this.searchedProducts.sort((a, b) => a.currentprice - b.currentprice);
 
+    } else if (event.target.innerText === 'High to Low') {
+      if (!this.searchedProducts.length) {
+        this.products.sort((a, b) => b.currentprice - a.currentprice);
+      }
+      this.searchedProducts.sort((a, b) => b.currentprice - a.currentprice);
+    }
+    this.updatePageProducts();
     // console.log('Sorted prices after sort:', this.pageProducts.map(product => product.currentprice));
   }
 

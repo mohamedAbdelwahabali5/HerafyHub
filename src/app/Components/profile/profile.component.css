@@ -6,6 +6,7 @@ main {
   align-items: center;
   padding: 10px 0;
   background-color: white;
+  margin-top: 60px; ;
 }
 
 .container {
@@ -118,6 +119,7 @@ main {
   border-radius: 10px;
   height: fit-content;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  max-height: fit-content;
 }
 
 .detail-card {
@@ -178,7 +180,7 @@ main {
   display: flex;
   align-items: center;
   padding: 8px 0;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .activity-list i {

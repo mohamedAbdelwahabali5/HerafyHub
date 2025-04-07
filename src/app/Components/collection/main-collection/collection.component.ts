@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-collection',
-  imports: [RouterModule, CommonModule,CollectionCardComponent],
+  imports: [RouterModule, CommonModule, CollectionCardComponent],
   providers: [ProductService],
   templateUrl: './collection.component.html',
   styleUrl: './collection.component.css',
@@ -17,7 +17,7 @@ export class CollectionComponent {
   loading: boolean = true;
   err: any = null;
 
-  constructor(private productService: ProductService,public userServ: UsersService) {}
+  constructor(private productService: ProductService, public userServ: UsersService) { }
 
   ngOnInit() {
     this.loading = true;

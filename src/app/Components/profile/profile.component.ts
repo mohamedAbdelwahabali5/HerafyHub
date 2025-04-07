@@ -12,6 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
+import { OrderService } from '../../Services/order.service';
+import { OrderStatistics, RecentActivity } from '../../Models/order.model';
 
 @Component({
   selector: 'app-profile',
@@ -24,7 +26,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  
+
   submitted = false;
   isEditMode = false;
   selectedFile: File | null = null;
@@ -33,6 +35,10 @@ export class ProfileComponent implements OnInit {
   isLoading = false;
   errorMessage: string | null = null;
   isPasswordResetLoading = false;
+
+  orderStats: OrderStatistics | null = null;
+  recentActivity: RecentActivity[] = [];
+  isLoadingActivity = false;
 
   profileForm = new FormGroup({
     firstName: new FormControl('', [
@@ -63,9 +69,10 @@ export class ProfileComponent implements OnInit {
 
 
   constructor(
-    private usersService: UsersService, 
+    private usersService: UsersService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private orderService: OrderService,
   ) {}
 
   ngOnInit() {
@@ -74,13 +81,14 @@ export class ProfileComponent implements OnInit {
       return;
     }
     this.loadUserProfile();
+    this.loadOrderActivity();
     this.disableForm();
   }
 
   loadUserProfile() {
     this.isLoading = true;
     this.errorMessage = null;
-    
+
     if (!this.usersService.isLoggedIn()) {
       this.router.navigate(['/login']);
       return;
@@ -96,10 +104,30 @@ export class ProfileComponent implements OnInit {
         console.error('Error loading profile:', err);
         this.errorMessage = err.error?.message || 'Failed to load profile';
         this.isLoading = false;
-        
+
         if (err.status === 401) {
           this.router.navigate(['/login']);
         }
+      }
+    });
+  }
+
+  loadOrderActivity() {
+    this.isLoadingActivity = true;
+    this.orderService.getUserOrders().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.orderStats = response.statistics;
+          // Sort activities by date in descending order (newest first)
+          this.recentActivity = response.recentActivity.sort((a, b) => {
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          });
+        }
+        this.isLoadingActivity = false;
+      },
+      error: (err) => {
+        console.error('Error loading order activity:', err);
+        this.isLoadingActivity = false;
       }
     });
   }
@@ -115,7 +143,7 @@ export class ProfileComponent implements OnInit {
       phone: user.phone,
       email: user.email
     });
-    
+
     // Set the image preview from user data
     this.imagePreview = user.profileImage || 'images/img-preview.png';
   }
@@ -144,16 +172,16 @@ export class ProfileComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     this.errorMessage = null;
-  
+
     if (!this.profileForm.valid) {
       return;
     }
-  
+
     if (!this.userData) {
       this.errorMessage = 'No user data available';
       return;
     }
-  
+
     const formValue = this.profileForm.getRawValue();
     const updatedUser: User = {
       ...this.userData,
@@ -166,26 +194,28 @@ export class ProfileComponent implements OnInit {
       phone: formValue.phone!,
       email: formValue.email!
     };
-  
+
     this.isLoading = true;
-    
+
     this.usersService.updateUserProfile(updatedUser, this.selectedFile || undefined).subscribe({
       next: (response) => {
         this.toastr.success('Profile updated successfully');
         this.userData = response.user;
-        
+
         // If a new profile image was uploaded
         if (response.user.profileImage) {
           this.imagePreview = response.user.profileImage;
         }
-        
+
         this.patchFormWithUserData(response.user);
         this.isLoading = false;
+        this.isEditMode = false; // Disable edit mode after successful save
+        this.disableForm(); // Disable the form
       },
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
         this.isLoading = false;
-        
+
         if (err.status === 401) {
           this.errorMessage = 'Session expired. Please login again.';
           this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
@@ -226,8 +256,19 @@ export class ProfileComponent implements OnInit {
   }
 
   onDeletePicture() {
-    this.selectedFile = null;
-    this.imagePreview = null;
+    this.usersService.deleteProfileImage().subscribe({
+      next: (response) => {
+        this.selectedFile = null;
+        this.imagePreview = 'images/img-preview.png';
+        if (this.userData) {
+          this.userData.profileImage = '';
+        }
+        this.toastr.success('Profile picture deleted successfully');
+      },
+      error: (error) => {
+        this.toastr.error(error.message || 'Failed to delete profile picture');
+      }
+    });
   }
 
   get formControls() {
@@ -271,21 +312,21 @@ export class ProfileComponent implements OnInit {
 
     return labels[controlName] || controlName;
   }
-  
+
   // Add this new method
   cancelEdit() {
     this.isEditMode = false;
     this.errorMessage = null;
-    
+
     // Reset the form to original values
     if (this.userData) {
       this.patchFormWithUserData(this.userData);
     }
-    
+
     // Reset any image changes
     this.selectedFile = null;
     this.imagePreview = this.userData?.profileImage || null;
-    
+
     this.disableForm();
   }
 
@@ -301,17 +342,27 @@ export class ProfileComponent implements OnInit {
         next: (response) => {
           this.isPasswordResetLoading = false;
           this.toastr.success(
-            'Password reset link sent to your email', 
+            'Password reset link sent to your email',
             'Success'
           );
         },
         error: (error) => {
           this.isPasswordResetLoading = false;
           this.toastr.error(
-            error.message || 'Failed to send reset link', 
+            error.message || 'Failed to send reset link',
             'Error'
           );
         }
       });
   }
+  getTimeAgo(date: Date): string {
+    const now = new Date();
+    const activityDate = new Date(date);
+    const diffInHours = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Just now';
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    return `${Math.floor(diffInHours / 24)}d ago`;
+  }
 }
+

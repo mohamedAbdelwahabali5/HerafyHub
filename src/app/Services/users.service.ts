@@ -20,12 +20,15 @@ interface UpdateProfileResponse {
 export class UsersService {
   private readonly apiUrl = environment.apiUrl;
   private readonly apiUrlAuth = `${this.apiUrl}/auth`;
-  // private readonly apiUrlAuth = 'http://localhost:5555/auth';
   private storageType: Storage | null = null;
   private profileImageSubject = new BehaviorSubject<string | null>(null);
 
   // Observable that components can subscribe to
   profileImage$ = this.profileImageSubject.asObservable();
+
+  // Create a BehaviorSubject to track login state
+  private _isLoggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
+  isLoggedIn$ = this._isLoggedIn.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
     if (typeof window !== 'undefined') {
@@ -49,6 +52,7 @@ export class UsersService {
           // Store the token in sessionStorage for authentication
           if (response && response.token) {
             this.setToken(response.token, false);
+            this._isLoggedIn.next(true);
           }
         }),
 
@@ -147,8 +151,8 @@ export class UsersService {
   // Update getUserProfile method to include default image
   getUserProfile(): Observable<User> {
     const token = this.getToken();
-    console.log('Current environment:', environment);
-    console.log('API URL:', this.apiUrlAuth);
+    // console.log('Current environment:', environment);
+    // console.log('API URL:', this.apiUrlAuth);
     if (!token) {
       return throwError(() => new Error('No token found'));
     }
@@ -173,7 +177,7 @@ export class UsersService {
           profileImage: response.user.profileImage || this.defaultProfileImage,
         })),
         tap((user) => {
-          console.log('User profile loaded:', user);
+          // console.log('User profile loaded:', user);
         }),
         catchError((error: HttpErrorResponse) => {
           console.error('Error fetching profile:', error);
@@ -227,6 +231,7 @@ export class UsersService {
   logout() {
     localStorage.removeItem('authToken');
     sessionStorage.removeItem('authToken');
+    this._isLoggedIn.next(false);
     this.router.navigate(['/login']);
   }
 
@@ -241,7 +246,7 @@ export class UsersService {
       .post<any>(`${this.apiUrlAuth}/forgot-password`, { email })
       .pipe(
         tap((response) => {
-          console.log('Password reset link sent:', response);
+          // console.log('Password reset link sent:', response);
         }),
         catchError((error) => {
           console.error('Password reset link error:', error);
@@ -253,5 +258,33 @@ export class UsersService {
           );
         })
       );
+  }
+
+  // delete profile image
+  deleteProfileImage(): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .delete<any>(`${this.apiUrlAuth}/profile-image`, { headers })
+      .pipe(
+        tap((response) => {
+          // Update the profile image subject with default image
+          this.profileImageSubject.next(this.defaultProfileImage);
+        }),
+        catchError((error) => {
+          console.error('Delete profile image error:', error);
+          return throwError(
+            () => new Error(error.error?.message || 'Failed to delete profile image')
+          );
+        })
+      );
+  }
+
+  // Method to check and update login state
+  checkLoginState() {
+    this._isLoggedIn.next(this.isLoggedIn());
   }
 }
