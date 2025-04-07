@@ -54,10 +54,9 @@
               d="M3.33301 3.33337H16.6663L25.5997 47.9667C25.9045 49.5014 26.7394 50.8799 27.9582 51.861C29.1769 52.8422 30.702 53.3634 32.2663 53.3334H64.6663C66.2307 53.3634 67.7557 52.8422 68.9745 51.861C70.1933 50.8799 71.0282 49.5014 71.333 47.9667L76.6663 20H19.9997M33.333 70C33.333 71.841 31.8406 73.3334 29.9997 73.3334C28.1587 73.3334 26.6663 71.841 26.6663 70C26.6663 68.1591 28.1587 66.6667 29.9997 66.6667C31.8406 66.6667 33.333 68.1591 33.333 70ZM69.9997 70C69.9997 71.841 68.5073 73.3334 66.6663 73.3334C64.8254 73.3334 63.333 71.841 63.333 70C63.333 68.1591 64.8254 66.6667 66.6663 66.6667C68.5073 66.6667 69.9997 68.1591 69.9997 70Z"
               stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          
+
           <!-- Ensure the badge is always visible when there are items -->
-          <span 
-            *ngIf="cartItemCount > 0" 
+          <span *ngIf="cartItemCount > 0"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {{ cartItemCount }}
             <span class="visually-hidden">cart items</span>

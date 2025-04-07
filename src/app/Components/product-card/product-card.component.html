@@ -20,7 +20,7 @@
       <p class="product-description">{{ product.description }}</p>
     </div>
     <div class=" ">
-      <p class="product-price">${{ product.currentprice }}</p>
+      <p class="product-price">{{ product.currentprice | currency:' ':'symbol':'1.2-2' }} EGP</p>
     </div>
   </div>
   <div class="mb-1 w-100">
@@ -29,5 +29,5 @@
       <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
       {{ isLoading ? 'Adding...' : (isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart') }}
     </button>
-    </div>
+  </div>
 </div>

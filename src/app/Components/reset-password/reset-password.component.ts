@@ -36,7 +36,7 @@ export class ResetPasswordComponent {
     this.route.params.subscribe(params => {
       // console.log("Query Params:", params);
       this.token = params['token'];
-      console.log("Extracted Token:", this.token);
+      // console.log("Extracted Token:", this.token);
     });
   }
 
@@ -76,11 +76,11 @@ export class ResetPasswordComponent {
         confirmedpassword: this.resetPasswordForm.get('confirmedpassword')?.value || '',
       };
 
-      console.log("Sending request with:", {
-        token: this.token,
-        password: formValues.password,
-        confirmedpassword: formValues.confirmedpassword,
-      });
+      // console.log("Sending request with:", {
+      //   token: this.token,
+      //   password: formValues.password,
+      //   confirmedpassword: formValues.confirmedpassword,
+      // });
       this.usersService.resetPassword(this.token, formValues.password, formValues.confirmedpassword)
         .subscribe({
           next: (response) => {
@@ -100,7 +100,7 @@ export class ResetPasswordComponent {
         });
 
     } else {
-      console.log('Form is invalid. Please check the fields.');
+      // console.log('Form is invalid. Please check the fields.');
       this.markFormGroupTouched(this.resetPasswordForm);
     }
   }
@@ -117,7 +117,7 @@ export class ResetPasswordComponent {
   }
 
   returnToLogin() {
-    console.log('logic of returnToLogin');
+    // console.log('logic of returnToLogin');
     this.router.navigate(['/login'], { skipLocationChange: false, replaceUrl: true });
 
   }
@@ -130,8 +130,8 @@ export class ResetPasswordComponent {
       title: title,
       text: message,
       icon: icon,
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3D8D7A'
+      showConfirmButton: false,
+      timer: 3000
     });
   }
 }

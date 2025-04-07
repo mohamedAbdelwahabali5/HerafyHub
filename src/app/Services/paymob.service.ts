@@ -29,7 +29,7 @@ export class PaymobService {
   getPaymentKey(authToken: string, orderId: number, amountCents: number, billingData: any): Observable<any> {
     const payload = { authToken, orderId, amountCents, billingData };
 
-    console.log("Sending request to backend (Payment Key):", JSON.stringify(payload, null, 2));
+    // console.log("Sending request to backend (Payment Key):", JSON.stringify(payload, null, 2));
 
     return this.http.post(`${this.apiUrl}/paymob/get-payment-key`, payload, {
       headers: { 'Content-Type': 'application/json' }

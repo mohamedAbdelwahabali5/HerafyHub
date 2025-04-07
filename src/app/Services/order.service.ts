@@ -18,7 +18,6 @@ export class OrderService {
     private usersService: UsersService
   ) { }
 
-  // Get all orders for the current user
   getUserOrders(): Observable<OrderResponse> {
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
