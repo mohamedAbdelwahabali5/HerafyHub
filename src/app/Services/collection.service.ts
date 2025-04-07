@@ -61,4 +61,3 @@ export class ProductService {
     return this.http.get(`${this.products_URL}/${id}`, { headers: this.getHeaders() });
   }
 }
-

@@ -111,6 +111,7 @@ export class PaymentFormComponent implements OnInit {
     this.cartService.getAllProducts().subscribe({
       next: (response: any) => {
         this.cartItems = response.cartItems;
+        this.applySavedQuantities(); // Add this line
         this.calculateTotalPrice();
       },
       error: (error) => {
@@ -118,6 +119,29 @@ export class PaymentFormComponent implements OnInit {
         this.toastr.error('Failed to load cart items', 'Error');
       }
     });
+  }
+
+  private applySavedQuantities(): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        const cartQuantities = JSON.parse(storedQuantities);
+        this.cartItems.forEach(item => {
+          const productId = item.id || item._id || item.product?._id || item.productId;
+          // Handle both array and object formats
+          const quantity = Array.isArray(cartQuantities) 
+            ? cartQuantities.find(q => q.id === productId)?.quantity 
+            : cartQuantities[productId];
+            
+          if (quantity) {
+            item.quantity = Number(quantity);
+            item.total = item.price * item.quantity;
+          }
+        });
+      } catch (e) {
+        console.error('Error parsing cart quantities:', e);
+      }
+    }
   }
 
   calculateTotalPrice(): void {
@@ -136,12 +160,17 @@ export class PaymentFormComponent implements OnInit {
 
     if (this.selectedMethod.id === 'cod') {
       this.processCashOnDelivery();
+    
+
     } else if (this.selectedMethod.id === 'card' && this.paymentKey) {
 
       this.toastr.info('Please complete the payment process', 'Info');
     }
+
   }
 
+
+  
 
   private startPaymentVerification() {
     if (!this.orderId) return;
@@ -210,15 +239,19 @@ export class PaymentFormComponent implements OnInit {
   }
 
   private mapCartItemsToOrderProducts() {
+    console.log('Cart Items:', this.cartItems);
+    
     return this.cartItems.map(item => {
       const productId = item.id || item._id || item.product?._id || item.productId;
+      const quantity = item.quantity;
+      
       if (!productId) {
         console.warn('Could not find product ID for item:', item);
         return null;
       }
       return {
         productId: productId,
-        quantity: Number(item.quantity || 1)
+        quantity: Number(quantity)
       };
     }).filter(product => product !== null);
   }
@@ -236,6 +269,8 @@ export class PaymentFormComponent implements OnInit {
           queryParams: { orderId: response.order?._id || response._id }
         });
         this.cartService.clearCartItems();
+        localStorage.removeItem('productsInCart');
+        localStorage.removeItem('cartQuantities');
       },
       error: (clearError) => {
         console.error('Cart clearing failed:', clearError);

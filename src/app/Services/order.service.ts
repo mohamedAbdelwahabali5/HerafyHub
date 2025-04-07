@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { Order, ShippingAddress, OrderResponse } from '../Models/order.model';
 
 @Injectable({
@@ -57,5 +57,14 @@ export class OrderService {
       'Authorization': `Bearer ${token}`
     });
     return this.http.get<Order[]>(`${this.apiUrlOrder}`, { headers });
+  }
+  
+  // get order details
+  getOrderDetails(orderId: string): Observable<Order> {
+    const token = this.usersService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<Order>(`${this.apiUrlOrder}/${orderId}`, { headers });
   }
 }
