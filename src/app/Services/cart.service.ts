@@ -60,12 +60,9 @@ export class CartService {
     }
   }
 
-  //private readonly cart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/';
-  //private readonly addToCart_URL = 'https://herafy-hub-api-wjex.vercel.app/cart/add';
-
   addProductToCart(newCart: any): Observable<any> {
     const token = this.userService.getToken();
-    console.log("Token being sent:", token); // Debugging
+    // console.log("Token being sent:", token); // Debugging
     if (!token) {
       console.error("No authentication token found");
       return throwError(() => new Error("No authentication token available"));

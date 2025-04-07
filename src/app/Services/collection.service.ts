@@ -13,7 +13,7 @@ export class ProductService {
   private ApiUrl = environment.apiUrl;
   private readonly products_URL = `${this.ApiUrl}/product`;
   private readonly all_Products_URL = `${this.ApiUrl}/product/all`;
-  private readonly searchProduct_URL = `${this.ApiUrl}/search`;
+  private readonly searchProduct_URL = `${this.ApiUrl}/product/search`;
   private readonly Categories_URL = `${this.ApiUrl}/category`;
   constructor(
     private http: HttpClient,

@@ -23,7 +23,7 @@ export class FooterService {
   getProducts(): Observable<any> {
     const params = new HttpParams().set('page', '1').set('limit', '5');
     return this.http
-      .get(`${this.apiUrl}/product, { params }`)
+      .get(`${this.apiUrl}/product`, { params })
       .pipe(catchError(handleError));
   }
 

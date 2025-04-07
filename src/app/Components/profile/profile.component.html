@@ -9,12 +9,11 @@
           <div class="profile-picture-container">
             <div class="profile-picture">
               @if (imagePreview) {
-                <img [src]="imagePreview" alt="Profile Picture" />
+              <img [src]="imagePreview" alt="Profile Picture" />
               } @else {
-                <img
-                  [src]="userData?.profileImage || 'images/img-preview.png'"
-                  alt="Default Profile Picture"
-                />
+              <img
+                [src]="userData?.profileImage || 'https://res.cloudinary.com/dojq1nxqw/image/upload/v1743790840/img-preview_r3jbih.png'"
+                alt="Default Profile Picture" />
               }
             </div>
             <div class="picture-actions">
@@ -26,50 +25,32 @@
               </button>
             </div>
 
-            <input
-              #fileInput
-              type="file"
-              hidden
-              accept="image/*"
-              (change)="onFileSelected($event)"
-            />
+            <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)" />
           </div>
 
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
             <!-- Full Name -->
             <div class="mb-3 mx-3">
-              <label class="form-label"
-                >Full Name <span class="text-danger">*</span></label
-              >
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
               <div class="row g-2 mb-3">
                 <div class="col-md-6">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="firstName"
-                    placeholder="First Name"
-                  />
+                  <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" />
                   @if ((formControls.firstName.touched ||
                   formControls.firstName.dirty) &&
                   formControls.firstName.invalid) {
                   <small class="text-danger">{{
                     getErrorMessage("firstName")
-                  }}</small>
+                    }}</small>
                   }
                 </div>
                 <div class="col-md-6">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="lastName"
-                    placeholder="Last Name"
-                  />
+                  <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" />
                   @if ((formControls.lastName.touched ||
                   formControls.lastName.dirty) && formControls.lastName.invalid)
                   {
                   <small class="text-danger">{{
                     getErrorMessage("lastName")
-                  }}</small>
+                    }}</small>
                   }
                 </div>
               </div>
@@ -77,60 +58,38 @@
 
             <!-- Address -->
             <div class="mb-3 mx-3">
-              <label class="form-label"
-                >Address <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                class="form-control mb-2"
-                formControlName="address"
-                placeholder="Address"
-              />
+              <label class="form-label">Address <span class="text-danger">*</span></label>
+              <input type="text" class="form-control mb-2" formControlName="address" placeholder="Address" />
               @if ((formControls.address.touched || formControls.address.dirty) &&
               formControls.address.invalid) {
               <small class="text-danger">{{ getErrorMessage("address") }}</small>
               }
               <div class="row g-2 mb-3">
                 <div class="col-md-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="city"
-                    placeholder="City"
-                  />
+                  <input type="text" class="form-control" formControlName="city" placeholder="City" />
                   @if ((formControls.city.touched || formControls.city.dirty) &&
                   formControls.city.invalid) {
                   <small class="text-danger">{{
                     getErrorMessage("city")
-                  }}</small>
+                    }}</small>
                   }
                 </div>
                 <div class="col-md-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="state"
-                    placeholder="State"
-                  />
+                  <input type="text" class="form-control" formControlName="state" placeholder="State" />
                   @if ((formControls.state.touched || formControls.state.dirty)
                   && formControls.state.invalid) {
                   <small class="text-danger">{{
                     getErrorMessage("state")
-                  }}</small>
+                    }}</small>
                   }
                 </div>
                 <div class="col-md-4">
-                  <input
-                    type="text"
-                    class="form-control"
-                    formControlName="zipCode"
-                    placeholder="Zip Code"
-                  />
+                  <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code" />
                   @if ((formControls.zipCode.touched ||
                   formControls.zipCode.dirty) && formControls.zipCode.invalid) {
                   <small class="text-danger">{{
                     getErrorMessage("zipCode")
-                  }}</small>
+                    }}</small>
                   }
                 </div>
               </div>
@@ -139,67 +98,50 @@
             <!-- Contact Information -->
             <div class="row g-2 mb-3 mx-3">
               <div class="col-md-6">
-                <label class="form-label"
-                  >Phone Number <span class="text-danger">*</span></label
-                >
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="phone"
-                  placeholder="Phone Number"
-                />
+                <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="phone" placeholder="Phone Number" />
                 @if ((formControls.phone.touched || formControls.phone.dirty) &&
                 formControls.phone.invalid) {
                 <small class="text-danger">{{
                   getErrorMessage("phone")
-                }}</small>
+                  }}</small>
                 }
               </div>
               <div class="col-md-6">
-                <label class="form-label"
-                  >E-mail <span class="text-danger">*</span></label
-                >
-                <input
-                  type="email"
-                  class="form-control"
-                  formControlName="email"
-                  placeholder="example@gmail.com"
-                />
+                <label class="form-label">E-mail <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" formControlName="email" placeholder="example@gmail.com" />
                 @if ((formControls.email.touched || formControls.email.dirty) &&
                 formControls.email.invalid) {
                 <small class="text-danger">{{
                   getErrorMessage("email")
-                }}</small>
+                  }}</small>
                 }
               </div>
             </div>
 
-          
-         
 
-   
-           
+
+
+
+
             <div class="d-flex justify-content-center">
               @if (isEditMode) {
-                <button type="submit" class="btn btn-custom w-75 m-2" [disabled]="isLoading">
-                  {{ isLoading ? 'Saving...' : 'Save Changes' }}
-                </button>
-                <button type="button" class="btn btn-bg-color w-25 m-2 text-white" (click)="cancelEdit()">
-                  Cancel
-                </button>
+              <button type="submit" class="btn btn-custom w-75 m-2" [disabled]="isLoading">
+                {{ isLoading ? 'Saving...' : 'Save Changes' }}
+              </button>
+              <button type="button" class="btn btn-bg-color w-25 m-2 text-white" (click)="cancelEdit()">
+                Cancel
+              </button>
               } @else {
-                <button type="button" class="btn btn-custom w-75 m-2" (click)="toggleEditMode()">
-                  Update
+              <button type="button" class="btn btn-custom w-75 m-2" (click)="toggleEditMode()">
+                Update
+              </button>
+              <div>
+                <button class="btn btn-bg-color m-2 text-white" (click)="sendPasswordResetLink()"
+                  [disabled]="isPasswordResetLoading">
+                  {{ isPasswordResetLoading ? 'Sending...' : 'Reset Password' }}
                 </button>
-                <div >
-                  <button 
-                    class="btn btn-bg-color m-2 text-white" 
-                    (click)="sendPasswordResetLink()"
-                    [disabled]="isPasswordResetLoading"
-                  >
-                    {{ isPasswordResetLoading ? 'Sending...' : 'Reset Password' }}
-                  </button>
-                </div>
+              </div>
               }
             </div>
           </form>
@@ -210,64 +152,64 @@
       <div class="col-lg-4 col-md-12">
         <div class="active-details-container">
           <h2 class="text-center mb-2">Activity Overview</h2>
-      
+
           @if (isLoadingActivity) {
-            <div class="text-center">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
+          </div>
           } @else {
-            <div class="detail-card">
-              <div class="detail-header">
-                <i class="bi bi-cart3"></i>
-                <h3>Orders</h3>
+          <div class="detail-card">
+            <div class="detail-header">
+              <i class="bi bi-cart3"></i>
+              <h3>Orders</h3>
+            </div>
+            <div class="detail-content">
+              <div class="detail-item">
+                <span>Total Orders</span>
+                <strong>{{ orderStats?.totalOrders || 0 }}</strong>
               </div>
-              <div class="detail-content">
-                <div class="detail-item">
-                  <span>Total Orders</span>
-                  <strong>{{ orderStats?.totalOrders || 0 }}</strong>
-                </div>
-                <div class="detail-item">
-                  <span>In-Progress</span>
-                  <strong class="text-warning">{{ orderStats?.ordersByStatus?.inProgress || 0 }}</strong>
-                </div>
-                <div class="detail-item">
-                  <span>Delivered</span>
-                  <strong class="text-success">{{ orderStats?.ordersByStatus?.delivered || 0 }}</strong>
-                </div>
-                <div class="detail-item">
-                  <span>Total Spent</span>
-                  <strong class="text-primary">{{ orderStats?.totalSpent | currency:'EGP ' }}</strong>
-                </div>
+              <div class="detail-item">
+                <span>In-Progress</span>
+                <strong class="text-warning">{{ orderStats?.ordersByStatus?.inProgress || 0 }}</strong>
+              </div>
+              <div class="detail-item">
+                <span>Delivered</span>
+                <strong class="text-success">{{ orderStats?.ordersByStatus?.delivered || 0 }}</strong>
+              </div>
+              <div class="detail-item">
+                <span>Total Spent</span>
+                <strong class="text-primary">{{ orderStats?.totalSpent | currency:'EGP ' }}</strong>
               </div>
             </div>
-      
-            <div class="detail-card">
-              <div class="detail-header">
-                <i class="bi bi-clock-history"></i>
-                <h3>Recent Activity</h3>
-              </div>
-              <div class="detail-content ">
-                <ul class="activity-list">
-                  @if (recentActivity.length === 0) {
-                    <li class="text-center text-muted">No recent activity</li>
-                  }
-                  @for (activity of recentActivity; track activity.orderNumber) {
-                    <li>
-                      <i [class]="
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-header">
+              <i class="bi bi-clock-history"></i>
+              <h3>Recent Activity</h3>
+            </div>
+            <div class="detail-content ">
+              <ul class="activity-list">
+                @if (recentActivity.length === 0) {
+                <li class="text-center text-muted">No recent activity</li>
+                }
+                @for (activity of recentActivity; track activity.orderNumber) {
+                <li>
+                  <i [class]="
                         activity.status === 'Delivered' ? 'bi bi-check-circle' :
                         activity.status === 'Shipping' ? 'bi bi-truck' :
                         activity.status === 'Cancelled' ? 'bi bi-x-circle' :
                         'bi bi-cart-plus'
                       "></i>
-                      Order {{ activity.orderNumber }} {{ activity.action }}
-                      <span class="text-muted px-1"> {{ getTimeAgo(activity.date) }}</span>
-                    </li>
-                  }
-                </ul>
-              </div>
+                  Order {{ activity.orderNumber }} {{ activity.action }}
+                  <span class="text-muted px-1"> {{ getTimeAgo(activity.date) }}</span>
+                </li>
+                }
+              </ul>
             </div>
+          </div>
           }
         </div>
       </div>

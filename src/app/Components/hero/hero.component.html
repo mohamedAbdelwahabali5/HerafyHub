@@ -12,7 +12,8 @@
           Find out the best collection offering our best quality production in a tolus spring collection.
         </p>
         <div class="text-center text-md-start">
-          <a href="#" class="btn btn-light fs-6">Explore</a>
+          <a *ngIf="userServ.isLoggedIn()" routerLink="/products" class="btn btn-light fs-6">Explore</a>
+          <a *ngIf="!userServ.isLoggedIn()" routerLink="/login" class="btn btn-light fs-6">Explore</a>
         </div>
       </div>
     </div>

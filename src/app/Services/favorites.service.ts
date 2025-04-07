@@ -9,14 +9,12 @@ import { environment } from '../../environments/environment.prod';
 })
 export class FavoriteService {
 
-  // private readonly favorite_URL = 'http://localhost:5555/favorite/';
-  // private readonly addToFavorite_URL = 'http://localhost:5555/favorite/add';
   private readonly apiUrl = environment.apiUrl;
   private readonly addToFavorite_URL = `${this.apiUrl}/favorite/add`;
   private readonly favorite_URL = `${this.apiUrl}/favorite/`;
 
 
-  constructor(private http: HttpClient, private userService: UsersService) {}
+  constructor(private http: HttpClient, private userService: UsersService) { }
 
   // Add product to favorites
   addProductToFavorite(productId: string): Observable<any> {
