@@ -33,12 +33,7 @@
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -69,6 +64,30 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "src/server.ts",
+            "tsConfig": "tsconfig.server.json"
+          }
+        },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": [
+              "/product-details/67c8df8cf9506d6f73d60ca8",
+              "/product-details/67c8df8cf9506d6f73d60ca9",
+              "/product-details/67c8df8cf9506d6f73d60caa",
+              "products/67c11684e8a1c3314b82b37c",
+              "products/67c11684e8a1c3314b82b37d",
+              "products/67c11684e8a1c3314b82b37f",
+              "products/67c11684e8a1c3314b82b37b",
+              "products/67c11684e8a1c3314b82b37e",
+              "reset-password/:token"
+            ]
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
