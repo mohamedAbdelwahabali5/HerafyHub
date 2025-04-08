@@ -53,7 +53,7 @@
           <div class="card-footer bg-transparent border-0 pt-0 my-3 px-0">
             <button type="button" class="btn bg-teal-green text-white w-100 py-2 fs-5 w-100 rounded-5"
               (click)="onSubmit()"
-              [disabled]="!selectedMethod || isPaymentProcessing || (selectedMethod.id === 'card')">
+              [disabled]="!selectedMethod || isPaymentProcessing || (selectedMethod.id === 'card') || isLoading">
               <span *ngIf="!isLoading; else loading">
                 {{ selectedMethod?.id === 'card' ? 'Complete Order' : 'Place Order' }}
               </span>
