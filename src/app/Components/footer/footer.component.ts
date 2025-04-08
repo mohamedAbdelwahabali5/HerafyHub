@@ -1,6 +1,9 @@
 // footer.component.ts
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../Services/users.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment.prod';
+
 import { FooterService } from '../../Services/footer.service';
 import {
   Router,
@@ -14,7 +17,6 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-footer',
   imports: [RouterModule, CommonModule],
-
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
 })
@@ -23,18 +25,21 @@ export class FooterComponent implements OnInit {
   products: any[] = [];
   isLoggedIn: boolean = false;
   currentCategoryId: string | null = null;
+  errorMessage: string = '';
 
   constructor(
+    private http: HttpClient,
     private userService: UsersService,
     private footerService: FooterService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadCategories();
-    this.checkAuthStatus();
+    this.loadTopProducts();
     this.setupRouteListener();
+    this.checkAuthStatus();
   }
 
   private checkAuthStatus() {
@@ -46,6 +51,7 @@ export class FooterComponent implements OnInit {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
         this.handleRouteChange();
+        this.checkAuthStatus();
       });
   }
 
@@ -57,12 +63,11 @@ export class FooterComponent implements OnInit {
       const newCategoryId = params['categoryId'];
       if (newCategoryId && newCategoryId !== this.currentCategoryId) {
         this.currentCategoryId = newCategoryId;
-        this.loadCategoryProducts(newCategoryId);
       } else if (!newCategoryId && this.currentCategoryId) {
         this.currentCategoryId = null;
-        this.loadProducts();
       }
     });
+    this.loadTopProducts();
   }
 
   loadCategories() {
@@ -72,17 +77,55 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  loadProducts() {
-    this.footerService.getProducts().subscribe({
-      next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
-      error: (error) => console.error('Products error:', error),
-    });
-  }
+  loadTopProducts() {
+    const token = this.userService.getToken();
+    const headers = token
+      ? new HttpHeaders({ Authorization: `Bearer ${token}` })
+      : {};
 
-  loadCategoryProducts(categoryId: string) {
-    this.footerService.getProductsByCategory(categoryId).subscribe({
-      next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
-      error: (error) => console.error('Category products error:', error),
-    });
+    this.http
+      .get(`${environment.apiUrl}/product?page=1&limit=5&sort=rating:1`, {
+        headers,
+      })
+      .subscribe(
+        (data: any) => {
+          if (data && data.products) {
+            this.products = data.products;
+          }
+        },
+        (error) => {
+          if (error.status === 401) {
+            this.errorMessage = 'Unauthorized. Please log in to view products.';
+          } else if (error.status === 500) {
+            this.errorMessage = 'Server error. Please try again later.';
+          } else {
+            this.errorMessage = 'Failed to load products.';
+          }
+          console.error('Error fetching products:', error);
+        }
+      );
   }
 }
+
+// loadProducts() {
+//   this.footerService.getProducts().subscribe({
+//     next: (data: any) => {
+//       // Adjust based on your API response structure
+//       this.products = data.products || []; // If response has products array
+//     },
+//     error: (error) => console.error('Error fetching products:', error),
+//   });
+// }
+
+// loadCategoryProducts(categoryId: string) {
+//   this.footerService.getProductsByCategory(categoryId).subscribe({
+//     next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
+//     error: (error) => console.error('Category products error:', error),
+//   });
+// }
+// checkLogin(event: Event) {
+//   if (!this.isLoggedIn) {
+//     event.preventDefault();
+//     this.router.navigate(['/login']);
+//   }
+// }
