@@ -52,11 +52,11 @@ export class ProductService {
   getAllCategories() {
     return this.http.get(this.Categories_URL, { headers: this.getHeaders() });
   }
-  
+
   getCategoryById(categoryId: string) {
     return this.http.get(`${this.Categories_URL}/${categoryId}`, { headers: this.getHeaders() });
   }
-  
+
   getProductById(id: string) {
     return this.http.get(`${this.products_URL}/${id}`, { headers: this.getHeaders() });
   }

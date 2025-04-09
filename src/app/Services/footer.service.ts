@@ -12,7 +12,7 @@ import { handleError } from '../Utils/handleError';
 export class FooterService {
   private readonly apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getCategories(): Observable<any[]> {
     return this.http
