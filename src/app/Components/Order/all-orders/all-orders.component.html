@@ -35,8 +35,7 @@
         @for (order of orders(); track order._id) {
         <tr>
           <td data-label="Invoice Number">{{ order.invoiceNumber || order._id }}</td>
-          <td data-label="Total">{{ (order.totalPrice) | currency:'EGP ' }}</td>
-
+          <td data-label="Total">{{ order.totalPrice | currency:'EGP ' }}</td>
           <td data-label="Status">{{ order.status }}</td>
           <td data-label="Date">{{ order.createdAt | date:'medium' }}</td>
           <td data-label="Actions" class="text-center">
