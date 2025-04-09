@@ -4,22 +4,20 @@
       <h2 class="text-center teal-green">Registration Form</h2>
       <p class="text-center">Please fill in the form below</p>
 
-      @if(successMessage) {
+      <!-- @if(successMessage) {
       <div class="alert alert-success">
         {{ successMessage }}
       </div>
-      }
-
-      @if(registrationError) {
+      } @if(registrationError) {
       <div class="alert alert-danger d-flex align-items-center">
         @if(loading) {
-          <div class="spinner-border spinner-border-sm me-2" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         }
         {{ registrationError }}
       </div>
-      }
+      } -->
 
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <!-- Full Name -->
@@ -190,17 +188,21 @@
             [disabled]="loading"
           >
             @if(loading) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Registering...
-            } @else {
-              Register
-            }
+            <span
+              class="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Registering... } @else { Register }
           </button>
         </div>
         <div class="text-center mt-3">
           <p>
             Already have an account?
-            <a class="login-link  teal-green" routerLinkActive="active" routerLink="/login"
+            <a
+              class="login-link teal-green"
+              routerLinkActive="active"
+              routerLink="/login"
               >Login here</a
             >
           </p>
