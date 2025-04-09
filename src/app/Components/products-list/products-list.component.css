@@ -110,7 +110,7 @@
   .pagination .page-number.active + .page-number + .page-number {
     display: block;
   }
-
+  
   /* Always show first and last page number */
   .pagination .page-number:first-of-type,
   .pagination .page-number:last-of-type {
