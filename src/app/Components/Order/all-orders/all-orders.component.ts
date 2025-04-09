@@ -45,9 +45,25 @@ export class AllOrdersComponent implements OnInit {
   }
 
   viewOrderDetails(order: Order) {
-    this.selectedOrderDetails = order;
-    this.applySavedQuantities();
+    if (!order._id) {
+      console.error('Order ID is undefined');
+      return;
+    }
+    
+    // this.loading.set(true);
+    this.orderService.getOrderDetails(order._id).subscribe({
+      next: (response) => {
+        this.selectedOrderDetails = response;
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Error fetching order details:', err);
+        this.error.set(true);
+        this.loading.set(false);
+      }
+    });
   }
+
 
   closeOrderDetails() {
     this.selectedOrderDetails = null;
@@ -86,4 +102,5 @@ export class AllOrdersComponent implements OnInit {
       }
     }
   }
+
 }
