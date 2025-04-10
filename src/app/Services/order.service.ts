@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
-import { environment } from '../../environments/environment';
-import { Order, ShippingAddress, OrderResponse,OrderDetailsResponse } from '../Models/order.model';
+import { environment } from '../../environments/environment.prod';
+import { Order, ShippingAddress, OrderResponse, OrderDetailsResponse } from '../Models/order.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -59,9 +59,9 @@ export class OrderService {
     });
     return this.http.get<Order[]>(`${this.apiUrlOrder}`, { headers });
   }
-  
+
   // get order details
- 
+
   getOrderDetails(orderId: string): Observable<Order> {
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
