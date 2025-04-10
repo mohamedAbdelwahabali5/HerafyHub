@@ -6,6 +6,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .form-container {
@@ -16,6 +17,8 @@ main {
   max-width: 700px;
   width: 100%;
   margin: 10px auto;
+  overflow: auto;
+  max-height: 100vh;
 }
 
 .form-container h2 {
@@ -56,4 +59,15 @@ main {
   &:hover {
     text-decoration: underline;
   }
+}
+.form-control:invalid {
+  scroll-margin-top: 100px;
+}
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  /* Position at top-right without pushing content */
+  top: 20px;
+  right: 20px;
 }
