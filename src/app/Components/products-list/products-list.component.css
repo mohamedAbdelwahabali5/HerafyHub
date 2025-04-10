@@ -37,16 +37,27 @@
   padding-left: 34px;
   height: 35px;
   border-radius: 5px;
+  width: 150%;
   border: 1px solid #ccc;
   outline: 1px solid var(--teal-green);
   border-radius: 10px;
   color: var(--teal-green);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-left: 5px;
+  margin-right: 20px;
+}
+.search-field:focus {
+  border-color: var(--teal-green);
+  box-shadow: 0 0 10px rgba(61, 141, 122, 0.2);
 }
 .search-icon-style {
   position: absolute;
-  left: 10px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 10;
+  pointer-events: none;
+  color: var(--teal-green);
 }
 
 .li-active {
@@ -110,7 +121,7 @@
   .pagination .page-number.active + .page-number + .page-number {
     display: block;
   }
-
+  
   /* Always show first and last page number */
   .pagination .page-number:first-of-type,
   .pagination .page-number:last-of-type {
