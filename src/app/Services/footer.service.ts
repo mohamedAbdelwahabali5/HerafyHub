@@ -20,16 +20,26 @@ export class FooterService {
       .pipe(catchError(handleError));
   }
 
-  getProducts(): Observable<any> {
-    const params = new HttpParams().set('page', '1').set('limit', '5');
+  getTopProducts(): Observable<any> {
+    const params = new HttpParams()
+      .set('page', '1')
+      .set('limit', '5')
+      .set('sort', 'rating:1'); // Adjusted sort parameter
+
     return this.http
       .get(`${this.apiUrl}/product`, { params })
       .pipe(catchError(handleError));
   }
 
+  // getProducts(): Observable<any[]> {
+  //   return this.http
+  //     .get<any[]>(`${this.apiUrl}/product`)
+  //     .pipe(catchError(handleError));
+  // }
+
   getProductsByCategory(categoryId: string): Observable<any> {
     return this.http
-      .get(`${this.apiUrl}/product/category/${categoryId}`) // Use path parameter
+      .get(`${this.apiUrl}/product/category/${categoryId}`)
       .pipe(catchError(handleError));
   }
 }

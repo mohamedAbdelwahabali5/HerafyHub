@@ -108,7 +108,6 @@ export class FavoriteItemComponent implements OnInit {
           showConfirmButton: false,
         });
         this.isLoading = false;
-        this.removeItem();
       },
       error: (err) => {
         console.error('Error adding product to cart:', err);

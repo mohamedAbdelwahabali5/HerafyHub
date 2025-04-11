@@ -6,15 +6,9 @@ import { FooterComponent } from './Components/footer/footer.component';
 import { filter } from 'rxjs';
 import { UsersService } from './Services/users.service';
 
-
-
 @Component({
   selector: 'app-root',
-  imports: [
-    HeaderComponent,
-    FooterComponent,
-    RouterOutlet,
-  ],
+  imports: [HeaderComponent, FooterComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -41,10 +35,8 @@ export class AppComponent {
   }
   // Helper function to check if the current route is an auth route
   private isAuthRoute(url: string): boolean {
-
     const authRoutes = ['/login', '/register', '/forgot-password', '/error'];
 
     return authRoutes.includes(url) || url.startsWith('/reset-password/');
   }
-
 }

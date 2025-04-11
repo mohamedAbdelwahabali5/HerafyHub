@@ -71,3 +71,10 @@ export interface OrderResponse {
   recentActivity: RecentActivity[];
   orders: Order[];
 }
+
+
+export interface OrderDetailsResponse {
+  success: boolean;
+  message: string;
+  order: Order;
+}

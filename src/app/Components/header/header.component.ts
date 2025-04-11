@@ -1,5 +1,6 @@
+declare var bootstrap: any;
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../Services/users.service';
 import { CartService } from '../../Services/cart.service';
@@ -53,6 +54,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     if (this.cartSubscription) {
       this.cartSubscription.unsubscribe();
+    }
+  }
+
+  closeNavbar() {
+    const navbarCollapse = document.getElementById('navbarSupportedContent');
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+      if (bsCollapse) {
+        bsCollapse.hide();
+      }
     }
   }
 

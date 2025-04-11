@@ -106,3 +106,53 @@
   color: var(--teal-green) !important;
   transform: translateX(5px);
 }
+
+/* Add this to prevent horizontal overflow */
+.bd-footer {
+  width: 100%;
+  overflow-x: hidden;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.container {
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Ensure responsive images don't cause overflow */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Adjust list items to prevent potential overflow */
+.list-unstyled {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+/* Ensure text doesn't cause horizontal scroll */
+.text-secondary {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Additional responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .row.g-5 {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+
+  .col-12 {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
