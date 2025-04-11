@@ -2,6 +2,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ProductService } from '../../Services/collection.service';
 import { CommonModule } from '@angular/common';
+import { CategoryIdSerService } from '../../Services/category-id-ser.service';
 
 @Component({
   selector: 'app-category-info',
@@ -22,7 +23,7 @@ export class CategoryInfoComponent implements OnInit {
   title: string = 'Welcome to our Platform';
   description: string = 'We are proud to offer you the finest local products and handicrafts carefully crafted by skilled artisans';
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private categoryService: CategoryIdSerService) { }
 
   ngOnInit() {
     this.productService.getAllCategories().subscribe({
@@ -64,6 +65,7 @@ export class CategoryInfoComponent implements OnInit {
       if (selectedCategoryTitle === 'All Products') {
         this.updateCategoryDisplay(null);
         this.categorySelected.emit('allProducts');
+        this.onCategorySelect('allProducts');
         return;
       }
 
@@ -71,7 +73,13 @@ export class CategoryInfoComponent implements OnInit {
       if (category) {
         this.updateCategoryDisplay(category);
         this.categorySelected.emit(category._id);
+        this.onCategorySelect(category._id);
       }
     }
+  }
+
+  //make category id sharable for all components
+  onCategorySelect(id: string) {
+    this.categoryService.setCategoryId(id);
   }
 }

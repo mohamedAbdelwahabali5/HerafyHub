@@ -14,7 +14,6 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
-// Enable CORS للاتصال مع الباكيند
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -32,7 +31,7 @@ app.use(express.static(browserDistFolder, {
 app.use('/**', (req, res, next) => {
   // Handle API routes by proxying to your backend
   if (req.originalUrl.startsWith('/api')) {
-    return next(); // سيتم التعامل معها في vercel.json
+    return next();
   }
 
   angularApp
