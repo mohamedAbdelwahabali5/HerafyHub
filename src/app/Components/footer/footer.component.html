@@ -25,9 +25,8 @@
             </h5>
             <ul class="list-unstyled">
               <li *ngFor="let product of topRatedProducts" class="mb-3">
-                <a [routerLink]="isLoggedIn ? ['product', product._id] : []"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  [ngClass]="{ disabled: !isLoggedIn }">
+                <a [routerLink]="isLoggedIn ? ['product-details', product._id] : []"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">
                   <div class="d-flex justify-content-between">
                     <span class="">{{ product.title | slice:0:15 }}{{ product.title.length >
                       15 ? '...' : '' }}</span>
@@ -36,12 +35,54 @@
                 </a>
               </li>
             </ul>
-            <div *ngIf="!topRatedProducts || topRatedProducts.length === 0" class="text-center py-3">
-              <i class="fas fa-box-open text-muted mb-2" style="font-size: 2rem"></i>
-              <p class="text-muted">No top rated products available</p>
-              <button class="btn btn-sm btn-teal mt-2" (click)="loadTopRatedProducts()">
-                <i class="fas fa-sync-alt me-1"></i> Retry
-              </button>
+            <div *ngIf="!topRatedProducts || topRatedProducts.length === 0" class="text-center py-3 ">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60ca9'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Handwoven Wool Scarf</span>
+                      <span class=""> 4.7 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cbf'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Rustic Wooden Nightstand</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cc0'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Windsor Chair</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cc7'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Adirondack Chair</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60ccd'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Wingback Chair</span>
+                      <span class=""> 4.5 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
