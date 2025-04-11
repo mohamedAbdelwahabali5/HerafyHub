@@ -4,13 +4,9 @@
       <!-- Logo Section -->
       <div class="col-12 col-lg-4 mb-4 mb-lg-0">
         <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <a class="d-inline-block mb-4" href="/">
-            <img
-              src="/images/logo.PNG"
-              alt="Logo"
-              class="img-fluid"
-              style="width: 180px"
-            />
+          <a class="d-inline-block mb-4" routerLink="/home">
+            <img src="https://res.cloudinary.com/dojq1nxqw/image/upload/v1743790842/logo_tfqhzr.png" alt="Logo"
+              class="img-fluid" style="width: 180px" />
           </a>
           <p class="text-center text-lg-start text-secondary mb-0 px-3 px-lg-0">
             Handcrafted with Love, Created for You.<br />
@@ -22,46 +18,43 @@
       <!-- Products & Links Row -->
       <div class="col-12 col-lg-8">
         <div class="row g-5 h-100">
-          <!-- Products Section -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <h5
-              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
-            >
-              Popular Products
+          <!-- Top Rated Products Section -->
+          <div class="col-12 col-md-4 col-lg-4">
+            <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
+              Top Rated Products
             </h5>
             <ul class="list-unstyled">
-              <li *ngFor="let product of products" class="mb-3">
-                <a
-                  [ngClass]="{ disabled: !isLoggedIn }"
-                  [routerLink]="
-                    isLoggedIn ? ['/product-details', product._id] : []
-                  "
+              <li *ngFor="let product of topRatedProducts" class="mb-3">
+                <a [routerLink]="isLoggedIn ? ['product', product._id] : []"
                   class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                >
-                  {{
-                    product.title.length > 15
-                      ? (product.title | slice : 0 : 15) + "..."
-                      : product.title
-                  }}
+                  [ngClass]="{ disabled: !isLoggedIn }">
+                  <div class="d-flex justify-content-between">
+                    <span class="">{{ product.title | slice:0:15 }}{{ product.title.length >
+                      15 ? '...' : '' }}</span>
+                    <span class="">{{ product.rating.rate | number:'1.1-1' }} ⭐</span>
+                  </div>
                 </a>
               </li>
             </ul>
+            <div *ngIf="!topRatedProducts || topRatedProducts.length === 0" class="text-center py-3">
+              <i class="fas fa-box-open text-muted mb-2" style="font-size: 2rem"></i>
+              <p class="text-muted">No top rated products available</p>
+              <button class="btn btn-sm btn-teal mt-2" (click)="loadTopRatedProducts()">
+                <i class="fas fa-sync-alt me-1"></i> Retry
+              </button>
+            </div>
           </div>
 
           <!-- Categories Section -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <h5
-              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
-            >
+          <div class="col-6 col-md-4 col-lg-4">
+            <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
               Categories
             </h5>
             <ul class="list-unstyled">
               <li *ngFor="let category of categories" class="mb-3">
-                <a
-                  [ngClass]="{ disabled: !isLoggedIn }"
-                  [routerLink]="isLoggedIn ? ['/products', category._id] : []"
+                <a [routerLink]="['/products', category._id]"
                   class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                >
+                  (click)="loadCategoryId($event)">
                   {{ category.title }}
                 </a>
               </li>
@@ -69,50 +62,30 @@
           </div>
 
           <!-- Quick Links -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <h5
-              class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal"
-            >
+          <div class="col-6 col-md-4 col-lg-4">
+            <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
               Quick Links
             </h5>
             <ul class="list-unstyled">
               <li class="mb-3">
-                <a
-                  routerLink="/profile"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  [ngClass]="{ disabled: !isLoggedIn }"
-                  >Profile</a
-                >
+                <a routerLink="/profile"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">Profile</a>
               </li>
               <li class="mb-3">
-                <a
-                  routerLink="/cart"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  [ngClass]="{ disabled: !isLoggedIn }"
-                  >Cart</a
-                >
+                <a routerLink="/cart"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">Cart</a>
               </li>
               <li class="mb-3">
-                <a
-                  routerLink="/favorite"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  [ngClass]="{ disabled: !isLoggedIn }"
-                  >Favorites</a
-                >
+                <a routerLink="/favorite"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">Favorites</a>
               </li>
               <li class="mb-3">
-                <a
-                  routerLink="/about-us"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  >About Us</a
-                >
+                <a routerLink="/about-us"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">About Us</a>
               </li>
               <li class="mb-3">
-                <a
-                  routerLink="/contact-us"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
-                  >Contact Us</a
-                >
+                <a routerLink="/contact-us"
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all">Contact Us</a>
               </li>
             </ul>
           </div>
@@ -128,9 +101,7 @@
       <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
         <p class="mb-0 text-muted small">
           <i class="fa-regular fa-copyright me-1"></i>2025 Herafy -
-          <span class="d-block d-md-inline mt-1 mt-md-0"
-            >All rights reserved</span
-          >
+          <span class="d-block d-md-inline mt-1 mt-md-0">All rights reserved</span>
         </p>
       </div>
 

@@ -23,10 +23,12 @@
               "sweetalert2"
             ],
             "assets": [
+              "src/_redirects",
               {
                 "glob": "**/*",
                 "input": "public"
               }
+
             ],
             "styles": [
               "src/styles.css",
@@ -118,10 +120,12 @@
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              "src/_redirects",
               {
                 "glob": "**/*",
                 "input": "public"
               }
+
             ],
             "styles": [
               "src/styles.css",
