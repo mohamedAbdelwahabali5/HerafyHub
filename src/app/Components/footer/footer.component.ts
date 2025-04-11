@@ -50,7 +50,7 @@ export class FooterComponent implements OnInit {
     this.footerService.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
-        console.log("this.categories", this.categories);
+        // console.log("this.categories", this.categories);
       },
       error: (error) => this.errorMessage = 'Failed to load categories'
     });
@@ -60,7 +60,7 @@ export class FooterComponent implements OnInit {
     this.footerService.loadTopRatedProducts().subscribe({
       next: (products) => {
         this.topRatedProducts = products;
-        console.log("this.topRatedProducts", this.topRatedProducts);
+        // console.log("this.topRatedProducts", this.topRatedProducts);
       },
       error: (error) => this.errorMessage = 'Failed to load top rated products'
     });
@@ -70,7 +70,7 @@ export class FooterComponent implements OnInit {
     this.footerService.loadTopRatedProductsPerCategory(categoryId).subscribe({
       next: (products) => {
         this.topRatedProducts = products;
-        console.log("this.topRatedProducts", this.topRatedProducts);
+        // console.log("this.topRatedProducts", this.topRatedProducts);
       },
       error: (error) => this.errorMessage = 'Failed to load category products'
     });

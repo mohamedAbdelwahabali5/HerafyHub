@@ -6,7 +6,7 @@
       Our latest collection where classic contemporary styles converge in
       perfect harmony
     </p>
-  }
+    }
   </header>
 
   @if (loading) {
@@ -20,51 +20,51 @@
   </div>
   }
   @else if (products.length === 0) {
-    <div class="row my-5">
-      <div class="col-12 text-center py-5">
-        <div class="coming-soon-container">
-          <i class="bi bi-hourglass-split fs-1 text-teal-green mb-3"></i>
-          <h3 class="fw-semibold text-teal-green">New Collection Coming Soon!</h3>
-          <p class="text-muted mt-3">We're crafting something special for you</p>
-          <div class="progress rounded-pill mt-4 mx-auto" style="max-width: 300px; height: 8px;">
-            <div class="progress-bar bg-teal-green progress-bar-striped progress-bar-animated" style="width: 75%"></div>
-          </div>
+  <div class="row my-5">
+    <div class="col-12 text-center py-5">
+      <div class="coming-soon-container">
+        <i class="bi bi-hourglass-split fs-1 text-teal-green mb-3"></i>
+        <h3 class="fw-semibold text-teal-green">New Collection Coming Soon!</h3>
+        <p class="text-muted mt-3">We're crafting something special for you</p>
+        <div class="progress rounded-pill mt-4 mx-auto" style="max-width: 300px; height: 8px;">
+          <div class="progress-bar bg-teal-green progress-bar-striped progress-bar-animated" style="width: 75%"></div>
         </div>
       </div>
     </div>
-    }
-    @else if (err) {
-      <div class="row my-5">
-        <div class="col-12 text-center py-5">
-          <div class="coming-soon-container">
-            <i class="bi bi-tools fs-1 text-teal-green mb-3"></i>
-            <h3 class="fw-semibold text-teal-green">New Products on the Way!</h3>
-            <p class="text-muted mt-3">Our team is working on adding exciting new items to our collection</p>
-            <div class="d-flex justify-content-center mt-4">
-              <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status" style="animation-delay: 0.2s">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status" style="animation-delay: 0.4s">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-            <div class="mt-4">
-              <button class="btn btn-outline-teal-green rounded-pill btn-sm px-4 py-2">
-                <i class="bi bi-arrow-clockwise me-2"></i>Check Back Later
-              </button>
-            </div>
+  </div>
+  }
+  @else if (err) {
+  <div class="row my-5">
+    <div class="col-12 text-center py-5">
+      <div class="coming-soon-container">
+        <i class="bi bi-tools fs-1 text-teal-green mb-3"></i>
+        <h3 class="fw-semibold text-teal-green">New Products on the Way!</h3>
+        <p class="text-muted mt-3">Our team is working on adding exciting new items to our collection</p>
+        <div class="d-flex justify-content-center mt-4">
+          <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status" style="animation-delay: 0.2s">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <div class="spinner-grow spinner-grow-sm text-teal-green mx-1" role="status" style="animation-delay: 0.4s">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
+        <div class="mt-4">
+          <button class="btn btn-outline-teal-green rounded-pill btn-sm px-4 py-2">
+            <i class="bi bi-arrow-clockwise me-2"></i>Check Back Later
+          </button>
+        </div>
       </div>
-      }
+    </div>
+  </div>
+  }
 
   @else {
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5">
     @for (product of products; track product._id) {
-<app-collection-card [product]="product"></app-collection-card>
+    <app-collection-card [product]="product"></app-collection-card>
     }
   </div>
   }

@@ -11,14 +11,14 @@ main {
 
 .form-container {
   background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
+  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 700px;
   width: 100%;
-  margin: 10px auto;
-  overflow: auto;
-  max-height: 100vh;
+  margin: 0px auto;
+  /* overflow: auto; */
+  max-height: 95vh;
 }
 
 .form-container h2 {

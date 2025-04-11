@@ -22,7 +22,7 @@ export class FooterService {
 
 
   getCategories(): Observable<Category[]> {
-    console.log("getCategories ia calling");
+    // console.log("getCategories ia calling");
 
     return this.http.get<Category[]>(`${this.apiUrl}/category`).pipe(
       map(categories => categories.slice(0, 5)),
@@ -31,7 +31,7 @@ export class FooterService {
   }
 
   loadTopRatedProducts(): Observable<Product[]> {
-    console.log("loadTopRatedProducts ia calling");
+    // console.log("loadTopRatedProducts ia calling");
     const isLoggedIn = this.userService.isLoggedIn();
     if (!isLoggedIn) return of([]);
 
@@ -47,7 +47,7 @@ export class FooterService {
   }
 
   loadTopRatedProductsPerCategory(categoryId: string): Observable<Product[]> {
-    console.log("loadTopRatedProductsPerCategory ia calling");
+    // console.log("loadTopRatedProductsPerCategory ia calling");
     const isLoggedIn = this.userService.isLoggedIn();
     if (!isLoggedIn || categoryId == "allProducts") return of([]);
 

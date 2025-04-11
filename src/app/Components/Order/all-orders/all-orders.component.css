@@ -76,14 +76,13 @@
   background-color: #ccc !important;
   color: #666 !important;
   cursor: not-allowed !important;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
 /*disabled cancel button*/
 button.cancel[disabled] {
   background-color: #D64545 !important;
   cursor: not-allowed;
-
 }
 
 /* table scroll */
@@ -394,7 +393,7 @@ button.cancel[disabled] {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
-  
+
 }
 .products-table tbody{
   width: 100%;
@@ -455,7 +454,7 @@ button.cancel[disabled] {
   .order-info-flex {
     flex-direction: column;
   }
-  
+
   .order-info-right {
     width: 100%;
     max-width: 100%;
