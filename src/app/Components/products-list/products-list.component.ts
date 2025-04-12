@@ -3,13 +3,14 @@ import { ProductService } from '../../Services/collection.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CollectionCardComponent } from '../collection/collection-card/collection-card.component';
 
 @Component({
   selector: 'app-products-list',
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
   standalone: true,
-  imports: [ProductCardComponent, CommonModule, FormsModule],
+  imports: [ProductCardComponent, CommonModule, FormsModule,CollectionCardComponent],
 })
 export class ProductsListComponent {
   @Input() categoryId: string = ''; // Changed from selectedCategoryId to categoryId
