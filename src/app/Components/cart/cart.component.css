@@ -53,9 +53,8 @@ h3 {
 
 /* Cart Items Container */
 .cart-items-container {
-  background-color: var(--light-gray);
   border-radius: var(--border-radius);
-  padding: 16px;
+  padding: 3px 13px 13px 13px ;
   box-shadow: var(--box-shadow);
   max-height: 70vh;
   overflow-y: auto;
@@ -81,7 +80,7 @@ h3 {
 .cart-summary-card {
   background-color: white;
   border-radius: var(--border-radius);
-  padding: 24px;
+  padding: 6px 13px 13px 13px ;
   box-shadow: var(--box-shadow);
 }
 

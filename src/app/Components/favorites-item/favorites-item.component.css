@@ -3,10 +3,13 @@
   display: flex;
   background-color: white;
   border-radius: var(--border-radius, 8px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.338);
   margin-bottom: 16px;
   overflow: hidden;
   transition: var(--transition, all 0.3s ease);
+  text-decoration: none;
+  color: black;
 }
 
 .favorite-item:hover {
@@ -82,7 +85,7 @@
 }
 
 .info-value {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .category-name {
