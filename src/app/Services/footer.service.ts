@@ -1,10 +1,11 @@
-// footer.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError, of } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment.prod';
-import { catchError } from 'rxjs/operators';
-import { handleError } from '../Utils/handleError';
+import { catchError, map } from 'rxjs/operators';
+import { UsersService } from './users.service';
+import { Product, Category, ProductsResponse } from '../Models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,34 +13,57 @@ import { handleError } from '../Utils/handleError';
 export class FooterService {
   private readonly apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private userService: UsersService,
+    private router: Router
+  ) { }
 
-  getCategories(): Observable<any[]> {
-    return this.http
-      .get<any[]>(`${this.apiUrl}/category`)
-      .pipe(catchError(handleError));
+
+
+  getCategories(): Observable<Category[]> {
+    // console.log("getCategories ia calling");
+
+    return this.http.get<Category[]>(`${this.apiUrl}/category`).pipe(
+      map(categories => categories.slice(0, 5)),
+      catchError(this.handleError)
+    );
   }
 
-  getTopProducts(): Observable<any> {
-    const params = new HttpParams()
-      .set('page', '1')
-      .set('limit', '5')
-      .set('sort', 'rating:1'); // Adjusted sort parameter
+  loadTopRatedProducts(): Observable<Product[]> {
+    // console.log("loadTopRatedProducts ia calling");
+    const isLoggedIn = this.userService.isLoggedIn();
+    if (!isLoggedIn) return of([]);
 
-    return this.http
-      .get(`${this.apiUrl}/product`, { params })
-      .pipe(catchError(handleError));
+    const token = this.userService.getToken();
+    const headers = token ? new HttpHeaders({ "Authorization": `Bearer ${token}` }) : {};
+
+    return this.http.get<ProductsResponse>(`${environment.apiUrl}/product/all`, { headers }).pipe(
+      map(res => res.products
+        .sort((a, b) => b.rating.rate - a.rating.rate)
+        .slice(0, 5)),
+      catchError(this.handleError)
+    );
   }
 
-  // getProducts(): Observable<any[]> {
-  //   return this.http
-  //     .get<any[]>(`${this.apiUrl}/product`)
-  //     .pipe(catchError(handleError));
-  // }
+  loadTopRatedProductsPerCategory(categoryId: string): Observable<Product[]> {
+    // console.log("loadTopRatedProductsPerCategory ia calling");
+    const isLoggedIn = this.userService.isLoggedIn();
+    if (!isLoggedIn || categoryId == "allProducts") return of([]);
 
-  getProductsByCategory(categoryId: string): Observable<any> {
-    return this.http
-      .get(`${this.apiUrl}/product/category/${categoryId}`)
-      .pipe(catchError(handleError));
+    const token = this.userService.getToken();
+    const headers = token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : {};
+
+    return this.http.get<ProductsResponse>(`${environment.apiUrl}/product/category/${categoryId}`, { headers }).pipe(
+      map(res => res.products
+        .sort((a, b) => b.rating.rate - a.rating.rate)
+        .slice(0, 5)),
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred:', error);
+    return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 }

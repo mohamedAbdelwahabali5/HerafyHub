@@ -1,42 +1,80 @@
-/* footer.component.css
+/* footer.component.css */
 :root {
   --teal-green: #3d8d7a;
   --teal-hover: #2b6456;
   --text-gray: #6c6c6c;
-} */
+}
 
-/* General Styles */
-.footer {
+/* Base Styles */
+.bd-footer {
+  width: 100%;
+  overflow-x: hidden;
   background-color: #f8f9fa;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.container {
+  max-width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Typography and Colors */
 .text-teal {
-  color: var(--teal-green) !important;
+  color: var(--teal-green);
 }
 
 .hover-teal {
   transition: color 0.3s ease;
 }
 
-.transition-all {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.border-teal {
-  border-color: var(--teal-green) !important;
-}
-
 .hover-teal:hover {
-  color: var(--teal-green) !important;
-  transform: translateX(5px);
+  color: var(--teal-green);
 }
 
 .hover-dark:hover {
-  color: var(--teal-hover) !important;
+  color: var(--teal-hover);
+}
+
+/* Layout Structure */
+.row.g-5 {
+  --bs-gutter-x: 3rem;
+  --bs-gutter-y: 3rem;
+}
+
+/* Logo Section */
+.d-flex.flex-column.align-items-center.align-items-lg-start {
+  align-items: center;
+}
+
+/* Top Rated Products */
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-unstyled li {
+  margin-bottom: 1rem;
+}
+
+.list-unstyled li a {
+  display: block;
+  color: var(--text-gray);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Categories and Quick Links */
+.col-12.col-md-6.col-lg-4 {
+  margin-bottom: 2rem;
 }
 
 /* Social Icons */
+.social-links {
+  display: inline-flex;
+  gap: 1rem;
+}
+
 .social-links i {
   font-size: 1.2rem;
   transition: all 0.3s ease;
@@ -51,108 +89,91 @@
 
 .social-links a:hover i {
   background-color: rgba(61, 141, 122, 0.1);
-  transform: translateY(-2px);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 992px) {
-  .section-title::after {
-    display: none;
-  }
+/* Disabled State */
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 
-  .row.g-5 > [class^="col-"]:not(:last-child) {
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
+/* Responsive Breakpoints */
+@media (max-width: 1199.98px) {
+  .col-lg-4 {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991.98px) {
+  .row.g-5 {
+    --bs-gutter-x: 2rem;
+    --bs-gutter-y: 2rem;
+  }
+
+  .col-12.col-lg-8 .row {
+    flex-wrap: wrap;
+  }
+
+  .col-12.col-md-6.col-lg-4 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 767.98px) {
   .bd-footer {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .col-12.col-md-6.col-lg-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .d-flex.flex-column.align-items-center.align-items-lg-start {
+    align-items: flex-start;
     text-align: center;
   }
 
-  .border-teal {
-    width: 60px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (max-width: 768px) {
-  .h-100 {
-    height: auto !important;
-  }
-
   .social-links {
-    justify-content: center !important;
-    margin-top: 1.5rem;
+    justify-content: center;
+    width: 100%;
+    margin-top: 1rem;
   }
 }
 
-@media (min-width: 1200px) {
-  .col-lg-4 {
-    padding-right: 2rem;
-    padding-left: 2rem;
-  }
-}
-.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.hover-teal:hover:not(.disabled) {
-  color: var(--teal-green) !important;
-  transform: translateX(5px);
-}
-
-/* Add this to prevent horizontal overflow */
-.bd-footer {
-  width: 100%;
-  overflow-x: hidden;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.container {
-  max-width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-/* Ensure responsive images don't cause overflow */
-.img-fluid {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Adjust list items to prevent potential overflow */
-.list-unstyled {
-  padding-left: 0;
-  margin-left: 0;
-}
-
-/* Ensure text doesn't cause horizontal scroll */
-.text-secondary {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-/* Additional responsive adjustments */
-@media (max-width: 768px) {
-  .container {
-    padding-left: 10px;
-    padding-right: 10px;
+@media (max-width: 575.98px) {
+  .bd-footer {
+    padding: 2rem 10px;
   }
 
   .row.g-5 {
-    margin-left: -10px;
-    margin-right: -10px;
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1.5rem;
   }
 
-  .col-12 {
-    padding-left: 10px;
-    padding-right: 10px;
+  .img-fluid {
+    max-width: 150px;
+  }
+
+  .text-center.text-md-start,
+  .text-center.text-lg-start {
+    text-align: center !important;
+  }
+}
+
+/* Hover Effects */
+@media (hover: hover) {
+  .hover-teal:hover:not(.disabled) {
+    transform: translateX(5px);
+  }
+
+  .list-unstyled li a:hover {
+    color: var(--teal-green);
+    transform: translateX(3px);
   }
 }
