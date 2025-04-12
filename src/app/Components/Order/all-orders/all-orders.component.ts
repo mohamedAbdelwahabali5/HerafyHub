@@ -1,10 +1,10 @@
-import { 
-  Component, 
-  OnInit, 
-  signal, 
-  Input, 
-  OnChanges, 
-  SimpleChanges 
+import {
+  Component,
+  OnInit,
+  signal,
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../Services/order.service';
@@ -41,10 +41,10 @@ export class AllOrdersComponent implements OnInit, OnChanges {
 
   updateOrderStatus(orderId: string) {
     // Find the order in the current list and update its status
-    this.orders.update(orders => 
-      orders.map(order => 
-        order._id === orderId 
-          ? { ...order, status: 'Cancelled' } 
+    this.orders.update(orders =>
+      orders.map(order =>
+        order._id === orderId
+          ? { ...order, status: 'Cancelled' }
           : order
       )
     );
@@ -85,7 +85,7 @@ export class AllOrdersComponent implements OnInit, OnChanges {
       console.error('Order ID is undefined');
       return;
     }
-    
+
     // this.loading.set(true);
     this.orderService.getOrderDetails(order._id).subscribe({
       next: (response) => {
@@ -111,8 +111,8 @@ export class AllOrdersComponent implements OnInit, OnChanges {
       text: 'Do you want to cancel this order?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3D8D7A',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#B22222',
+      cancelButtonColor:'#3D8D7A',
       confirmButtonText: 'Yes, cancel it!',
       cancelButtonText: 'No, keep it'
     }).then((result) => {
@@ -120,10 +120,10 @@ export class AllOrdersComponent implements OnInit, OnChanges {
         this.orderService.cancelOrder(orderId).subscribe({
           next: (cancelledOrder) => {
             // Immediately update the order status in the list
-            this.orders.update(orders => 
-              orders.map(order => 
-                order._id === orderId 
-                  ? { ...order, status: 'Cancelled' } 
+            this.orders.update(orders =>
+              orders.map(order =>
+                order._id === orderId
+                  ? { ...order, status: 'Cancelled' }
                   : order
               )
             );
@@ -146,7 +146,7 @@ export class AllOrdersComponent implements OnInit, OnChanges {
           },
           error: (err) => {
             this.error.set(true);
-            
+
             // Show error message
             Swal.fire({
               title: 'Error!',
@@ -154,7 +154,7 @@ export class AllOrdersComponent implements OnInit, OnChanges {
               icon: 'error',
               confirmButtonColor: '#3D8D7A'
             });
-            
+
             console.error('Error cancelling order:', err);
           }
         });
