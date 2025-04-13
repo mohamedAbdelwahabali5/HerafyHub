@@ -6,8 +6,8 @@
 
 /* Hero Section */
 .hero-section {
-  height: 70vh;
-  min-height: 500px;
+  height: 40vh;
+  /* min-height: 500px; */
 }
 
 .gradient-overlay {

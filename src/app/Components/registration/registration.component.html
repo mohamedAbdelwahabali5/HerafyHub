@@ -4,57 +4,30 @@
       <h2 class="text-center teal-green">Registration Form</h2>
       <p class="text-center">Please fill in the form below</p>
 
-      @if(successMessage) {
-      <div class="alert alert-success">
-        {{ successMessage }}
-      </div>
-      }
 
-      @if(registrationError) {
-      <div class="alert alert-danger d-flex align-items-center">
-        @if(loading) {
-          <div class="spinner-border spinner-border-sm me-2" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        }
-        {{ registrationError }}
-      </div>
-      }
 
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <!-- Full Name -->
         <div class="mb-3 mx-3">
-          <label class="form-label"
-            >Full Name <span class="text-danger">*</span></label
-          >
+          <label class="form-label">Full Name <span class="text-danger">*</span></label>
           <div class="row g-2 mb-3">
             <div class="col-md-6">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="firstName"
-                placeholder="First Name"
-              />
+              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" />
               @if ((formControls.firstName.touched ||
               formControls.firstName.dirty || submitted) &&
               formControls.firstName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("firstName")
-              }}</small>
+                }}</small>
               }
             </div>
             <div class="col-md-6">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="lastName"
-                placeholder="Last Name"
-              />
+              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" />
               @if ((formControls.lastName.touched || formControls.lastName.dirty
               || submitted) && formControls.lastName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("lastName")
-              }}</small>
+                }}</small>
               }
             </div>
           </div>
@@ -62,15 +35,8 @@
 
         <!-- Address -->
         <div class="mb-3 mx-3">
-          <label class="form-label"
-            >Address <span class="text-danger">*</span></label
-          >
-          <input
-            type="text"
-            class="form-control mb-2"
-            formControlName="address"
-            placeholder="Address"
-          />
+          <label class="form-label">Address <span class="text-danger">*</span></label>
+          <input type="text" class="form-control mb-2" formControlName="address" placeholder="Address" />
           @if ((formControls.address.touched || formControls.address.dirty ||
           submitted) && formControls.address.invalid) {
           <small class="text-danger">{{ getErrorMessage("address") }}</small>
@@ -78,41 +44,26 @@
 
           <div class="row g-2 mb-3">
             <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="city"
-                placeholder="City"
-              />
+              <input type="text" class="form-control" formControlName="city" placeholder="City" />
               @if ((formControls.city.touched || formControls.city.dirty ||
               submitted) && formControls.city.invalid) {
               <small class="text-danger">{{ getErrorMessage("city") }}</small>
               }
             </div>
             <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="state"
-                placeholder="State"
-              />
+              <input type="text" class="form-control" formControlName="state" placeholder="State" />
               @if ((formControls.state.touched || formControls.state.dirty ||
               submitted) && formControls.state.invalid) {
               <small class="text-danger">{{ getErrorMessage("state") }}</small>
               }
             </div>
             <div class="col-md-4">
-              <input
-                type="text"
-                class="form-control"
-                formControlName="zipCode"
-                placeholder="Zip Code"
-              />
+              <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code" />
               @if ((formControls.zipCode.touched || formControls.zipCode.dirty
               || submitted) && formControls.zipCode.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("zipCode")
-              }}</small>
+                }}</small>
               }
             </div>
           </div>
@@ -121,9 +72,7 @@
         <!-- Contact Information -->
         <div class="row g-2 mb-3 mx-3">
           <div class="col-md-6">
-            <label class="form-label"
-              >Phone Number <span class="text-danger">*</span></label
-            >
+            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
             <input type="text" class="form-control" formControlName="phone" />
             @if ((formControls.phone.touched || formControls.phone.dirty ||
             submitted) && formControls.phone.invalid) {
@@ -131,15 +80,8 @@
             }
           </div>
           <div class="col-md-6">
-            <label class="form-label"
-              >E-mail <span class="text-danger">*</span></label
-            >
-            <input
-              type="email"
-              class="form-control"
-              formControlName="email"
-              placeholder="example@gmail.com"
-            />
+            <label class="form-label">E-mail <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" formControlName="email" placeholder="example@gmail.com" />
             @if ((formControls.email.touched || formControls.email.dirty ||
             submitted) && formControls.email.invalid) {
             <small class="text-danger">{{ getErrorMessage("email") }}</small>
@@ -150,59 +92,38 @@
         <!-- Password -->
         <div class="row g-2 mb-3 mx-3">
           <div class="col-md-6">
-            <label class="form-label"
-              >Password <span class="text-danger">*</span></label
-            >
-            <input
-              type="password"
-              class="form-control"
-              formControlName="password"
-            />
+            <label class="form-label">Password <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" formControlName="password" />
             @if ((formControls.password.touched || formControls.password.dirty
             || submitted) && formControls.password.invalid) {
             <small class="text-danger">{{ getErrorMessage("password") }}</small>
             }
           </div>
           <div class="col-md-6">
-            <label class="form-label"
-              >Confirm Password <span class="text-danger">*</span></label
-            >
-            <input
-              type="password"
-              class="form-control"
-              formControlName="confirmPassword"
-            />
+            <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" formControlName="confirmPassword" />
             @if ((formControls.confirmPassword.touched ||
             formControls.confirmPassword.dirty || submitted) &&
             (formControls.confirmPassword.errors?.['required'] ||
             registrationForm.errors?.['passwordMismatch'])) {
             <small class="text-danger">{{
               getErrorMessage("confirmPassword")
-            }}</small>
+              }}</small>
             }
           </div>
         </div>
 
         <div class="d-flex justify-content-center">
-          <button
-            type="submit"
-            class="btn btn-custom w-75"
-            [disabled]="loading"
-          >
+          <button type="submit" class="btn btn-custom w-75" [disabled]="loading">
             @if(loading) {
-              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Registering...
-            } @else {
-              Register
-            }
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Registering... } @else { Register }
           </button>
         </div>
         <div class="text-center mt-3">
           <p>
             Already have an account?
-            <a class="login-link  teal-green" routerLinkActive="active" routerLink="/login"
-              >Login here</a
-            >
+            <a class="login-link teal-green" routerLinkActive="active" routerLink="/login">Login</a>
           </p>
         </div>
       </form>

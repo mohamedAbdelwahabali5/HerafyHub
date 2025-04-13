@@ -3,15 +3,8 @@
   <!-- Hero Section -->
   <section class="hero-section position-relative overflow-hidden">
     <div class="gradient-overlay"></div>
-    <img
-      src="images/about-us.png"
-      alt="Artisans working on handmade products"
-      class="hero-image img-fluid"
-      loading="lazy"
-      (load)="imageLoaded = true"
-      (error)="imageError = true"
-      [class.loaded]="imageLoaded"
-    />
+    <img src="images/about-us.png" alt="Artisans working on handmade products" class="hero-image img-fluid"
+      loading="lazy" (load)="imageLoaded = true" (error)="imageError = true" [class.loaded]="imageLoaded" />
     <div class="hero-content position-absolute text-center text-white">
       <h1 class="display-3 display-md-2 fw-bold mb-4">About Us</h1>
       <div class="divider mx-auto"></div>
@@ -21,7 +14,7 @@
   <!-- Main Content -->
   <main class="container py-5">
     <!-- Introduction -->
-    <section
+    <!-- <section
       class="intro-section text-center mb-6 animate__animated animate__fadeIn"
     >
       <h2 class="section-title teal-green mb-4 display-5">
@@ -32,10 +25,10 @@
         preserve<br class="d-none d-md-block" />
         traditional craftsmanship while creating modern, sustainable designs.
       </p>
-    </section>
+    </section> -->
 
     <!-- Key Features -->
-    <section class="features-section mt-6">
+    <!-- <section class="features-section mt-6">
       <div class="row g-5 align-items-center">
         <div class="col-md-6" *ngFor="let feature of keyFeatures">
           <div class="feature-card p-4 p-lg-5 shadow-sm">
@@ -47,7 +40,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <!-- Values Section -->
     <section class="values-section mt-6">
