@@ -49,7 +49,6 @@ export class LoginComponent {
 
             this.router.navigate(['/home']);
           } else {
-            // Show sweet alert message for unsuccessful login
             this.showLoginError('Login failed', 'Invalid credentials... Please try again');
           }
         },

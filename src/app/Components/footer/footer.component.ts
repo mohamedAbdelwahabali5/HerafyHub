@@ -1,88 +1,94 @@
-// footer.component.ts
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../Services/users.service';
 import { FooterService } from '../../Services/footer.service';
-import {
-  Router,
-  NavigationEnd,
-  ActivatedRoute,
-  RouterModule,
-} from '@angular/router';
-import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { CategoryIdSerService } from '../../Services/category-id-ser.service';
+import { Product } from '../../Models/product.model';
+import { Category } from '../../Models/product.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterModule, CommonModule],
-
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
+  styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-  categories: any[] = [];
-  products: any[] = [];
+  categories: Category[] = [];
+  topRatedProducts: Product[] = [];
   isLoggedIn: boolean = false;
   currentCategoryId: string | null = null;
+  errorMessage: string = '';
 
   constructor(
     private userService: UsersService,
     private footerService: FooterService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private categoryService: CategoryIdSerService
   ) { }
 
-  ngOnInit() {
-    this.loadCategories();
+  ngOnInit(): void {
     this.checkAuthStatus();
-    this.setupRouteListener();
-  }
+    this.loadCategories();
 
-  private checkAuthStatus() {
-    this.isLoggedIn = this.userService.isLoggedIn();
-  }
-
-  private setupRouteListener() {
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.handleRouteChange();
-      });
-  }
-
-  private handleRouteChange() {
-    let route = this.activatedRoute;
-    while (route.firstChild) route = route.firstChild;
-
-    route.params.subscribe((params) => {
-      const newCategoryId = params['categoryId'];
-      if (newCategoryId && newCategoryId !== this.currentCategoryId) {
-        this.currentCategoryId = newCategoryId;
-        this.loadCategoryProducts(newCategoryId);
-      } else if (!newCategoryId && this.currentCategoryId) {
-        this.currentCategoryId = null;
-        this.loadProducts();
+    this.categoryService.currentCategoryId$.subscribe(categoryId => {
+      this.currentCategoryId = categoryId;
+      if (categoryId) {
+        console.log("categoryId = ", categoryId);
+        this.loadTopRatedProductsByCategory(categoryId);
+      } else {
+        this.loadTopRatedProducts();
       }
     });
   }
 
-  loadCategories() {
+  private checkAuthStatus(): void {
+    this.isLoggedIn = this.userService.isLoggedIn();
+  }
+
+  loadCategories(): void {
     this.footerService.getCategories().subscribe({
-      next: (data: any) => (this.categories = data || []),
-      error: (error) => console.error('Categories error:', error),
+      next: (categories) => {
+        this.categories = categories;
+        // console.log("this.categories", this.categories);
+      },
+      error: (error) => this.errorMessage = 'Failed to load categories'
     });
   }
 
-  loadProducts() {
-    this.footerService.getProducts().subscribe({
-      next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
-      error: (error) => console.error('Products error:', error),
+  loadTopRatedProducts(): void {
+    this.footerService.loadTopRatedProducts().subscribe({
+      next: (products) => {
+        this.topRatedProducts = products;
+        // console.log("this.topRatedProducts", this.topRatedProducts);
+      },
+      error: (error) => this.errorMessage = 'Failed to load top rated products'
     });
   }
 
-  loadCategoryProducts(categoryId: string) {
-    this.footerService.getProductsByCategory(categoryId).subscribe({
-      next: (data: any) => (this.products = data.products?.slice(0, 5) || []),
-      error: (error) => console.error('Category products error:', error),
+  loadTopRatedProductsByCategory(categoryId: string): void {
+    this.footerService.loadTopRatedProductsPerCategory(categoryId).subscribe({
+      next: (products) => {
+        this.topRatedProducts = products;
+        // console.log("this.topRatedProducts", this.topRatedProducts);
+      },
+      error: (error) => this.errorMessage = 'Failed to load category products'
     });
+  }
+
+  loadCategoryId(event: any) {
+    let clickedItem = event.target.closest('a');
+    if (clickedItem) {
+      const selectedCategoryTitle = clickedItem.textContent.trim();
+      const category = this.categories.find((cat: any) => cat.title === selectedCategoryTitle);
+      if (category) {
+        this.onCategorySelect(category._id);
+      }
+    }
+  }
+
+  //make category id sharable for all components
+  onCategorySelect(id: string) {
+    this.categoryService.setCategoryId(id);
   }
 }

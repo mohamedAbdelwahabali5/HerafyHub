@@ -19,43 +19,46 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link" aria-current="page" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active"
-            routerLink="/">Home</a>
+            routerLink="/" (click)="closeNavbar()" data-bs-dismiss="collapse">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="products">Products</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="products" (click)="closeNavbar()"
+            data-bs-dismiss="collapse">Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="order" *ngIf="userServ.isLoggedIn()">Orders</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="order" *ngIf="userServ.isLoggedIn()"
+            (click)="closeNavbar()" data-bs-dismiss="collapse">Orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="contact-us">Contact Us</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="contact-us" (click)="closeNavbar()"
+            data-bs-dismiss="collapse">Contact Us</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="about-us">About Us</a>
+          <a class="nav-link" routerLinkActive="active" routerLink="about-us" (click)="closeNavbar()"
+            data-bs-dismiss="collapse">About Us</a>
         </li>
       </ul>
 
       <!-- Icons and buttons -->
       <div class="d-flex align-items-center mt-3 mt-lg-0">
-
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="favorite"
-          class="me-3 d-flex align-items-center text-decoration-none">
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="favorite" (click)="closeNavbar()"
+          data-bs-dismiss="collapse" class="me-3 d-flex align-items-center text-decoration-none">
           <svg width="24" height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M40 65.8333L35.1333 61.3833C18 45.9 7 36.0166 7 23.75C7 13.8666 14.85 6 24.6667 6C30.3 6 35.7 8.71666 40 13.05C44.3 8.71666 49.7 6 55.3333 6C65.15 6 73 13.8666 73 23.75C73 36.0166 62 45.9 44.8667 61.4L40 65.8333Z"
               stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </a>
+
         <!-- Cart icon -->
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="cart"
-          class="me-3 d-flex align-items-center text-decoration-none position-relative">
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="cart" (click)="closeNavbar()"
+          data-bs-dismiss="collapse" class="me-3 d-flex align-items-center text-decoration-none position-relative">
           <svg width="24" height="24" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M3.33301 3.33337H16.6663L25.5997 47.9667C25.9045 49.5014 26.7394 50.8799 27.9582 51.861C29.1769 52.8422 30.702 53.3634 32.2663 53.3334H64.6663C66.2307 53.3634 67.7557 52.8422 68.9745 51.861C70.1933 50.8799 71.0282 49.5014 71.333 47.9667L76.6663 20H19.9997M33.333 70C33.333 71.841 31.8406 73.3334 29.9997 73.3334C28.1587 73.3334 26.6663 71.841 26.6663 70C26.6663 68.1591 28.1587 66.6667 29.9997 66.6667C31.8406 66.6667 33.333 68.1591 33.333 70ZM69.9997 70C69.9997 71.841 68.5073 73.3334 66.6663 73.3334C64.8254 73.3334 63.333 71.841 63.333 70C63.333 68.1591 64.8254 66.6667 66.6663 66.6667C68.5073 66.6667 69.9997 68.1591 69.9997 70Z"
               stroke="#3D8D7A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
 
-          <!-- Ensure the badge is always visible when there are items -->
           <span *ngIf="cartItemCount > 0"
             class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
             {{ cartItemCount }}
@@ -64,8 +67,8 @@
         </a>
 
         <!-- User icon -->
-        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="profile"
-          class="me-3 d-flex align-items-center text-decoration-none">
+        <a *ngIf="userServ.isLoggedIn()" routerLinkActive="active" routerLink="profile" (click)="closeNavbar()"
+          data-bs-dismiss="collapse" class="me-3 d-flex align-items-center text-decoration-none">
           <img *ngIf="userProfileImage" [src]="userProfileImage" class="rounded-circle" width="24" height="24"
             alt="Profile Picture">
           <svg *ngIf="!userProfileImage" width="24" height="24" viewBox="0 0 120 120" fill="none"
@@ -78,12 +81,16 @@
         </a>
 
         <!-- Login/Logout buttons -->
-        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-1"
-          routerLinkActive="active" routerLink="login">
+        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 me-1 ps-3 pe-3 py-1"
+          routerLinkActive="active" routerLink="login" data-bs-dismiss="collapse">
           Login
         </button>
+        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5  ps-3 pe-3 py-1"
+          routerLinkActive="active" routerLink="register" data-bs-dismiss="collapse">
+          Register Now
+        </button>
         <button *ngIf="userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-1"
-          (click)="logout()">
+          (click)="logout()" data-bs-dismiss="collapse">
           Logout
         </button>
       </div>

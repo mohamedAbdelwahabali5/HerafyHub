@@ -119,7 +119,6 @@ export class ResetPasswordComponent {
   returnToLogin() {
     // console.log('logic of returnToLogin');
     this.router.navigate(['/login'], { skipLocationChange: false, replaceUrl: true });
-
   }
   checkMatchingPassword() {
     this.onSubmit();

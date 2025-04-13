@@ -2,18 +2,23 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.ts",
+      "src": "src/server.ts",
       "use": "@vercel/node"
     },
     {
-      "src": "dist/herafy-hub/browser/**/*",
+      "src": "dist/herafy-hub/browser/**",
+
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "https://herafy-hub-api.vercel.app/api/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/dist/herafy-hub/browser/$1"
+      "dest": "/src/server.ts"
     }
   ]
 }

@@ -12,6 +12,7 @@ import { UsersService } from '../../Services/users.service';
 import { RegisterResponse, User } from '../../Models/user.model';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -22,7 +23,11 @@ import { finalize } from 'rxjs/operators';
   styleUrl: './registration.component.css',
 })
 export class RegistrationComponent {
-  constructor(private userService: UsersService, private router: Router) { }
+  constructor(
+    private userService: UsersService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   submitted = false;
   registrationError = '';
@@ -84,8 +89,16 @@ export class RegistrationComponent {
   }
 
   onSubmit() {
+    this.submitted = true;
+    event?.preventDefault(); // Prevent default form submission
     if (this.registrationForm.invalid) {
+      const firstInvalidControl = document.querySelector('.ng-invalid');
+      if (firstInvalidControl) {
+        (firstInvalidControl as HTMLElement).focus({ preventScroll: true });
+      }
       this.markFormGroupTouched(this.registrationForm);
+      this.toastr.warning('Please fill all required fields correctly.');
+
       return;
     }
 
@@ -100,45 +113,56 @@ export class RegistrationComponent {
       password: formValues.password!,
       city: formValues.city || '',
       state: formValues.state || '',
-      zipCode: formValues.zipCode || ''
+      zipCode: formValues.zipCode || '',
     };
 
-    this.userService.addUser(newUser).pipe(
-      finalize(() => this.loading = false)
-    ).subscribe({
-      next: (response) => {
-        this.handleSuccessfulRegistration(response, newUser.email || '');
-      },
-      error: (error) => this.handleRegistrationError(error)
-    });
+    this.userService
+      .addUser(newUser)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (response) => {
+          this.handleSuccessfulRegistration(response, newUser.email || '');
+        },
+        error: (error) => this.handleRegistrationError(error),
+      });
   }
   private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
+    Object.values(formGroup.controls).forEach((control) => {
       control.markAsTouched();
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
       }
     });
   }
-  private handleSuccessfulRegistration(response: RegisterResponse, email: string) {
+  private handleSuccessfulRegistration(
+    response: RegisterResponse,
+    email: string
+  ) {
     this.successMessage = response.message;
     this.registrationForm.reset();
     this.submitted = false;
+    this.toastr.success('Registration successful! Please login to continue.');
 
     setTimeout(() => {
       this.router.navigate(['/login'], {
-        state: { email, message: 'Registration successful! Please login to continue.' }
+        state: {
+          email,
+          message: 'Registration successful! Please login to continue.',
+        },
       });
     }, 2000);
   }
   private handleRegistrationError(error: any) {
-    this.registrationError = error.userMessage;
-    const errorElement = document.querySelector('.alert-danger');
-    errorElement?.scrollIntoView({ behavior: 'smooth' });
+    this.toastr.error(error.userMessage || 'Registration failed');
+    // this.registrationError = error.userMessage;
+    // const errorElement = document.querySelector('.alert-danger');
+    // errorElement?.scrollIntoView({ behavior: 'smooth' });
   }
   isFieldInvalid(fieldName: string): boolean {
     const field = this.registrationForm.get(fieldName);
-    return field ? (field.invalid && (field.dirty || field.touched || this.submitted)) : false;
+    return field
+      ? field.invalid && (field.dirty || field.touched || this.submitted)
+      : false;
   }
   getErrorMessage(controlName: string): string {
     const control = this.registrationForm.get(controlName);
