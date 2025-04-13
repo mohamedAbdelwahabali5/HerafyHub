@@ -24,11 +24,13 @@
       <div class="d-flex justify-content-between align-items-center mt-2">
         <p class="card-text fw-semibold fs-5 text-dark mb-0">{{ product.currentprice | currency:' ':'symbol':'1.2-2' }}
           EGP</p>
-        <button (click)="addToCart($event)" class="btn btn-sm rounded-pill" [ngClass]="{
-          'btn-outline-dark add': !isProductInCart(product._id),
-          'btn-dark filled': isProductInCart(product._id)
-        }" [disabled]="!userServ.isLoggedIn() || isLoading || isProductInCart(product._id)"
-          [title]="userServ.isLoggedIn() ? (isProductInCart(product._id) ? 'Added to cart' : 'Add to cart') : 'Login to add items to cart'">
+          <button *ngIf="userServ.isLoggedIn()" (click)="addToCart($event)" class="btn btn-sm rounded-pill"
+          [ngClass]="{
+            'btn-outline-dark add': !isProductInCart(product._id),
+            'btn-dark filled': isProductInCart(product._id)
+          }"
+          [disabled]="isLoading || isProductInCart(product._id)"
+          [title]="isProductInCart(product._id) ? 'Added to cart' : 'Add to cart'">
           <i class="bi"
             [ngClass]="{'bi-cart-plus': !isProductInCart(product._id), 'bi-cart-check': isProductInCart(product._id)}"></i>
           <span *ngIf="isLoading" class="spinner-border spinner-border-sm ms-1" role="status" aria-hidden="true"></span>

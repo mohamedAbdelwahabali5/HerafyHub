@@ -109,7 +109,6 @@ export class AllOrdersComponent implements OnInit, OnChanges {
     Swal.fire({
       title: 'Are you sure?',
       text: 'Do you want to cancel this order?',
-      icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#B22222',
       cancelButtonColor:'#3D8D7A',
