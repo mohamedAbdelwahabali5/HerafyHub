@@ -25,6 +25,7 @@ export class AppComponent {
       )
       .subscribe((event: NavigationEnd) => {
         // Check the current route
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         this.showHeaderAndFooter = !this.isAuthRoute(event.url);
       });
   }

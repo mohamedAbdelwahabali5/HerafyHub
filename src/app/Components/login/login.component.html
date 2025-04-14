@@ -9,7 +9,11 @@
           <form [formGroup]="loginForm" id="" (ngSubmit)="formCheck()" class="row g-3">
             <div class="col-12">
               <label for="inputEmail4" class="form-label text-teal-green">Email</label>
-              <input formControlName="email" type="email" class="form-control" id="inputEmail4" />
+              <input formControlName="email" 
+                     [attr.disabled]="isLoading ? '' : null"
+                     type="email" 
+                     class="form-control" 
+                     id="inputEmail4" />
             </div>
             @if(loginForm.controls['email'].invalid && loginForm.controls['email'].touched) {
             @if(loginForm.controls['email'].errors?.['required']) {
@@ -31,7 +35,11 @@
             }
             <div class="col-12">
               <label for="inputPassword4" class="form-label text-teal-green">Password</label>
-              <input formControlName="password" type="password" class="form-control" id="inputPassword4" />
+              <input formControlName="password" 
+                     [attr.disabled]="isLoading ? '' : null"
+                     type="password" 
+                     class="form-control" 
+                     id="inputPassword4" />
             </div>
             @if(loginForm.controls['password'].invalid && loginForm.controls['password'].touched) {
             @if(loginForm.controls['password'].errors?.['required']) {
@@ -71,8 +79,15 @@
             </div>
 
             <div class="col-12">
-              <button type="submit" class="btn w-100 bg-teal-green text-white">
-                Sign in
+              <button type="submit" 
+                      [disabled]="isLoading"
+                      class="btn w-100 bg-teal-green text-white">
+                @if (!isLoading) {
+                  Login
+                } @else {
+                  <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                  Logging in...
+                }
               </button>
             </div>
           </form>

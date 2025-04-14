@@ -26,8 +26,8 @@ export class RegistrationComponent {
   constructor(
     private userService: UsersService,
     private router: Router,
-    private toastr: ToastrService
-  ) {}
+    // private toastr: ToastrService
+  ) { }
 
   submitted = false;
   registrationError = '';
@@ -97,7 +97,7 @@ export class RegistrationComponent {
         (firstInvalidControl as HTMLElement).focus({ preventScroll: true });
       }
       this.markFormGroupTouched(this.registrationForm);
-      this.toastr.warning('Please fill all required fields correctly.');
+      // this.toastr.warning('Please fill all required fields correctly.');
 
       return;
     }
@@ -141,7 +141,7 @@ export class RegistrationComponent {
     this.successMessage = response.message;
     this.registrationForm.reset();
     this.submitted = false;
-    this.toastr.success('Registration successful! Please login to continue.');
+    // this.toastr.success('Registration successful! Please login to continue.');
 
     setTimeout(() => {
       this.router.navigate(['/login'], {
@@ -153,7 +153,7 @@ export class RegistrationComponent {
     }, 2000);
   }
   private handleRegistrationError(error: any) {
-    this.toastr.error(error.userMessage || 'Registration failed');
+    // this.toastr.error(error.userMessage || 'Registration failed');
     // this.registrationError = error.userMessage;
     // const errorElement = document.querySelector('.alert-danger');
     // errorElement?.scrollIntoView({ behavior: 'smooth' });

@@ -32,19 +32,19 @@ export const routes: Routes = [
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
   {
     path: 'products',
     component: ProductsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
 
   {
     path: 'products/:categoryId',
     component: ProductsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
   {
     path: 'order',
     component: OrderPageComponent,

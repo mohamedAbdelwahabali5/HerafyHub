@@ -33,6 +33,7 @@ export class OrderService {
     paymentMethod: 'Credit Card' | 'Cash on Delivery';
     products: { productId: string; quantity: number }[];
   }): Observable<Order> {
+    console.log("calling order service");
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,

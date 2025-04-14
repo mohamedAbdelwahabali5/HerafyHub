@@ -3,7 +3,14 @@
     <div class="row g-2 align-items-stretch">
       <div class="col-md-6">
         <div class="p-2 rounded shadow-sm bg-light">
-          <div class="image-container">
+          <div class="image-container position-relative">
+            <!-- Heart icon for favorites -->
+            <button 
+              (click)="toggleHeart($event)" 
+              class="btn position-absolute top-0 end-0 m-2 bg-white rounded-circle p-2 "
+            >
+              <i class="bi" [class.bi-heart-fill]="isProductInFavorites()" [class.bi-heart]="!isProductInFavorites()"></i>
+            </button>
             <img
               [src]="product.image"
               [alt]="product.title"
@@ -44,11 +51,19 @@
             <!-- <button class="btn btn-checkout w-100 py-3 fw-medium rounded-4">
               Checkout Now
             </button> -->
-            <button type="submit" (click)="addToCart()" class="btn btn-dark w-100 py-3 fw-medium rounded-4 "
-            [disabled]="isProductInCart(product._id) || isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-            {{ isLoading ? 'Adding...' : (isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart') }}
-          </button>
+            <button type="submit" (click)="addToCart()" class="btn btn-dark w-100 py-3 fw-medium rounded-4"
+              [disabled]="isProductInCart(product._id) || isLoading">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              {{ isLoading ? 'Adding...' : (isProductInCart(product._id) ? 'Added to Cart' : 'Add to Cart') }}
+            </button>
+            
+            <!-- Alternative: Add favorite button below cart button -->
+            <button *ngIf="userServ.isLoggedIn()" (click)="toggleHeart($event)" class="btn mt-2 py-3 fw-medium rounded-4"
+              [class.btn-outline-danger]="!isProductInFavorites()"
+              [class.btn-danger]="isProductInFavorites()">
+              <i class="bi me-2" [class.bi-heart]="!isProductInFavorites()" [class.bi-heart-fill]="isProductInFavorites()"></i>
+              {{ isProductInFavorites() ? 'Remove from Favorites' : 'Add to Favorites' }}
+            </button>
           </div>
         </div>
       </div>

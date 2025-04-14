@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CartService } from '../../Services/cart.service';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-cart-item',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.css',
   standalone: true
@@ -12,11 +13,14 @@ export class CartItemComponent{
   @Input() cart: any;
   @Output() itemRemoved = new EventEmitter<string>();
   @Output() quantityChanged = new EventEmitter<{id: string, quantity: number}>();
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService) {
+  }
   get totalPrice(): number {
     return this.cart.price * this.cart.quantity;
   }
-  decrease(): void {
+  decrease(event:MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
     if (this.cart.quantity > 1) {
       this.cart.quantity--;
       this.saveQuantityToLocalStorage();
@@ -26,7 +30,9 @@ export class CartItemComponent{
       });
     }
   }
-  increase(): void {
+  increase(event:MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.cart.quantity++;
     this.saveQuantityToLocalStorage();
     this.quantityChanged.emit({
@@ -48,7 +54,9 @@ export class CartItemComponent{
     localStorage.setItem('cartQuantities', JSON.stringify(cartQuantities));
     console.log('Quantity saved for item:', this.cart.id, this.cart.quantity);
   }
-  removeItem() {
+  removeItem(event:MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
     console.log(this.cart);
     if (this.cart && this.cart.id) {
       this.cartService.removeFromCart(this.cart.id).subscribe({
