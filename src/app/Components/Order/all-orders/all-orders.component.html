@@ -36,18 +36,19 @@
         <tr>
           <td data-label="Invoice Number">{{ order.invoiceNumber || order._id }}</td>
           <td data-label="Total">{{ order.totalPrice | currency:'EGP ' }}</td>
-          <td data-label="Status">{{ order.status }}</td>
+          <td class="status-label p-0 m-0">{{ order.status }}</td>
           <td data-label="Date">{{ order.createdAt | date:'medium' }}</td>
           <td data-label="Actions" class="text-center">
-            <button (click)="viewOrderDetails(order)">
-              View Details
+            <button (click)="viewOrderDetails(order)" title="View Order" class="view">
+              <i class="fa-solid fa-eye"></i>
             </button>
 
             @if (order._id) {
             <button (click)="cancelOrder(order._id)"
+              [title]="order.status !== 'Cancelled' ? 'Cancel Order' : 'Cancelled'"
               [ngClass]="order.status !== 'In-Progress' ? 'disabledCancel' : 'cancel'"
               [attr.disabled]="order.status !== 'In-Progress' ? true : null">
-              Cancel Order
+              <i class="fa-solid" [ngClass]="order.status === 'Cancelled' ? 'fa-ban' : 'fa-xmark'"></i>
             </button>
             }
           </td>
@@ -70,7 +71,8 @@
         <div class="order-info-flex">
           <div class="order-info-left">
             <ul class="order-info">
-              <li><strong>Invoice Number:</strong> {{ selectedOrderDetails.invoiceNumber || selectedOrderDetails._id }}</li>
+              <li><strong>Invoice Number:</strong> {{ selectedOrderDetails.invoiceNumber || selectedOrderDetails._id }}
+              </li>
               <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency:'EGP ' }}</li>
               <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
               <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
@@ -83,7 +85,7 @@
               </div>
               <div class="shipping-details">
                 <p><strong>Name:</strong> {{ selectedOrderDetails.shippingAddress.name }}</p>
-                <p><strong>Address:</strong>  {{ selectedOrderDetails.shippingAddress.address }}</p>
+                <p><strong>Address:</strong> {{ selectedOrderDetails.shippingAddress.address }}</p>
                 <p><strong>Phone: </strong>{{ selectedOrderDetails.shippingAddress.phone }}</p>
               </div>
             </div>

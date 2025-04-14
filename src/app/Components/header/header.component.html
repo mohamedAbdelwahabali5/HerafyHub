@@ -81,15 +81,15 @@
         </a>
 
         <!-- Login/Logout buttons -->
-        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 me-1 ps-3 pe-3 py-1"
+        <button *ngIf="!userServ.isLoggedIn()" type="button" class="login btn border-0 rounded-5 me-2 ps-3 pe-3 py-2"
           routerLinkActive="active" routerLink="login" data-bs-dismiss="collapse">
           Login
         </button>
-        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5  ps-3 pe-3 py-1"
+        <button *ngIf="!userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5  ps-3 pe-3 py-2"
           routerLinkActive="active" routerLink="register" data-bs-dismiss="collapse">
           Register Now
         </button>
-        <button *ngIf="userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-1"
+        <button *ngIf="userServ.isLoggedIn()" type="button" class="btn border-0 rounded-5 ps-3 pe-3 py-2"
           (click)="logout()" data-bs-dismiss="collapse">
           Logout
         </button>

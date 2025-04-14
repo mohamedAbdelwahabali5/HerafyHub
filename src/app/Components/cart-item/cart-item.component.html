@@ -1,10 +1,10 @@
-<div class="cart-item">
+<a class="cart-item" routerLink="/product-details/{{cart.id}}">
   <div class="cart-item-image" [ngStyle]="{'background-image': 'url(' + cart.image + ')'}"></div>
 
   <div class="cart-item-details">
     <div class="cart-item-name">
-      <h5 class="item-title">{{cart.Name}}</h5>
-      <button (click)="removeItem()" class="btn-remove" aria-label="Remove item">
+      <p class="item-title">{{cart.name}}</p>
+      <button (click)="removeItem($event)" class="btn-remove" aria-label="Remove item">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -18,11 +18,11 @@
       <div class="info-block quantity-block">
         <span class="info-label">Quantity</span>
         <div class="quantity-controls">
-          <button (click)="decrease()" class="btn-quantity" [disabled]="cart.quantity <= 1">
+          <button (click)="decrease($event)" class="btn-quantity" [disabled]="cart.quantity <= 1">
             <i class="fa-solid fa-minus"></i>
           </button>
           <span class="quantity-value">{{cart.quantity}}</span>
-          <button (click)="increase()" class="btn-quantity">
+          <button (click)="increase($event)" class="btn-quantity">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -34,4 +34,4 @@
       </div>
     </div>
   </div>
-</div>
+</a>

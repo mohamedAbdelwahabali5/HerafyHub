@@ -57,26 +57,33 @@
 }
 
 .orders-table button {
-  background-color: #2C6E63;
-  color: white;
-  border: none;
+  border: 1px solid #2C6E63;
+  color: #2C6E63;
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+.view:hover{
+  color: white !important;
+}
 .cancel{
-  background-color:  #B22222!important;
+  border: 1px solid #B22222 !important;
+  color: #B22222 !important;
+  padding: 8px 15px !important;
   margin-left: 10px;
 }
 .cancel:hover {
-  background-color: #D64545 !important;
+  background-color: #B22222  !important;
+  color: white !important;
 }
 .disabledCancel {
   background-color: #ccc !important;
   color: #666 !important;
   cursor: not-allowed !important;
-  /* margin-left: 10px; */
+  margin-left: 10px;
+  padding: 8px 13px !important;
+
 }
 
 /*disabled cancel button*/
