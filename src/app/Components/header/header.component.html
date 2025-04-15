@@ -25,10 +25,10 @@
           <a class="nav-link" routerLinkActive="active" routerLink="products" (click)="closeNavbar()"
             data-bs-dismiss="collapse">Products</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="order" *ngIf="userServ.isLoggedIn()"
             (click)="closeNavbar()" data-bs-dismiss="collapse">Orders</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" routerLinkActive="active" routerLink="contact-us" (click)="closeNavbar()"
             data-bs-dismiss="collapse">Contact Us</a>
@@ -71,7 +71,7 @@
           data-bs-dismiss="collapse" class="me-3 d-flex align-items-center text-decoration-none">
           <img *ngIf="userProfileImage" [src]="userProfileImage" class="rounded-circle" width="24" height="24"
             alt="Profile Picture">
-          <svg *ngIf="!userProfileImage" width="24" height="24" viewBox="0 0 120 120" fill="none"
+          <svg *ngIf="!userProfileImage" width="24" height="24" viewBox="0 0 120 120" fill="cover"
             xmlns="http://www.w3.org/2000/svg">
             <circle cx="60" cy="60" r="60" fill="#D9D9D9" />
             <path
