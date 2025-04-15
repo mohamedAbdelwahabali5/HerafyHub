@@ -2,124 +2,105 @@
   <div class="container">
     <div class="form-container">
       <h2 class="text-center teal-green">Registration Form</h2>
-      <p class="text-center">Please fill in the form below</p>
 
 
 
       <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
         <!-- Full Name -->
-        <div class="mb-3 mx-3">
-          @if ((formControls.firstName.touched ||
+        <div class=" mx-3">
+          <label class="form-label">Full Name <span class="text-danger">*</span></label>
+          <div class="row g-2 ">
+            <div class="col-md-6">
+              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" />
+              @if ((formControls.firstName.touched ||
               formControls.firstName.dirty || submitted) &&
               formControls.firstName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("firstName")
                 }}</small>
               }
-              @else if ((formControls.lastName.touched || formControls.lastName.dirty
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" />
+              @if ((formControls.lastName.touched || formControls.lastName.dirty
               || submitted) && formControls.lastName.invalid) {
               <small class="text-danger">{{
                 getErrorMessage("lastName")
                 }}</small>
               }
-              @else {
-          <label class="form-label">Full Name <span class="text-danger">*</span></label>
-                
-              }
-          <div class="row g-2 mb-3">
-            <div class="col-md-6">
-              <input type="text" class="form-control" formControlName="firstName" placeholder="First Name" />
-              
-            </div>
-            <div class="col-md-6">
-              <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name" />
-              
             </div>
           </div>
         </div>
 
         <!-- Address -->
         <div class="mb-3 mx-3">
+          <label class="form-label">Address <span class="text-danger">*</span></label>
+          <input type="text" class="form-control mb-2" formControlName="address" placeholder="Address" />
           @if ((formControls.address.touched || formControls.address.dirty ||
           submitted) && formControls.address.invalid) {
           <small class="text-danger">{{ getErrorMessage("address") }}</small>
           }
-          @else if ((formControls.city.touched || formControls.city.dirty ||
-          submitted) && formControls.city.invalid) {
-          <small class="text-danger">{{ getErrorMessage("city") }}</small>
-          }
-          @else if ((formControls.state.touched || formControls.state.dirty ||
-          submitted) && formControls.state.invalid) {
-          <small class="text-danger">{{ getErrorMessage("state") }}</small>
-          }
-          @else if ((formControls.zipCode.touched || formControls.zipCode.dirty
-          || submitted) && formControls.zipCode.invalid) {
-          <small class="text-danger">{{
-            getErrorMessage("zipCode")
-            }}</small>
-          }
-          @else {
-          <label class="form-label">Address <span class="text-danger">*</span></label>
 
-          }
-          <input type="text" class="form-control mb-2" formControlName="address" placeholder="Address" />
-         
           <div class="row g-2 mb-3">
             <div class="col-md-4">
               <input type="text" class="form-control" formControlName="city" placeholder="City" />
-              
+              @if ((formControls.city.touched || formControls.city.dirty ||
+              submitted) && formControls.city.invalid) {
+              <small class="text-danger">{{ getErrorMessage("city") }}</small>
+              }
             </div>
             <div class="col-md-4">
               <input type="text" class="form-control" formControlName="state" placeholder="State" />
-             
+              @if ((formControls.state.touched || formControls.state.dirty ||
+              submitted) && formControls.state.invalid) {
+              <small class="text-danger">{{ getErrorMessage("state") }}</small>
+              }
             </div>
             <div class="col-md-4">
               <input type="text" class="form-control" formControlName="zipCode" placeholder="Zip Code" />
-             
+              @if ((formControls.zipCode.touched || formControls.zipCode.dirty
+              || submitted) && formControls.zipCode.invalid) {
+              <small class="text-danger">{{
+                getErrorMessage("zipCode")
+                }}</small>
+              }
             </div>
           </div>
         </div>
 
         <!-- Contact Information -->
-        <div class="row g-2 mb-3 mx-3">
+        <div class="row g-2  mx-3">
           <div class="col-md-6">
+            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="phone" />
             @if ((formControls.phone.touched || formControls.phone.dirty ||
             submitted) && formControls.phone.invalid) {
             <small class="text-danger">{{ getErrorMessage("phone") }}</small>
-            }@else {
-              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-
             }
-            <input type="text" class="form-control" formControlName="phone" />
-           
           </div>
           <div class="col-md-6">
+            <label class="form-label">E-mail <span class="text-danger">*</span></label>
+            <input type="email" class="form-control" formControlName="email" placeholder="example@gmail.com" />
             @if ((formControls.email.touched || formControls.email.dirty ||
             submitted) && formControls.email.invalid) {
             <small class="text-danger">{{ getErrorMessage("email") }}</small>
-            }@else {
-              <label class="form-label">E-mail <span class="text-danger">*</span></label>
-
             }
-            <input type="email" class="form-control" formControlName="email" placeholder="example@gmail.com" />
-          
           </div>
         </div>
 
         <!-- Password -->
-        <div class="row g-2 mb-3 mx-3">
+        <div class="row g-2 mb-2 mx-3">
           <div class="col-md-6">
+            <label class="form-label">Password <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" formControlName="password" />
             @if ((formControls.password.touched || formControls.password.dirty
             || submitted) && formControls.password.invalid) {
             <small class="text-danger">{{ getErrorMessage("password") }}</small>
-            }@else {
-              <label class="form-label">Password <span class="text-danger">*</span></label>
-
             }
-            <input type="password" class="form-control" formControlName="password" />
-            
           </div>
           <div class="col-md-6">
+            <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+            <input type="password" class="form-control" formControlName="confirmPassword" />
             @if ((formControls.confirmPassword.touched ||
             formControls.confirmPassword.dirty || submitted) &&
             (formControls.confirmPassword.errors?.['required'] ||
@@ -127,12 +108,7 @@
             <small class="text-danger">{{
               getErrorMessage("confirmPassword")
               }}</small>
-            }@else {
-              <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
-
             }
-            <input type="password" class="form-control" formControlName="confirmPassword" />
-            
           </div>
         </div>
 
@@ -143,7 +119,7 @@
             Registering... } @else { Register }
           </button>
         </div>
-        <div class="text-center mt-3">
+        <div class="text-center ">
           <p>
             Already have an account?
             <a class="login-link teal-green" routerLinkActive="active" routerLink="/login">Login</a>
