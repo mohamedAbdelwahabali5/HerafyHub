@@ -11,11 +11,19 @@
   --btn-bg-color: #000000;
 }
 
+/* Update the html, body styles */
 html, body {
-  height: 100vh;
-
+  height: 100%;
+  margin: 0;
+  /* padding: 0; */
+  /* overflow-x: hidden; */
 }
-/* Utility Classes */
+
+/* Remove or update this as it's causing issues */
+.form-control:invalid {
+  scroll-margin-top: 0; /* Remove this or set to 0 */
+}
+
 .teal-green {
   color: var(--teal-green) !important;
 }

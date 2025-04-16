@@ -7,40 +7,41 @@ import {
   AbstractControl,
   ValidationErrors,
   ValidatorFn,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from '../../Services/users.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, CommonModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css',
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent implements OnInit {
   resetEmail: string = '';
   password: string = '';
   confirmedpassword: string = '';
   showPassword = false;
   showConfirmPassword = false;
   token: string = '';
+  isLoading = false;
 
-  constructor(private route: ActivatedRoute, private usersService: UsersService, private router: Router) {
+  constructor(
+    private route: ActivatedRoute, 
+    private usersService: UsersService, 
+    private router: Router
+  ) {}
 
-  }
-
-  //get token from queryParams
   ngOnInit() {
     this.route.params.subscribe(params => {
-      // console.log("Query Params:", params);
       this.token = params['token'];
-      // console.log("Extracted Token:", this.token);
     });
   }
 
-  // Define your validator to match the expected signature
   passwordMatchValidator(): ValidatorFn {
     return (formGroup: AbstractControl): ValidationErrors | null => {
       const password = formGroup.get('password');
@@ -68,23 +69,25 @@ export class ResetPasswordComponent {
     confirmedpassword: new FormControl('', [Validators.required]),
   }, { validators: this.passwordMatchValidator() });
 
-  // Submit form handler
   onSubmit(): void {
     if (this.resetPasswordForm.valid) {
+      // Prevent multiple submissions
+      if (this.isLoading) return;
+
+      this.isLoading = true;
       const formValues = {
         password: this.resetPasswordForm.get('password')?.value || '',
         confirmedpassword: this.resetPasswordForm.get('confirmedpassword')?.value || '',
       };
 
-      // console.log("Sending request with:", {
-      //   token: this.token,
-      //   password: formValues.password,
-      //   confirmedpassword: formValues.confirmedpassword,
-      // });
       this.usersService.resetPassword(this.token, formValues.password, formValues.confirmedpassword)
+        .pipe(
+          finalize(() => {
+            this.isLoading = false;
+          })
+        )
         .subscribe({
           next: (response) => {
-
             this.showMessage('Password Reset Successful', 'You will be redirected to the login page', "success");
             setTimeout(() => {
               this.router.navigate(['/login']);
@@ -95,18 +98,15 @@ export class ResetPasswordComponent {
           },
           error: (err) => {
             console.error('Error:', err);
-            this.showMessage('Reset failed', 'Failed to reset password... Please try again', "error");
+            this.showMessage('Reset failed', err.error?.message || 'Failed to reset password... Please try again', "error");
           }
         });
 
     } else {
-      // console.log('Form is invalid. Please check the fields.');
       this.markFormGroupTouched(this.resetPasswordForm);
     }
   }
 
-
-  // Helper to mark all controls as touched
   markFormGroupTouched(formGroup: FormGroup): void {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
@@ -117,11 +117,17 @@ export class ResetPasswordComponent {
   }
 
   returnToLogin() {
-    // console.log('logic of returnToLogin');
-    this.router.navigate(['/login'], { skipLocationChange: false, replaceUrl: true });
+    // Prevent navigation if loading
+    if (!this.isLoading) {
+      this.router.navigate(['/login'], { skipLocationChange: false, replaceUrl: true });
+    }
   }
+
   checkMatchingPassword() {
-    this.onSubmit();
+    // Prevent multiple submissions
+    if (!this.isLoading) {
+      this.onSubmit();
+    }
   }
 
   private showMessage(title: string, message: string, icon: SweetAlertIcon): void {

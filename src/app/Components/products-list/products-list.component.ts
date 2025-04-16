@@ -10,7 +10,7 @@ import { CollectionCardComponent } from '../collection/collection-card/collectio
   templateUrl: './products-list.component.html',
   styleUrl: './products-list.component.css',
   standalone: true,
-  imports: [ProductCardComponent, CommonModule, FormsModule,CollectionCardComponent],
+  imports: [ CommonModule, FormsModule,CollectionCardComponent],
 })
 export class ProductsListComponent {
   @Input() categoryId: string = ''; // Changed from selectedCategoryId to categoryId

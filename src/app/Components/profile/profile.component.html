@@ -1,4 +1,12 @@
 <!-- profile.component.html -->
+@if (isLoading && isLoadingActivity) {
+<div class="loader-overlay">
+  <div class="spinner-border text-teal-green" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+}
+
 <main>
   <div class="container ">
     <div class="row g-4">
@@ -7,25 +15,34 @@
         <div class="form-container">
           <h2 class="text-left">Profile</h2>
           <div class="profile-picture-container">
-            <div class="profile-picture">
+            <div class="profile-picture position-relative">
               @if (imagePreview) {
-              <img [src]="imagePreview" alt="Profile Picture" />
+              <img class="rounded-circle" [src]="imagePreview" alt="Profile Picture" />
               } @else {
               <img
+              class="rounded-circle"
                 [src]="userData?.profileImage || 'https://res.cloudinary.com/dojq1nxqw/image/upload/v1743790840/img-preview_r3jbih.png'"
                 alt="Default Profile Picture" />
               }
+              <div class="image-overlay" [class.disabled]="!isEditMode">
+                <label for="profileImageInput" class="upload-icon">
+                  <i class="bi bi-camera-fill"></i>
+                </label>
+                @if (imagePreview && imagePreview !== 'images/img-preview.png') {
+                  <i class="bi bi-trash-fill delete-icon text-danger" 
+                     (click)="onDeletePicture()" 
+                     [class.disabled]="isLoading || isDeletingImage">
+                  </i>
+                }
+              </div>
             </div>
-            <div class="picture-actions">
-              <button class="btn btn-custom" (click)="fileInput.click()" [disabled]="!isEditMode">
-                Change Picture
-              </button>
-              <button class="btn btn-bg-color text-white" (click)="onDeletePicture()" [disabled]="!isEditMode">
-                Delete Picture
-              </button>
-            </div>
-
-            <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)" />
+            <input 
+              #fileInput 
+              id="profileImageInput"
+              type="file" 
+              hidden 
+              accept="image/*" 
+              (change)="onFileSelected($event)" />
           </div>
 
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
@@ -153,13 +170,13 @@
         <div class="active-details-container">
           <h2 class="text-center mb-2">Activity Overview</h2>
 
-          @if (isLoadingActivity) {
+          <!-- @if (isLoadingActivity) {
           <div class="text-center">
-            <div class="spinner-border" role="status">
+            <div class="spinner-border text-teal-green" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
           </div>
-          } @else {
+          } @else { -->
           <div class="detail-card">
             <div class="detail-header">
               <i class="bi bi-cart3"></i>
@@ -179,8 +196,11 @@
                 <strong class="text-success">{{ orderStats?.ordersByStatus?.delivered || 0 }}</strong>
               </div>
               <div class="detail-item">
-                <span>Total Spent</span>
-                <strong class="text-primary">{{ orderStats?.totalSpent | currency:'EGP ' }}</strong>
+                <strong 
+                  class="text-primary cursor-pointer" 
+                  (click)="navigateToOrderHistory()">
+                  View Orders
+                </strong>
               </div>
             </div>
           </div>
@@ -210,7 +230,7 @@
               </ul>
             </div>
           </div>
-          }
+          <!-- } -->
         </div>
       </div>
     </div>
