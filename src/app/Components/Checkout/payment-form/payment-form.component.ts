@@ -117,8 +117,9 @@ export class PaymentFormComponent implements OnInit {
     }
 
     if (success === 'true') {
-      this.router.navigate(['/order'], { queryParams: { orderId: merchantOrderId } });
+      this.showMessage('Success', 'Order placed successfully', 'success');
       this.processSuccessfulPayment(merchantOrderId);
+      // this.router.navigate(['/order'], { queryParams: { orderId: merchantOrderId } });
     } else {
       this.showMessage('Payment Failed', `Order ID: ${merchantOrderId}`, 'error');
       this.removePaymentFlag();
