@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../../Services/collection.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { UsersService } from '../../Services/users.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterModule, CommonModule, FormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterModule, CommonModule],
   providers: [ProductService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   name: string = '';
   email: string = '';
+  isLoading = false;
 
   constructor(private userServ: UsersService, private router: Router) { }
 
@@ -35,32 +36,35 @@ export class LoginComponent {
 
   formCheck() {
     if (this.loginForm.valid) {
+      // Prevent multiple submissions
+      if (this.isLoading) return;
+
+      this.isLoading = true;
       const email = this.loginForm.controls['email'].value || '';
       const password = this.loginForm.controls['password'].value || '';
       const rememberMe = this.loginForm.controls['rememberMe'].value || false;
 
-      this.userServ.loginUser(email, password).subscribe({
-        next: (response) => {
-          // console.log('Login successful', response);
-          // console.log(response.success);
-          if (response.success) {
-            this.userServ.setToken(response.token, rememberMe);
-            // console.log("rememberMe", rememberMe);
-
-            this.router.navigate(['/home']);
-          } else {
-            // Show sweet alert message for unsuccessful login
-            this.showLoginError('Login failed', 'Invalid credentials... Please try again');
+      this.userServ.loginUser(email, password)
+        .pipe(
+          finalize(() => {
+            this.isLoading = false;
+          })
+        )
+        .subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.userServ.setToken(response.token, rememberMe);
+              this.router.navigate(['/home']);
+            } else {
+              this.showLoginError('Login failed', 'Invalid credentials... Please try again');
+            }
+          },
+          error: (error: any) => {
+            this.showLoginError('Login Error', error.error?.message || 'Unable to connect to the server... Please try again later');
           }
-        },
-        error: (error: any) => {
-          // console.log('Login failed', error.message);
-          this.showLoginError('Login Error', error.message || 'Unable to connect to the server... Please try again later');
-        }
-      });
+        });
     } else {
-      // console.log('Form validation failed');
-      this.loginForm.markAllAsTouched(); // Mark all fields as touched to trigger validation errors
+      this.loginForm.markAllAsTouched();
     }
   }
 

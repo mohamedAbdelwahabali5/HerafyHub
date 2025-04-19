@@ -35,22 +35,21 @@
         @for (order of orders(); track order._id) {
         <tr>
           <td data-label="Invoice Number">{{ order.invoiceNumber || order._id }}</td>
-          <td data-label="Total">{{ (order.totalPrice - 4) | currency:'EGP ' }}</td>
-
-          <td data-label="Status">{{ order.status }}</td>
+          <td data-label="Total">{{ order.totalPrice | currency:'EGP ' }}</td>
+          <td class="status-label p-0 m-0">{{ order.status }}</td>
           <td data-label="Date">{{ order.createdAt | date:'medium' }}</td>
           <td data-label="Actions" class="text-center">
-            <button (click)="viewOrderDetails(order)">
-              View Details
+            <button (click)="viewOrderDetails(order)" title="View Order" class="view">
+              <i class="fa-solid fa-eye"></i>
             </button>
 
             @if (order._id) {
             <button (click)="cancelOrder(order._id)"
+              [title]="order.status !== 'Cancelled' ? 'Cancel Order' : 'Cancelled'"
               [ngClass]="order.status !== 'In-Progress' ? 'disabledCancel' : 'cancel'"
               [attr.disabled]="order.status !== 'In-Progress' ? true : null">
-              Cancel Order
+              <i class="fa-solid" [ngClass]="order.status === 'Cancelled' ? 'fa-ban' : 'fa-xmark'"></i>
             </button>
-
             }
           </td>
         </tr>
@@ -69,41 +68,55 @@
 
       <div class="order-details-section">
         <h4>Order Information</h4>
-        <ul class="order-info">
-          <li><strong>Invoice Number:</strong> {{ selectedOrderDetails.invoiceNumber || selectedOrderDetails._id }}</li>
-          <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency:'EGP ' }}</li>
-
-          <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
-          <li>
-            <strong>Shipping details:</strong>
-            <div class="shipping-details">
-              <p>Name: {{ selectedOrderDetails.shippingAddress.name }}</p>
-              <p>Address: {{ selectedOrderDetails.shippingAddress.address }}</p>
-              <p>Phone: {{ selectedOrderDetails.shippingAddress.phone }}</p>
+        <div class="order-info-flex">
+          <div class="order-info-left">
+            <ul class="order-info">
+              <li><strong>Invoice Number:</strong> {{ selectedOrderDetails.invoiceNumber || selectedOrderDetails._id }}
+              </li>
+              <li><strong>Total Price:</strong> {{ selectedOrderDetails.totalPrice | currency:'EGP ' }}</li>
+              <li><strong>Status:</strong> <span class="status-label">{{ selectedOrderDetails.status }}</span></li>
+              <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
+            </ul>
+          </div>
+          <div class="order-info-right">
+            <div class="shipping-details-container">
+              <div class="shipping-header">
+                <strong>Shipping details</strong>
+              </div>
+              <div class="shipping-details">
+                <p><strong>Name:</strong> {{ selectedOrderDetails.shippingAddress.name }}</p>
+                <p><strong>Address:</strong> {{ selectedOrderDetails.shippingAddress.address }}</p>
+                <p><strong>Phone: </strong>{{ selectedOrderDetails.shippingAddress.phone }}</p>
+              </div>
             </div>
-          </li>
-          <li><strong>Created Date:</strong> {{ selectedOrderDetails.createdAt | date:'medium' }}</li>
-        </ul>
+          </div>
+        </div>
       </div>
 
       <div class="order-details-section">
         <h4>Products</h4>
-        <table class="products-table">
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of selectedOrderDetails.orderItems; track item.product) {
-            <tr>
-              <td>{{ item.product.title}}</td>
-              <td>{{ item.quantity }}</td>
-            </tr>
-            }
-          </tbody>
-        </table>
+        <div class="products-table-wrapper">
+          <table class="products-table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of selectedOrderDetails.orderItems; track item.product) {
+              <tr>
+                <td>{{ item.product.title }}</td>
+                <td>{{ item.price | currency:'EGP ' }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price * item.quantity | currency:'EGP ' }}</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

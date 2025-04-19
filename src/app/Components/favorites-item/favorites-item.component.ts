@@ -5,11 +5,12 @@ import { ProductService } from '../../Services/collection.service';
 import { CartService } from '../../Services/cart.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-favorite-item',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './favorites-item.component.html',
   styleUrl: './favorites-item.component.css',
 })
@@ -63,7 +64,9 @@ export class FavoriteItemComponent implements OnInit {
       }
     }
   }
-  removeItem() {
+  removeItem(event:MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
     // console.log(this.product._id);
     if (this.product && this.product._id) {
       this.FavoriteService.removeFromFavorite(this.product._id).subscribe({
@@ -85,7 +88,9 @@ export class FavoriteItemComponent implements OnInit {
   isProductInCart(productId: string): boolean {
     return this.productsInCart.has(productId);
   }
-  addToCart(): void {
+  addToCart(event:MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
     if (this.isLoading || this.isProductInCart(this.product._id)) {
       return;
     }
@@ -108,7 +113,6 @@ export class FavoriteItemComponent implements OnInit {
           showConfirmButton: false,
         });
         this.isLoading = false;
-        this.removeItem();
       },
       error: (err) => {
         console.error('Error adding product to cart:', err);

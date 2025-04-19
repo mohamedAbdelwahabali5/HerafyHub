@@ -3,6 +3,7 @@ import { ProductService } from '../../Services/collection.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { CategoryIdSerService } from '../../Services/category-id-ser.service';
 
 @Component({
   selector: 'app-slider',
@@ -17,7 +18,7 @@ export class SliderComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private productService: ProductService, private router: Router, private categoryService: CategoryIdSerService) { }
 
   ngOnInit() {
     this.fetchCategories();
@@ -41,7 +42,8 @@ export class SliderComponent implements OnInit {
 
   navigateToProducts(categoryId: string) {
     if (!this.loading) {
-      this.router.navigate(['/products'], { 
+      this.onCategorySelect(categoryId);
+      this.router.navigate(['/products'], {
         state: { categoryId: categoryId }
       });
     }
@@ -75,5 +77,21 @@ export class SliderComponent implements OnInit {
 
   retryFetch() {
     this.fetchCategories();
+  }
+
+  loadCategoryId(event: any) {
+    let clickedItem = event.target.closest('a');
+    if (clickedItem) {
+      const selectedCategoryTitle = clickedItem.textContent.trim();
+      const category = this.categories.find((cat: any) => cat.title === selectedCategoryTitle);
+      if (category) {
+        this.onCategorySelect(category._id);
+      }
+    }
+  }
+
+  //make category id sharable for all components
+  onCategorySelect(id: string) {
+    this.categoryService.setCategoryId(id);
   }
 }

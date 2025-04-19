@@ -4,7 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UsersService } from './users.service';
 import { environment } from '../../environments/environment.prod';
-import { Order, ShippingAddress, OrderResponse } from '../Models/order.model';
+import { Order, ShippingAddress, OrderResponse, OrderDetailsResponse } from '../Models/order.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,7 @@ export class OrderService {
     paymentMethod: 'Credit Card' | 'Cash on Delivery';
     products: { productId: string; quantity: number }[];
   }): Observable<Order> {
+    console.log("calling order service");
     const token = this.usersService.getToken();
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`,
@@ -57,5 +59,18 @@ export class OrderService {
       'Authorization': `Bearer ${token}`
     });
     return this.http.get<Order[]>(`${this.apiUrlOrder}`, { headers });
+  }
+
+  // get order details
+
+  getOrderDetails(orderId: string): Observable<Order> {
+    const token = this.usersService.getToken();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<OrderDetailsResponse>(`${this.apiUrlOrder}/${orderId}`, { headers })
+      .pipe(
+        map(response => response.order)
+      );
   }
 }

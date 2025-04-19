@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, SecurityContext, ViewChild } from
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 // Services
@@ -15,6 +15,7 @@ import { UsersService } from '../../../Services/users.service';
 import { ShippingAddress } from '../../../Models/order.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { interval, Subscription, switchMap, takeWhile } from 'rxjs';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 interface PaymentMethod {
   id: string;
@@ -84,15 +85,49 @@ export class PaymentFormComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private paymobService: PaymobService,
-    private userService: UsersService
+    private userService: UsersService,
+    private route: ActivatedRoute,
   ) { }
 
 
   ngOnInit() {
     this.loadCartItems();
     this.gettingAllUserInfo();
-  }
+    this.route.queryParams.subscribe((params) => {
+      const success = params['success'];
+      const merchantOrderId = params['merchant_order_id'];
 
+      if (localStorage.getItem('fromCheckout') === 'true') {
+        // In the queryParams subscription, modify the handling:
+        if (success === 'true') {
+          // Restore cart data before processing
+          if (this.restoreCartData()) {
+            const paymentMethod = localStorage.getItem('paymentMethod');
+            console.log('Payment Method:', paymentMethod);
+            console.log('merchantOrderId:', merchantOrderId);
+            if (paymentMethod === 'card') {
+              this.handleSuccessfulCardPayment(merchantOrderId);
+            } else {
+              this.processCashOnDelivery();
+            }
+            this.showMessage('Payment Successful', `Order ID: ${merchantOrderId}`, 'success');
+          } else {
+            this.toastr.error('Could not restore order data', 'Error');
+          }
+        } else {
+          this.showMessage('Payment Failed', `Order ID: ${merchantOrderId}`, 'error')
+        }
+        this.removePaymentFlag();
+        this.removePaymentMethod();
+
+        // After payment processing is complete, also clean up other localStorage items
+        setTimeout(() => {
+          localStorage.removeItem('processedOrderId');
+          localStorage.removeItem('lastOrderId');
+        }, 5000); // Give some time for navigation to complete
+      }
+    });
+  }
   ngOnDestroy() {
     if (this.paymentStatusSub) {
       this.paymentStatusSub.unsubscribe();
@@ -111,6 +146,7 @@ export class PaymentFormComponent implements OnInit {
     this.cartService.getAllProducts().subscribe({
       next: (response: any) => {
         this.cartItems = response.cartItems;
+        this.applySavedQuantities(); // Add this line
         this.calculateTotalPrice();
       },
       error: (error) => {
@@ -118,6 +154,29 @@ export class PaymentFormComponent implements OnInit {
         this.toastr.error('Failed to load cart items', 'Error');
       }
     });
+  }
+
+  private applySavedQuantities(): void {
+    const storedQuantities = localStorage.getItem('cartQuantities');
+    if (storedQuantities) {
+      try {
+        const cartQuantities = JSON.parse(storedQuantities);
+        this.cartItems.forEach(item => {
+          const productId = item.id || item._id || item.product?._id || item.productId;
+          // Handle both array and object formats
+          const quantity = Array.isArray(cartQuantities)
+            ? cartQuantities.find(q => q.id === productId)?.quantity
+            : cartQuantities[productId];
+
+          if (quantity) {
+            item.quantity = Number(quantity);
+            item.total = item.price * item.quantity;
+          }
+        });
+      } catch (e) {
+        console.error('Error parsing cart quantities:', e);
+      }
+    }
   }
 
   calculateTotalPrice(): void {
@@ -130,17 +189,19 @@ export class PaymentFormComponent implements OnInit {
 
   onSubmit() {
     if (!this.selectedMethod) {
+      console.log('No payment method selected');
+      console.log(this.selectedMethod);
       this.toastr.error('Please select a payment method', 'Error');
       return;
     }
 
-    if (this.selectedMethod.id === 'cod') {
+    if (this.selectedMethod.id === 'cod' || this.selectedMethod.id === 'card') {
       this.processCashOnDelivery();
-    } else if (this.selectedMethod.id === 'card' && this.paymentKey) {
-
-      this.toastr.info('Please complete the payment process', 'Info');
     }
+
   }
+
+
 
 
   private startPaymentVerification() {
@@ -210,15 +271,19 @@ export class PaymentFormComponent implements OnInit {
   }
 
   private mapCartItemsToOrderProducts() {
+    console.log('Cart Items:', this.cartItems);
+
     return this.cartItems.map(item => {
       const productId = item.id || item._id || item.product?._id || item.productId;
+      const quantity = item.quantity;
+
       if (!productId) {
         console.warn('Could not find product ID for item:', item);
         return null;
       }
       return {
         productId: productId,
-        quantity: Number(item.quantity || 1)
+        quantity: Number(quantity)
       };
     }).filter(product => product !== null);
   }
@@ -230,17 +295,25 @@ export class PaymentFormComponent implements OnInit {
       closeButton: true
     });
 
+    const orderId = response.order?._id || response._id;
+
     this.cartService.clearCart().subscribe({
       next: () => {
         this.router.navigate(['/order'], {
-          queryParams: { orderId: response.order?._id || response._id }
+          queryParams: { orderId: orderId }
         });
         this.cartService.clearCartItems();
+        localStorage.removeItem('productsInCart');
+        localStorage.removeItem('cartQuantities');
+        localStorage.removeItem('fromCheckout');
+        localStorage.removeItem('checkoutCartData');
+        localStorage.removeItem('paymentMethod');
+        localStorage.removeItem('processedOrderId');
       },
       error: (clearError) => {
         console.error('Cart clearing failed:', clearError);
-        this.router.navigate(['/'], {
-          queryParams: { orderId: response.order?._id || response._id }
+        this.router.navigate(['/order'], {
+          queryParams: { orderId: orderId }
         });
       }
     });
@@ -264,6 +337,7 @@ export class PaymentFormComponent implements OnInit {
 
   selectPaymentMethod(method: PaymentMethod) {
     this.selectedMethod = method;
+    localStorage.setItem('paymentMethod', method.id);
     if (method.id === 'card') {
       this.initiateCardPayment();
     }
@@ -304,6 +378,76 @@ export class PaymentFormComponent implements OnInit {
     });
   }
 
+  // Update this method to properly handle the card payment flow
+  private handleSuccessfulCardPayment(merchantOrderId: string) {
+    // Check if we already processed this order to prevent duplicates
+    if (localStorage.getItem('processedOrderId') === merchantOrderId) {
+      console.log('Order already processed:', merchantOrderId);
+      this.router.navigate(['/order'], {
+        queryParams: { orderId: localStorage.getItem('lastOrderId') || '' }
+      });
+      return;
+    }
+
+    // First create the order in your system
+    const orderProducts = this.mapCartItemsToOrderProducts();
+    if (!orderProducts.length) {
+      this.toastr.error('No products found in cart', 'Order Error');
+      return;
+    }
+
+    const shippingAddress = this.getShippingAddress();
+    if (!this.validateShippingAddress(shippingAddress)) return;
+
+    const orderData = {
+      shippingAddress,
+      paymentMethod: 'Credit Card' as const,
+      products: orderProducts.map(p => ({
+        productId: String(p?.productId),
+        quantity: Number(p?.quantity || 1)
+      }))
+
+    };
+
+    this.isLoading = true;
+    this.orderService.createOrder(orderData).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+        const orderId = response.order?._id || response._id;
+
+        // Mark this order as processed to prevent duplicates
+        localStorage.setItem('processedOrderId', merchantOrderId);
+        localStorage.setItem('lastOrderId', orderId);
+
+        // Clear cart and navigate to order success page
+        this.cartService.clearCart().subscribe({
+          next: () => {
+            this.router.navigate(['/order'], {
+              queryParams: { orderId: orderId }
+            });
+            this.cartService.clearCartItems();
+            localStorage.removeItem('productsInCart');
+            localStorage.removeItem('cartQuantities');
+          },
+          error: (clearError) => {
+            console.error('Cart clearing failed:', clearError);
+            this.router.navigate(['/order'], {
+              queryParams: { orderId: orderId }
+            });
+          }
+        });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.toastr.error(
+          error.error?.message || 'Failed to create order record',
+          'Order Error',
+          { timeOut: 5000, closeButton: true }
+        );
+        console.error('Failed to create order after successful payment:', error);
+      }
+    });
+  }
   private getPaymentKey() {
     if (!this.userInfo) {
       this.handlePaymentError('User information not available');
@@ -334,6 +478,7 @@ export class PaymentFormComponent implements OnInit {
         this.paymentKey = keyRes.token;
         // Use your actual Paymob iframe ID (replace 911500)
         this.iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/911500?payment_token=${this.paymentKey}`;
+        this.setPaymentFlag();
 
         // Load iframe after slight delay to ensure DOM is ready
         setTimeout(() => {
@@ -354,6 +499,13 @@ export class PaymentFormComponent implements OnInit {
     this.toastr.error(message, 'Payment Error');
   }
 
+  setPaymentFlag() {
+    localStorage.setItem('fromCheckout', 'true');
+    localStorage.setItem('checkoutCartData', JSON.stringify(this.cartItems));
+  }
+  removePaymentFlag() {
+    localStorage.removeItem('fromCheckout');
+  }
   // Helper methods remain the same
   getUserFullName(): string {
     if (!this.userData) return '';
@@ -423,6 +575,33 @@ export class PaymentFormComponent implements OnInit {
     });
   }
 
+  private removePaymentMethod() {
+    localStorage.removeItem('paymentMethod');
+  }
+  // method to restore cart data
+  private restoreCartData() {
+    const savedCartData = localStorage.getItem('checkoutCartData');
+    if (savedCartData) {
+      try {
+        this.cartItems = JSON.parse(savedCartData);
+        this.calculateTotalPrice();
+        return true;
+      } catch (e) {
+        console.error('Error parsing saved cart data:', e);
+        return false;
+      }
+    }
+    return false;
+  }
+  private showMessage(title: string, message: string, icon: SweetAlertIcon): void {
+    Swal.fire({
+      title: title,
+      text: message,
+      icon: icon,
+      showConfirmButton: false,
+      timer: 3000
+    });
+  }
 }
 
 

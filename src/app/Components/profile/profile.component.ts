@@ -9,7 +9,8 @@ import {
 import { User } from '../../Models/user.model';
 import { UsersService } from '../../Services/users.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
 import { ToastrService } from 'ngx-toastr';
 import { finalize } from 'rxjs/operators';
 import { OrderService } from '../../Services/order.service';
@@ -20,7 +21,8 @@ import { OrderStatistics, RecentActivity } from '../../Models/order.model';
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -169,19 +171,77 @@ export class ProfileComponent implements OnInit {
     // this.profileForm.get('email')?.disable();
   }
 
+  updateProfileImage(file: File) {
+    if (!file) return;
+  
+    this.isLoading = true;
+    this.usersService.updateProfileImage(file).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.toastr.success('Profile image updated successfully');
+          if (response.profileImage) {
+            this.imagePreview = response.profileImage;
+            if (this.userData) {
+              this.userData.profileImage = response.profileImage;
+            }
+          }
+          this.isEditMode = false;
+          this.disableForm();
+        } else {
+          this.toastr.error('Failed to update profile image');
+        }
+        this.isLoading = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Image update failed:', err);
+        this.isLoading = false;
+        this.toastr.error(err.error?.message || 'Failed to update profile image');
+      }
+    });
+  }
+  
+  // Update the onFileSelected method
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        this.toastr.error('File size should not exceed 10MB', 'Error');
+        return;
+      }
+  
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.toastr.error('Please upload only image files', 'Error');
+        return;
+      }
+  
+      // Preview the image
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
+  
+      // Update the profile image
+      this.updateProfileImage(file);
+    }
+  }
+  
+  // Update the onSubmit method to remove image handling
   onSubmit() {
     this.submitted = true;
     this.errorMessage = null;
-
+  
     if (!this.profileForm.valid) {
       return;
     }
-
+  
     if (!this.userData) {
       this.errorMessage = 'No user data available';
       return;
     }
-
+  
     const formValue = this.profileForm.getRawValue();
     const updatedUser: User = {
       ...this.userData,
@@ -194,35 +254,26 @@ export class ProfileComponent implements OnInit {
       phone: formValue.phone!,
       email: formValue.email!
     };
-
+  
     this.isLoading = true;
-
-    this.usersService.updateUserProfile(updatedUser, this.selectedFile || undefined).subscribe({
+  
+    this.usersService.updateUserProfile(updatedUser).subscribe({
       next: (response) => {
         this.toastr.success('Profile updated successfully');
         this.userData = response.user;
-
-        // If a new profile image was uploaded
-        if (response.user.profileImage) {
-          this.imagePreview = response.user.profileImage;
-        }
-
         this.patchFormWithUserData(response.user);
         this.isLoading = false;
-        this.isEditMode = false; // Disable edit mode after successful save
-        this.disableForm(); // Disable the form
+        this.isEditMode = false;
+        this.disableForm();
       },
       error: (err: HttpErrorResponse) => {
         console.error('Update failed:', err);
         this.isLoading = false;
-
+  
         if (err.status === 401) {
           this.errorMessage = 'Session expired. Please login again.';
           this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
           this.usersService.logout();
-        } else if (err.status === 400) {
-          this.errorMessage = err.error?.message || 'Invalid data provided';
-          this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
         } else {
           this.errorMessage = err.error?.message || 'Error updating profile';
           this.toastr.error(this.errorMessage || 'An error occurred', 'Error');
@@ -231,31 +282,12 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // Validate file size (10MB limit)
-      if (file.size > 10 * 1024 * 1024) {
-        this.toastr.error('File size should not exceed 10MB', 'Error');
-        return;
-      }
-
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        this.toastr.error('Please upload only image files', 'Error');
-        return;
-      }
-
-      this.selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
+  isDeletingImage = false;
 
   onDeletePicture() {
+    if (this.isDeletingImage) return;
+    
+    this.isDeletingImage = true;
     this.usersService.deleteProfileImage().subscribe({
       next: (response) => {
         this.selectedFile = null;
@@ -264,9 +296,13 @@ export class ProfileComponent implements OnInit {
           this.userData.profileImage = '';
         }
         this.toastr.success('Profile picture deleted successfully');
+        this.isDeletingImage = false;
+        this.isEditMode = false;
+        this.disableForm();
       },
       error: (error) => {
         this.toastr.error(error.message || 'Failed to delete profile picture');
+        this.isDeletingImage = false;
       }
     });
   }
@@ -363,6 +399,10 @@ export class ProfileComponent implements OnInit {
     if (diffInHours < 1) return 'Just now';
     if (diffInHours < 24) return `${diffInHours}h ago`;
     return `${Math.floor(diffInHours / 24)}d ago`;
+  }
+
+  navigateToOrderHistory() {
+    this.router.navigate(['/order']);
   }
 }
 

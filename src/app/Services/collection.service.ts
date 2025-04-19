@@ -39,7 +39,7 @@ export class ProductService {
   }
 
   searchByTitleInCategory(title: string, categoryId: string) {
-    console.log('Searching for:', title, 'in category:', categoryId);
+    // console.log('Searching for:', title, 'in category:', categoryId);
     if (categoryId == 'allProducts') {
       return this.http.get(`${this.all_Products_URL}`, { headers: this.getHeaders() });
     } else {
@@ -52,13 +52,12 @@ export class ProductService {
   getAllCategories() {
     return this.http.get(this.Categories_URL, { headers: this.getHeaders() });
   }
-  
+
   getCategoryById(categoryId: string) {
     return this.http.get(`${this.Categories_URL}/${categoryId}`, { headers: this.getHeaders() });
   }
-  
+
   getProductById(id: string) {
     return this.http.get(`${this.products_URL}/${id}`, { headers: this.getHeaders() });
   }
 }
-

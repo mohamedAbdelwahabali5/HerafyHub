@@ -15,14 +15,27 @@ nav {
 .img-fluid{
     width:135px;
 }
+.login{
+  border: 1px solid #3D8D7A !important;
+  background-color: transparent !important;
+  color: #3D8D7A;
+
+}
+.login:hover{
+  border: 1px solid #3D8D7A !important;
+  background-color: transparent !important;
+  color: #3D8D7A;
+
+}
 button{
     background-color: #3D8D7A;
     color: white;
-}
-button:hover{
-  background-color: var(--teal-green-hover);
-  color: aliceblue;
-}
+  }
+  button:hover{
+    background-color: var(--teal-green-hover);
+    color: aliceblue;
+    transform: translateY(-1px);
+  }
 
 div i{
     color: #3D8D7A;

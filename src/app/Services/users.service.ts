@@ -287,4 +287,41 @@ export class UsersService {
   checkLoginState() {
     this._isLoggedIn.next(this.isLoggedIn());
   }
+
+  // Add this method to the UsersService class
+  updateProfileImage(file: File): Observable<any> {
+    const token = this.getToken();
+    if (!token) {
+      return throwError(() => new Error('No token found'));
+    }
+  
+    const formData = new FormData();
+    formData.append('profileImage', file);
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json'  // Add this to ensure JSON response
+    });
+  
+    return this.http.put<any>(  // Changed from post to put
+      `${this.apiUrlAuth}/update-profile`, // Changed endpoint to match the update profile endpoint
+      formData,
+      { headers }
+    ).pipe(
+      tap(response => {
+        if (response?.user?.profileImage) {
+          this.profileImageSubject.next(response.user.profileImage);
+        }
+      }),
+      catchError(error => {
+        if (error.status === 401) {
+          this.logout();
+          return throwError(() => new Error('Session expired. Please login again.'));
+        }
+        console.error('Profile image update error:', error);
+        const errorMsg = error.error?.message || 'Failed to update profile image';
+        return throwError(() => new Error(errorMsg));
+      })
+    );
+  }
 }

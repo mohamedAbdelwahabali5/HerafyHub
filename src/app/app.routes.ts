@@ -20,43 +20,44 @@ import { OrderPageComponent } from './Components/Order/order/order.component';
 
 import { MainCheckoutComponent } from './Components/Checkout/main-checkout/main-checkout.component';
 
-
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'contact-us', component: ContactComponent },
 
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
   {
     path: 'products',
     component: ProductsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
 
   {
     path: 'products/:categoryId',
     component: ProductsComponent,
-    canActivate: [AuthGuardService],
-  },
+/*     canActivate: [AuthGuardService],
+ */  },
   {
     path: 'order',
     component: OrderPageComponent,
     canActivate: [AuthGuardService],
   },
-  { path: 'cart', component: CartComponent },
-  { path: 'favorite', component: FavoriteComponent },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuardService] },
+  { path: 'favorite', component: FavoriteComponent, canActivate: [AuthGuardService] },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   {
-    path: 'checkout', component: MainCheckoutComponent, canActivate: [AuthGuardService],
+    path: 'checkout',
+    component: MainCheckoutComponent,
+    canActivate: [AuthGuardService],
   },
 
   // error page

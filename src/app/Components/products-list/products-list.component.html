@@ -53,11 +53,9 @@
     </div>
   </div>
   }@else{
-  <div class="row mt-4  d-flex justify-content-evenly">
-    @for (product of pageProducts; track $index) {
-    <div class="col-sm-5 col-md-4 col-lg-3 mb-5 d-flex justify-content-center align-content-center">
-      <app-product-card [product]="product"></app-product-card>
-    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-5 mt-3">
+      @for (product of pageProducts; track $index) {
+      <app-collection-card  [product]="product"></app-collection-card>
     }
   </div>
 

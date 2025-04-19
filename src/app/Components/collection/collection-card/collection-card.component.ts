@@ -38,6 +38,7 @@ export class CollectionCardComponent {
     this.loadFavoriteStateFromStorage();
   }
   toggleHeart(event: Event): void {
+    event.preventDefault();
     event.stopPropagation();
 
     if (this.isProductInFavorites()) {
@@ -76,7 +77,10 @@ export class CollectionCardComponent {
     return this.productsInCart.has(productId);
   }
 
-  addToCart(quantity: number = 1) {
+  addToCart(event:MouseEvent,quantity: number = 1) {
+    event.preventDefault();
+    event.stopPropagation();
+
     if (this.isLoading || this.isProductInCart(this.product._id) || !this.userServ.isLoggedIn()) {
       return;
     }

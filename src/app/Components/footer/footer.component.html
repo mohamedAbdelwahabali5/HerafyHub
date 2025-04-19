@@ -2,10 +2,11 @@
   <div class="container">
     <div class="row g-5">
       <!-- Logo Section -->
-      <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+      <div class="col-12 col-lg-4 mb-lg-0">
         <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <a class="d-inline-block mb-4" href="/">
-            <img src="/images/logo.PNG" alt="Logo" class="img-fluid" style="width: 180px" />
+          <a class="d-inline-block mb-4" routerLink="/home">
+            <img src="https://res.cloudinary.com/dojq1nxqw/image/upload/v1743790842/logo_tfqhzr.png" alt="Logo"
+              class="img-fluid" style="width: 180px" />
           </a>
           <p class="text-center text-lg-start text-secondary mb-0 px-3 px-lg-0">
             Handcrafted with Love, Created for You.<br />
@@ -17,34 +18,84 @@
       <!-- Products & Links Row -->
       <div class="col-12 col-lg-8">
         <div class="row g-5 h-100">
-          <!-- Products Section -->
-          <div class="col-12 col-md-6 col-lg-4">
-            <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
-              Popular Products
+          <!-- Top Rated Products Section -->
+          <div class="col-12 col-md-4 col-lg-4">
+            <h5 class="text-teal fw-bold position-relative pb-2 border-bottom border-teal">
+              Top Rated Products
             </h5>
-            <ul class="list-unstyled" *ngIf="isLoggedIn">
-              <li *ngFor="let product of products.slice(0, 5)" class="mb-3">
-                <a [routerLink]="['/product-details', product._id]"
+            <ul class="list-unstyled">
+              <li *ngFor="let product of topRatedProducts" class="mb-3">
+                <a [routerLink]="isLoggedIn ? ['product-details', product._id] : []"
                   class="text-secondary hover-teal text-decoration-none d-block transition-all">
-                  {{
-                  product.title.length > 15
-                  ? (product.title | slice : 0 : 15) + "..."
-                  : product.title
-                  }}
+                  <div class="d-flex justify-content-between">
+                    <span class="">{{ product.title | slice:0:15 }}{{ product.title.length >
+                      15 ? '...' : '' }}</span>
+                    <span class="">{{ product.rating.rate | number:'1.1-1' }} ⭐</span>
+                  </div>
                 </a>
               </li>
             </ul>
+            <div *ngIf="!topRatedProducts || topRatedProducts.length === 0" class="text-center ">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60ca9'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Handwoven Wool Scarf</span>
+                      <span class=""> 4.7 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cbf'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Rustic Wooden Nightstand</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cc0'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Windsor Chair</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60cc7'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Adirondack Chair</span>
+                      <span class=""> 4.6 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+                <li class="mb-3">
+                  <a [routerLink]="isLoggedIn ? ['product-details/67c8df8cf9506d6f73d60ccd'] : ['login']"
+                    class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                    <div class="d-flex justify-content-between">
+                      <span class="">Wingback Chair</span>
+                      <span class=""> 4.5 ⭐</span>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
 
           <!-- Categories Section -->
-          <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-6 col-md-4 col-lg-4">
             <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
               Categories
             </h5>
             <ul class="list-unstyled">
               <li *ngFor="let category of categories" class="mb-3">
                 <a [routerLink]="['/products', category._id]"
-                  class="text-secondary hover-teal text-decoration-none d-block transition-all">
+                  class="text-secondary hover-teal text-decoration-none d-block transition-all"
+                  (click)="loadCategoryId($event)">
                   {{ category.title }}
                 </a>
               </li>
@@ -52,7 +103,7 @@
           </div>
 
           <!-- Quick Links -->
-          <div class="col-12 col-md-6 col-lg-4">
+          <div class="col-6 col-md-4 col-lg-4">
             <h5 class="text-teal fw-bold mb-4 position-relative pb-2 border-bottom border-teal">
               Quick Links
             </h5>

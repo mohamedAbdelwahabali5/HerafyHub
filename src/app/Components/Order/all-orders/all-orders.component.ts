@@ -1,7 +1,15 @@
-import { Component, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  signal,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../Services/order.service';
 import { Order, OrderResponse } from '../../../Models/order.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-all-orders',
@@ -10,7 +18,9 @@ import { Order, OrderResponse } from '../../../Models/order.model';
   templateUrl: './all-orders.component.html',
   styleUrls: ['./all-orders.component.css'],
 })
-export class AllOrdersComponent implements OnInit {
+export class AllOrdersComponent implements OnInit, OnChanges {
+  @Input() orderId: string | null = null;
+
   orders = signal<Order[]>([]);
   loading = signal(true);
   error = signal(false);
@@ -20,6 +30,32 @@ export class AllOrdersComponent implements OnInit {
 
   ngOnInit() {
     this.loadOrders();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Check if orderId has changed and is not null
+    if (changes['orderId'] && this.orderId) {
+      this.updateOrderStatus(this.orderId);
+    }
+  }
+
+  updateOrderStatus(orderId: string) {
+    // Find the order in the current list and update its status
+    this.orders.update(orders =>
+      orders.map(order =>
+        order._id === orderId
+          ? { ...order, status: 'Cancelled' }
+          : order
+      )
+    );
+
+    // Update selected order details if it's the same order
+    if (this.selectedOrderDetails?._id === orderId) {
+      this.selectedOrderDetails = {
+        ...this.selectedOrderDetails,
+        status: 'Cancelled'
+      };
+    }
   }
 
   loadOrders() {
@@ -45,25 +81,83 @@ export class AllOrdersComponent implements OnInit {
   }
 
   viewOrderDetails(order: Order) {
-    this.selectedOrderDetails = order;
-    this.applySavedQuantities();
+    if (!order._id) {
+      console.error('Order ID is undefined');
+      return;
+    }
+
+    // this.loading.set(true);
+    this.orderService.getOrderDetails(order._id).subscribe({
+      next: (response) => {
+        this.selectedOrderDetails = response;
+        this.loading.set(false);
+      },
+      error: (err) => {
+        console.error('Error fetching order details:', err);
+        this.error.set(true);
+        this.loading.set(false);
+      }
+    });
   }
+
 
   closeOrderDetails() {
     this.selectedOrderDetails = null;
   }
 
   cancelOrder(orderId: string) {
-    this.orderService.cancelOrder(orderId).subscribe({
-      next: (cancelledOrder) => {
-        this.orders.update((orders) =>
-          orders.filter((order) => order._id !== orderId)
-        );
-        this.closeOrderDetails();
-      },
-      error: (err) => {
-        this.error.set(true);
-      },
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to cancel this order?',
+      showCancelButton: true,
+      confirmButtonColor: '#B22222',
+      cancelButtonColor:'#3D8D7A',
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.orderService.cancelOrder(orderId).subscribe({
+          next: (cancelledOrder) => {
+            // Immediately update the order status in the list
+            this.orders.update(orders =>
+              orders.map(order =>
+                order._id === orderId
+                  ? { ...order, status: 'Cancelled' }
+                  : order
+              )
+            );
+
+            // Update the selected order details if it's the same order
+            if (this.selectedOrderDetails?._id === orderId) {
+              this.selectedOrderDetails = {
+                ...this.selectedOrderDetails,
+                status: 'Cancelled'
+              };
+            }
+
+            // Show success message
+            Swal.fire({
+              title: 'Cancelled!',
+              text: 'Your order has been cancelled.',
+              icon: 'success',
+              confirmButtonColor: '#3D8D7A'
+            });
+          },
+          error: (err) => {
+            this.error.set(true);
+
+            // Show error message
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to cancel the order. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#3D8D7A'
+            });
+
+            console.error('Error cancelling order:', err);
+          }
+        });
+      }
     });
   }
   applySavedQuantities(): void {
@@ -86,4 +180,5 @@ export class AllOrdersComponent implements OnInit {
       }
     }
   }
+
 }
